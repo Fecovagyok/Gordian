@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.szakchat.databinding.RowContactBinding
 
-class ContactAdapter : ListAdapter<Contact,ContactAdapter.ContactHolder>(itemCallback){
+class ContactAdapter(private val listener: ContactListener)
+    : ListAdapter<Contact,ContactAdapter.ContactHolder>(itemCallback){
 
     companion object {
         object itemCallback : DiffUtil.ItemCallback<Contact>() {
@@ -22,14 +23,12 @@ class ContactAdapter : ListAdapter<Contact,ContactAdapter.ContactHolder>(itemCal
         }
     }
 
-    var listener: ContactListener? = null
-
     interface ContactListener {
-
+        fun onItemClick(contact: Contact)
+        fun onLongClick()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
-        Log.d("FECO", "CreateViewHolder")
         return ContactHolder(
             RowContactBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -54,7 +53,11 @@ class ContactAdapter : ListAdapter<Contact,ContactAdapter.ContactHolder>(itemCal
         }
 
         init {
-
+            binding.root.setOnClickListener {
+                contact?.let {
+                    listener.onItemClick(it)
+                }
+            }
         }
     }
 }

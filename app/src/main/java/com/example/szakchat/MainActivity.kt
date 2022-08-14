@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> {
-                Log.d("FECO", "Settings_")
                 viewModel.insert(Contact(0, "Tumpek Ferenc"))
                 true
             }

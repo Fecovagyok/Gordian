@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:id="@+id/list_contact"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:paddingTop="10dp"
         >
 
     </androidx.recyclerview.widget.RecyclerView>

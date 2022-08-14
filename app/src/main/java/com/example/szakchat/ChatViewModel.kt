@@ -8,6 +8,7 @@ import com.example.szakchat.contacts.ContactRepository
 import kotlinx.coroutines.launch
 
 class ChatViewModel : ViewModel() {
+    var currentContact: Contact? = null
     private val repository = ContactRepository(
         ChatApplication.database.contactDao()
     )
