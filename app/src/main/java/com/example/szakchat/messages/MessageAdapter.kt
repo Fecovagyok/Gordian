@@ -35,7 +35,7 @@ class MessageAdapter(private val listener: Listener)
             this.message = message
             binding.msgView.text = message.text
             if(message.incoming)
-                binding.root.gravity = Gravity.END
+                binding.root.gravity = Gravity.START
             else
                 if(message.sent == false)
                     binding.msgView.setBackgroundResource(R.drawable.not_sent_message_ground)

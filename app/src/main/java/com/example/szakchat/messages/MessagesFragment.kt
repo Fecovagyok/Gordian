@@ -1,6 +1,7 @@
 package com.example.szakchat.messages
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -50,8 +51,10 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener {
             if (viewModel.currentContact == null)
                 return@setOnClickListener
             val text = binding.msgField.text.toString().trim()
-            if(text.isBadText())
+            if(text.isBadText()){
+                Log.d("FECO", "Textbox: $text")
                 return@setOnClickListener
+            }
 
             val contact = viewModel.currentContact!!
             val message = Message(
