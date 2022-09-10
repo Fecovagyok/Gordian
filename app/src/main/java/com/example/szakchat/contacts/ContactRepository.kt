@@ -19,10 +19,16 @@ class ContactRepository(private val dao: ContactDao) {
         dao.insertContact(contact.toRoomModel())
     }
 
-    private fun RoomContact.toDomainModel() = Contact(id, name)
+    fun getContacts(list: List<String>): List<Contact> {
+        return dao.getContacts(list).map {
+            it.toDomainModel()
+        }
+    }
+
+    private fun RoomContact.toDomainModel() = Contact(id, name, uniqueId)
     private fun Contact.toRoomModel() = RoomContact(
         id = id,
         name = name,
-        secret = "titok",
+        uniqueId = uniqueId,
     )
 }

@@ -6,6 +6,21 @@
     app:startDestination="@id/FirstFragment">
 
     <fragment
+        android:id="@+id/giveSelfFragment"
+        android:name="com.example.szakchat.identity.IdentityFragment"
+        android:label="@string/name_yourself"
+        tools:layout="@layout/fragment_identity"
+        >
+        <action
+            android:id="@+id/action_self_to_first"
+            app:destination="@id/FirstFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"
+            />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.szakchat.contacts.FirstFragment"
         android:label="@string/first_fragment_label"
@@ -14,10 +29,15 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_First_to_self"
+            app:destination="@id/giveSelfFragment"
+            app:popUpToInclusive="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.szakchat.SecondFragment"
+        android:name="com.example.szakchat.messages.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 

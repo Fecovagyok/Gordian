@@ -17,6 +17,8 @@ class ChatApplication : Application() {
             applicationContext,
             Database::class.java,
             "chat_data"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }

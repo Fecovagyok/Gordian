@@ -1,4 +1,4 @@
-package com.example.szakchat
+package com.example.szakchat.messages
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
+import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.databinding.FragmentSecondBinding
+import com.example.szakchat.network.ChatSocket
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class SecondFragment : Fragment(), MessageAdapter.Listener {
 
     private var _binding: FragmentSecondBinding? = null
 
@@ -21,6 +22,7 @@ class SecondFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private val viewModel: ChatViewModel by activityViewModels()
+    private var chatSocket: ChatSocket? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +37,32 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as AppCompatActivity
-        activity.supportActionBar?.title = viewModel.currentContact?.name ?: "Unknown"
+        val contact = viewModel.currentContact
+        activity.supportActionBar?.title = contact?.name ?: "Unknown"
+
+        val adapter = MessageAdapter(this)
+        binding.messagesView.adapter = adapter
+        viewModel.currentMessages?.observe(viewLifecycleOwner) { messages ->
+            adapter.submitList(messages)
+        }
+
         binding.buttonSecond.setOnClickListener {
-            findNavController().popBackStack()
+            if (viewModel.currentContact == null)
+                return@setOnClickListener
+            val text = binding.msgField.text.toString().trim()
+            if (text == "")
+                return@setOnClickListener
+            if (text.contains('\n'))
+                return@setOnClickListener
+
+            val message = Message(
+                contact = viewModel.currentContact!!,
+                text = text,
+                incoming = false,
+            )
+            //viewModel.insertMessage(message)
+            chatSocket?.send(listOf(message))
+            binding.msgField.text.clear()
         }
     }
 
