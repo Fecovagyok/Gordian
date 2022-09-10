@@ -23,7 +23,6 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener {
     // onDestroyView.
     private val binding get() = _binding!!
     private val viewModel: ChatViewModel by activityViewModels()
-    private var chatSocket: ChatSocket? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,14 +53,15 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener {
             if(text.isBadText())
                 return@setOnClickListener
 
+            val contact = viewModel.currentContact!!
             val message = Message(
-                contact = viewModel.currentContact!!,
+                contact = contact,
                 text = text,
                 incoming = false,
                 sent = false,
             )
-            //viewModel.insertMessage(message)
-            chatSocket?.send(listOf(message))
+
+            viewModel.networking.send(message)
             binding.msgField.text.clear()
         }
     }

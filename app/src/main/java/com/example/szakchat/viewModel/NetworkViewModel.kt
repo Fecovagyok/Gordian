@@ -44,7 +44,7 @@ class NetworkViewModel(private val viewModel: ChatViewModel) {
     fun startPolling(){
         pollJob =  viewModel.viewModelScope.launch(Dispatchers.IO) {
             while (true) {
-                delay(2500)
+                delay(4500)
                 val received = chatSocket.receive()?: continue
                 val userIds = received.map {
                     it.userId
