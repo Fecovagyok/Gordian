@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.databinding.FragmentSecondBinding
+import com.example.szakchat.extensions.isBadText
 import com.example.szakchat.network.ChatSocket
 
 /**
@@ -50,9 +51,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener {
             if (viewModel.currentContact == null)
                 return@setOnClickListener
             val text = binding.msgField.text.toString().trim()
-            if (text == "")
-                return@setOnClickListener
-            if (text.contains('\n'))
+            if(text.isBadText())
                 return@setOnClickListener
 
             val message = Message(
