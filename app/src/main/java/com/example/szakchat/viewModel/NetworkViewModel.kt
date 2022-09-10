@@ -1,5 +1,6 @@
 package com.example.szakchat.viewModel
 
+import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.messages.Message
@@ -11,7 +12,13 @@ import kotlinx.coroutines.launch
 
 
 class NetworkViewModel(private val viewModel: ChatViewModel) {
-    private val chatSocket = ChatSocket(ChatViewModel.DEFAULT_IP)
+
+    companion object {
+        const val SELF_KEY = "SELF_KEY"
+        const val DEFAULT_IP = "89.133.85.78"
+    }
+
+    private val chatSocket = ChatSocket("192.168.0.13")
     var ip
     get() = chatSocket.ip
     set(value) { chatSocket.ip = value }
@@ -29,10 +36,16 @@ class NetworkViewModel(private val viewModel: ChatViewModel) {
         viewModel.messageRepository.setSent(message)
     }
 
+    fun setSelfId(value: String, prefs: SharedPreferences){
+        self = value
+        prefs.edit().putString(SELF_KEY, value).apply()
+    }
+
     fun startPolling(){
         pollJob =  viewModel.viewModelScope.launch(Dispatchers.IO) {
             while (true) {
-                val received = chatSocket.receive()
+                delay(2500)
+                val received = chatSocket.receive()?: continue
                 val userIds = received.map {
                     it.userId
                 }
@@ -54,7 +67,6 @@ class NetworkViewModel(private val viewModel: ChatViewModel) {
                         )
                     }
                     viewModel.messageRepository.insert(toInsert)
-                    delay(3000)
                 }
             }
         }

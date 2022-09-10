@@ -7,8 +7,9 @@
     >
 
     <TextView
-        android:background="@drawable/not_sent_message_ground"
+        android:background="@drawable/sent_message_border"
         android:id="@+id/msg_view"
+        android:padding="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="test"

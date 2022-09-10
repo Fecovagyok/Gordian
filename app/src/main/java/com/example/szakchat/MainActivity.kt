@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.databinding.ActivityMainBinding
 import com.example.szakchat.viewModel.ChatViewModel
+import com.example.szakchat.viewModel.NetworkViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,9 +22,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ChatViewModel
 
-    companion object {
-        const val SELF_KEY = "SELF_KEY"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initSelfId(navController: NavController) {
         if (viewModel.networking.self == null) {
-            val self = getPreferences(MODE_PRIVATE).getString(SELF_KEY, null)
+            val self = getPreferences(MODE_PRIVATE).getString(NetworkViewModel.SELF_KEY, null)
             if (self == null) {
                 navController.navigate(R.id.action_First_to_self)
             } else {
@@ -64,12 +62,17 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> {
+            R.id.action_add -> {
                 Log.d("FECO", "self: ${viewModel.networking.self}")
                 viewModel.networking.self?.let {
                     viewModel.insertContact(Contact(0, "Tumpek Ferenc", it))
                     true
                 }?: false
+            }
+            R.id.action_settings -> {
+                val controller = findNavController(R.id.nav_host_fragment_content_main)
+                controller.navigate(R.id.action_First_to_self)
+                true
             }
             else -> super.onOptionsItemSelected(item)
         }

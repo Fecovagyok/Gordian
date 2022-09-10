@@ -1,5 +1,6 @@
 package com.example.szakchat.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,10 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ChatViewModel : ViewModel() {
-    companion object {
-        const val DEFAULT_IP = "89.133.85.78"
-    }
-    val networking = NetworkViewModel(this)
+
+    val networking: NetworkViewModel = NetworkViewModel(this)
     var currentMessages: LiveData<List<Message>>? = null
         private set
     val messageRepository = MessageRepository()
@@ -31,6 +30,11 @@ class ChatViewModel : ViewModel() {
         ChatApplication.database.contactDao()
     )
     val contacts: LiveData<List<Contact>> = repository.getContacts()
+
+    init {
+        Log.e("FECO", "ViewModel init called")
+        networking.startPolling()
+    }
 
     fun getContacts(list: List<String>) = repository.getContacts(list)
 

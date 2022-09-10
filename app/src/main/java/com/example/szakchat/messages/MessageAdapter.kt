@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.szakchat.R
 import com.example.szakchat.database.RoomMessage
 import com.example.szakchat.databinding.MessageBinding
 
@@ -35,6 +36,9 @@ class MessageAdapter(private val listener: Listener)
             binding.msgView.text = message.text
             if(message.incoming)
                 binding.root.gravity = Gravity.END
+            else
+                if(message.sent == false)
+                    binding.msgView.setBackgroundResource(R.drawable.not_sent_message_ground)
         }
 
         init {

@@ -59,6 +59,7 @@ class SecondFragment : Fragment(), MessageAdapter.Listener {
                 contact = viewModel.currentContact!!,
                 text = text,
                 incoming = false,
+                sent = false,
             )
             //viewModel.insertMessage(message)
             chatSocket?.send(listOf(message))

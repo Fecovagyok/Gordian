@@ -6,6 +6,9 @@ import com.example.szakchat.MainActivity
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.exceptions.CannotRegister
 import com.example.szakchat.messages.Message
+import com.example.szakchat.viewModel.ChatViewModel
+import com.example.szakchat.viewModel.NetworkViewModel
+import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.net.Socket
 
@@ -19,15 +22,10 @@ class ChatSocket(var ip: String, var self: String? = null) {
         const val EXPECT = 8
     }
 
-    private fun auth(writer: BufferedWriter){
-        writer.write(PASS)
-        writer.newLine()
-    }
-
     fun register() {
         val socket = Socket(ip, PORT)
         val writer = socket.getOutputStream().bufferedWriter()
-        auth(writer)
+        writer.auth()
         writer.apply {
             register()
             flush()
@@ -42,7 +40,7 @@ class ChatSocket(var ip: String, var self: String? = null) {
             return
         val socket = Socket(ip, PORT)
         val writer = socket.getOutputStream().bufferedWriter()
-        auth(writer)
+        writer.auth()
         writer.apply {
             send()
             writeLine(self!!)
@@ -55,35 +53,40 @@ class ChatSocket(var ip: String, var self: String? = null) {
         socket.close()
     }
 
-    fun receive(): List<UserWithMessages>{
-        if(self == null)
-            return listOf()
+    private fun checkEnd(reader: BufferedReader, writer: BufferedWriter): Boolean {
+        val header = reader.read()
+        if(header == END) {
+            writer.apply { write(END); flush() }
+            return true
+        }
+        if (header != EXPECT){
+            Log.e("FECO", "The first sent integer is not EXPECT: $header")
+            return true
+        }
+        return false
+    }
+
+    fun receive(): List<UserWithMessages>?{
+        self?: return null
+        val self = self!!
+
         val received = mutableListOf<UserWithMessages>()
         val socket = Socket(ip, PORT)
         val writer = socket.getOutputStream().bufferedWriter()
-        auth(writer)
-        writer.receive()
+        writer.auth()
+        writer.receive(self)
 
         val reader = socket.getInputStream().bufferedReader()
         while (true){
-            val header = reader.read()
-            if(header == END)
+            if(checkEnd(reader, writer))
                 break
-            if (header != EXPECT){
-                Log.e("FECO", "The first sent integer is not EXPECT")
-                break
-            }
             // He does not know if the user exists
             val id = reader.readLine()
             val list = mutableListOf<String>()
             while (true) {
-                val msgHeader = reader.read()
-                if(msgHeader == END)
+                if(checkEnd(reader, writer))
                     break
-                if(msgHeader != EXPECT) {
-                    Log.e("FECO", "The sent integer before the message is not EXPECT")
-                    break
-                }
+
                 val text = reader.readLine()
                 list.add(text)
             }
@@ -91,10 +94,5 @@ class ChatSocket(var ip: String, var self: String? = null) {
             received.add(messages)
         }
         return received
-    }
-
-    fun setSelfId(id: String, preferences: SharedPreferences){
-        self = id
-        preferences.edit().putString(MainActivity.SELF_KEY, id).apply()
     }
 }

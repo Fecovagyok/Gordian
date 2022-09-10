@@ -7,14 +7,23 @@ fun BufferedWriter.register() {
     newLine()
 }
 
+fun BufferedWriter.auth() {
+    write(ChatSocket.PASS)
+    newLine()
+    flush()
+}
+
 fun BufferedWriter.send() {
     write(ChatSocketCommands.SEND)
     newLine()
 }
 
-fun BufferedWriter.receive() {
-    write(ChatSocketCommands.REGISTER)
+fun BufferedWriter.receive(selfId: String) {
+    write(ChatSocketCommands.RECEIVE)
     newLine()
+    write(selfId)
+    newLine()
+    flush()
 }
 
 fun BufferedWriter.writeLine(string: String) {
