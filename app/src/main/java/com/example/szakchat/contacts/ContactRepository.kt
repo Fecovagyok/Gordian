@@ -15,8 +15,8 @@ class ContactRepository(private val dao: ContactDao) {
             }
         }
 
-    suspend fun insert(contact: Contact) = withContext(Dispatchers.IO) {
-        dao.insertContact(contact.toRoomModel())
+    fun insert(contact: Contact): Long  {
+        return dao.insertContact(contact.toRoomModel())
     }
 
     fun getContacts(list: List<String>): List<Contact> {

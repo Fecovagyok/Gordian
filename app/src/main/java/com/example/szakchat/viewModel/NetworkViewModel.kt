@@ -18,7 +18,7 @@ class NetworkViewModel(private val viewModel: ChatViewModel) {
         const val DEFAULT_IP = "89.133.85.78"
     }
 
-    private val chatSocket = ChatSocket("192.168.0.13")
+    private val chatSocket = ChatSocket(DEFAULT_IP)
     var ip
     get() = chatSocket.ip
     set(value) { chatSocket.ip = value }

@@ -46,6 +46,9 @@ class IdentityFragment : Fragment() {
             findNavController().navigate(R.id.action_self_to_first)
         }
         binding.ipField.setText(viewModel.networking.ip)
+        viewModel.networking.self?.let {
+            binding.nameField.setText(it)
+        }
         return binding.root
     }
 }

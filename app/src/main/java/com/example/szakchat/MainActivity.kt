@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import com.example.szakchat.contacts.AddContactDialog
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.databinding.ActivityMainBinding
 import com.example.szakchat.viewModel.ChatViewModel
@@ -64,10 +65,9 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_add -> {
                 Log.d("FECO", "self: ${viewModel.networking.self}")
-                viewModel.networking.self?.let {
-                    viewModel.insertContact(Contact(0, "Tumpek Ferenc", it))
-                    true
-                }?: false
+                val dialog = AddContactDialog()
+                dialog.show(supportFragmentManager, "Add a contact")
+                true
             }
             R.id.action_settings -> {
                 val controller = findNavController(R.id.nav_host_fragment_content_main)

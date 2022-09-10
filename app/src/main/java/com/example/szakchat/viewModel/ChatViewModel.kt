@@ -38,7 +38,7 @@ class ChatViewModel : ViewModel() {
 
     fun getContacts(list: List<String>) = repository.getContacts(list)
 
-    fun insertContact(contact: Contact) = viewModelScope.launch {
+    fun insertContact(contact: Contact) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(contact)
     }
     fun insertMessage(message: Message) = viewModelScope.launch {

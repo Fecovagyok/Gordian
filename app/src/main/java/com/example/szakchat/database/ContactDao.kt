@@ -6,8 +6,8 @@ import androidx.room.*
 @Dao
 interface ContactDao {
 
-    @Insert
-    fun insertContact(contact: RoomContact)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertContact(contact: RoomContact): Long
 
     @Query("SELECT * from contacts")
     fun getContacts(): LiveData<List<RoomContact>>
