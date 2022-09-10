@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".messages.SecondFragment"
+    tools:context=".messages.MessagesFragment"
     android:paddingBottom="6dp"
     android:paddingTop="10dp"
     android:paddingHorizontal="12dp"

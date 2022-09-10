@@ -15,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment(), ContactAdapter.ContactListener {
+class ContactsFragment : Fragment(), ContactAdapter.ContactListener {
 
     companion object{
         const val DTAG = "FECO"

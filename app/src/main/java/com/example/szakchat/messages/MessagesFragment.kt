@@ -14,7 +14,7 @@ import com.example.szakchat.network.ChatSocket
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment(), MessageAdapter.Listener {
+class MessagesFragment : Fragment(), MessageAdapter.Listener {
 
     private var _binding: FragmentSecondBinding? = null
 

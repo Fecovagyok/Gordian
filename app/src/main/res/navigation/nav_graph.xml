@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.szakchat.contacts.FirstFragment"
+        android:name="com.example.szakchat.contacts.ContactsFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.szakchat.messages.SecondFragment"
+        android:name="com.example.szakchat.messages.MessagesFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
