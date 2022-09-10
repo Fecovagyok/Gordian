@@ -7,6 +7,6 @@ data class Message(
     val text: String,
     val contact: Contact,
     val incoming: Boolean,
-    val sent: Boolean? = null,
+    var sent: Boolean = true,
 )
 

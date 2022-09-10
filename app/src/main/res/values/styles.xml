@@ -2,7 +2,7 @@
 <resources>
 
     <style name="basic_text" parent="Platform.MaterialComponents.Light">
-
+        <item name="android:textSize">16sp</item>
     </style>
 
 </resources>

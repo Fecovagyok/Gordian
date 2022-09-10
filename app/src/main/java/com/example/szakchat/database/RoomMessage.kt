@@ -12,5 +12,5 @@ data class RoomMessage(
     val contactId: Long,
     val text: String,
     val incoming: Boolean,
-    val sent: Boolean?,
+    val sent: Boolean,
 )

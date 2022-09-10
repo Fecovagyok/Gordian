@@ -1,5 +1,6 @@
 package com.example.szakchat.messages
 
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -36,9 +37,16 @@ class MessageAdapter(private val listener: Listener)
             binding.msgView.text = message.text
             if(message.incoming)
                 binding.root.gravity = Gravity.START
+            Log.d(
+                "FECO", "Text: ${
+                    message.text
+                } Sent: ${message.sent} incoming: ${message.incoming}"
+            )
+            if(!message.sent) {
+                binding.msgView.setBackgroundResource(R.drawable.not_sent_message_ground)
+            }
             else
-                if(message.sent == false)
-                    binding.msgView.setBackgroundResource(R.drawable.not_sent_message_ground)
+                binding.msgView.setBackgroundResource(R.drawable.sent_message_border)
         }
 
         init {

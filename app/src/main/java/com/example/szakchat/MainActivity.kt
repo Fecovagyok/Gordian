@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_settings -> {
                 val controller = findNavController(R.id.nav_host_fragment_content_main)
-                controller.navigate(R.id.action_First_to_self)
+                controller.navigate(R.id.giveSelfFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)

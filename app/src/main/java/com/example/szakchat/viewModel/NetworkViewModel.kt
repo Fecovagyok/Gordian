@@ -31,9 +31,10 @@ class NetworkViewModel(private val viewModel: ChatViewModel) {
     private set
 
     fun send(message: Message) = viewModel.viewModelScope.launch(Dispatchers.IO) {
-        viewModel.messageRepository.insert(message)
+        val id = viewModel.messageRepository.insert(message)
         chatSocket.send(listOf(message))
-        viewModel.messageRepository.setSent(message)
+        message.sent = true
+        viewModel.messageRepository.setSent(id)
     }
 
     fun setSelfId(value: String, prefs: SharedPreferences){

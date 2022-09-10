@@ -15,13 +15,13 @@ interface MessageDao {
     fun getMessages(id: Long): LiveData<List<RoomMessage>>
 
     @Insert
-    fun insert(message: RoomMessage)
+    fun insert(message: RoomMessage): Long
 
     @Insert
     fun insertAll(messages: List<RoomMessage>)
 
     @Update
-    fun update(message: RoomMessage)
+    fun update(message: RoomMessage): Int
 
     @Query("UPDATE messages SET sent=1 WHERE id=:id")
     fun setSent(id: Long)

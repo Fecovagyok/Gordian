@@ -32,7 +32,7 @@ class ChatViewModel : ViewModel() {
     val contacts: LiveData<List<Contact>> = repository.getContacts()
 
     init {
-        Log.e("FECO", "ViewModel init called")
+        Log.d("FECO", "ViewModel init called")
         networking.startPolling()
     }
 
@@ -41,7 +41,7 @@ class ChatViewModel : ViewModel() {
     fun insertContact(contact: Contact) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(contact)
     }
-    fun insertMessage(message: Message) = viewModelScope.launch {
+    fun insertMessage(message: Message) = viewModelScope.launch(Dispatchers.IO) {
         messageRepository.insert(message)
     }
     fun insertMessage(messages: List<Message>) = viewModelScope.launch {

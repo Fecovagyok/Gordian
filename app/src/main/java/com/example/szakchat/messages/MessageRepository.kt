@@ -1,5 +1,6 @@
 package com.example.szakchat.messages
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.szakchat.ChatApplication
@@ -18,8 +19,8 @@ class MessageRepository() {
             }
         }
 
-    suspend fun insert(message: Message) = withContext(Dispatchers.IO) {
-        dao.insert(message.toRoomModel())
+    fun insert(message: Message): Long {
+        return dao.insert(message.toRoomModel())
     }
 
     suspend fun insert(messages: List<Message>) = withContext(Dispatchers.IO){
@@ -29,8 +30,8 @@ class MessageRepository() {
         dao.insertAll(roomMessages)
     }
 
-    suspend fun setSent(message: Message) = withContext(Dispatchers.IO){
-        dao.setSent(message.id)
+    suspend fun setSent(id: Long) = withContext(Dispatchers.IO){
+        dao.setSent(id)
     }
 
     private fun RoomMessage.toDomainModel(contact: Contact) = Message(
