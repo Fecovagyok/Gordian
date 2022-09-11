@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+        android:background="@drawable/not_sent_message_ground"
+        android:id="@+id/msg_view"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"
+        style="@style/Theme.Szakchat.message"
+        />
+
+</FrameLayout>

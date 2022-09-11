@@ -5,4 +5,12 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="Theme.Szakchat.message" parent="basic_text">
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
 </resources>

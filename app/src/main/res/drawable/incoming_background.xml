@@ -3,7 +3,7 @@
     android:shape="rectangle"
     >
 
-    <corners android:radius="24dp" />
-    <solid android:color="@color/NotSentMessageBackground"/>
+    <solid android:color="@color/IncomingMessageBackground"/>
+    <corners android:radius="24dp"/>
 
 </shape>

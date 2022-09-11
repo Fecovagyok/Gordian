@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.databinding.FragmentSecondBinding
 import com.example.szakchat.extensions.isBadText
+import com.example.szakchat.extensions.scrollToTheEnd
 import com.example.szakchat.network.ChatSocket
 
 /**
@@ -45,6 +46,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener {
         binding.messagesView.adapter = adapter
         viewModel.currentMessages?.observe(viewLifecycleOwner) { messages ->
             adapter.submitList(messages)
+            binding.messagesView.scrollToPosition(messages.size-1)
         }
 
         binding.buttonSecond.setOnClickListener {
@@ -52,7 +54,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener {
                 return@setOnClickListener
             val text = binding.msgField.text.toString().trim()
             if(text.isBadText()){
-                Log.d("FECO", "Textbox: $text")
+                Log.d("FECO", "BadText, Textbox: $text")
                 return@setOnClickListener
             }
 

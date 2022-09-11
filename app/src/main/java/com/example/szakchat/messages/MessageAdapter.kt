@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.szakchat.R
-import com.example.szakchat.database.RoomMessage
-import com.example.szakchat.databinding.MessageBinding
+import com.example.szakchat.databinding.MessageIncomingBinding
+import com.example.szakchat.databinding.MessageOwnedBinding
 
 class MessageAdapter(private val listener: Listener)
-    : ListAdapter<Message, MessageAdapter.MessageHolder>(itemCallback){
+    : ListAdapter<Message, MessageHolder>(itemCallback){
 
 
     companion object {
@@ -25,43 +25,34 @@ class MessageAdapter(private val listener: Listener)
                 return oldItem == newItem
             }
         }
+        const val INCOMING = 1
+        const val OWNED = 0
     }
 
-    inner class MessageHolder(private val binding: MessageBinding)
-        : RecyclerView.ViewHolder(binding.root) {
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        return if(item.incoming)
+            INCOMING
+        else
+            OWNED
+    }
 
-        var message: Message? = null
-
-        fun bind(message: Message){
-            this.message = message
-            binding.msgView.text = message.text
-            if(message.incoming)
-                binding.root.gravity = Gravity.START
-            Log.d(
-                "FECO", "Text: ${
-                    message.text
-                } Sent: ${message.sent} incoming: ${message.incoming}"
-            )
-            if(!message.sent) {
-                binding.msgView.setBackgroundResource(R.drawable.not_sent_message_ground)
-            }
-            else
-                binding.msgView.setBackgroundResource(R.drawable.sent_message_border)
-        }
-
-        init {
-            binding.root.setOnClickListener {
-                }
-            }
-        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
-        return MessageHolder(
-            MessageBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent, false
+        return when(viewType) {
+            OWNED -> OwnedMessageHolder(
+                MessageOwnedBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
             )
-        )
+            else -> IncomingMessageHolder(
+                MessageIncomingBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
+            )
+        }
     }
 
     override fun onBindViewHolder(holder: MessageHolder, position: Int) {

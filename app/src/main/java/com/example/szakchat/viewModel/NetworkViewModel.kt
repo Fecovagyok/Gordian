@@ -1,14 +1,21 @@
 package com.example.szakchat.viewModel
 
 import android.content.SharedPreferences
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.messages.Message
 import com.example.szakchat.network.ChatSocket
+import com.example.szakchat.network.ConnectionStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.IOException
+import java.net.SocketException
+import java.net.SocketTimeoutException
 
 
 class NetworkViewModel(private val viewModel: ChatViewModel) {
@@ -30,11 +37,23 @@ class NetworkViewModel(private val viewModel: ChatViewModel) {
     var pollJob: Job? = null
     private set
 
+    private val _networkStatus = MutableLiveData<ConnectionStatus>()
+    val networkStatus: LiveData<ConnectionStatus>
+    get() = _networkStatus
+
     fun send(message: Message) = viewModel.viewModelScope.launch(Dispatchers.IO) {
-        val id = viewModel.messageRepository.insert(message)
-        chatSocket.send(listOf(message))
-        message.sent = true
-        viewModel.messageRepository.setSent(id)
+        try {
+            val id = viewModel.messageRepository.insert(message)
+            chatSocket.send(listOf(message))
+            message.sent = true
+            viewModel.messageRepository.setSent(id)
+        } catch(e: IOException){
+            Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause}")
+            _networkStatus.postValue(ConnectionStatus(
+                connected = false,
+                message = "Error: ${e.message}"
+            ))
+        }
     }
 
     fun setSelfId(value: String, prefs: SharedPreferences){
@@ -44,31 +63,39 @@ class NetworkViewModel(private val viewModel: ChatViewModel) {
 
     fun startPolling(){
         pollJob =  viewModel.viewModelScope.launch(Dispatchers.IO) {
-            while (true) {
-                delay(4500)
-                val received = chatSocket.receive()?: continue
-                val userIds = received.map {
-                    it.userId
-                }
-                val contacts = viewModel.getContacts(userIds)
-                // To Spawn the contacts into existence
-                val map = HashMap<String, Contact>()
-                contacts.forEach { map[it.uniqueId] = it }
-                received.forEach {
-                    val contact = map[it.userId]?: run {
-                        val c = Contact(uniqueId = it.userId)
-                        viewModel.repository.insert(c)
-                        c
+            try {
+                while (true) {
+                    delay(2500)
+                    val received = chatSocket.receive() ?: continue
+                    val userIds = received.map {
+                        it.userId
                     }
-                    val toInsert = it.messages.map { text ->
-                        Message(
-                            contact = contact,
-                            text = text,
-                            incoming = true
-                        )
+                    val contacts = viewModel.getContacts(userIds)
+                    // To Spawn the contacts into existence
+                    val map = HashMap<String, Contact>()
+                    contacts.forEach { map[it.uniqueId] = it }
+                    received.forEach {
+                        val contact = map[it.userId] ?: run {
+                            val c = Contact(uniqueId = it.userId)
+                            viewModel.repository.insert(c)
+                            c
+                        }
+                        val toInsert = it.messages.map { text ->
+                            Message(
+                                contact = contact,
+                                text = text,
+                                incoming = true
+                            )
+                        }
+                        viewModel.messageRepository.insert(toInsert)
                     }
-                    viewModel.messageRepository.insert(toInsert)
                 }
+            } catch (e: IOException){
+                Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause}")
+                _networkStatus.postValue(ConnectionStatus(
+                    connected = false,
+                    message = "Error: ${e.message}"
+                ))
             }
         }
     }

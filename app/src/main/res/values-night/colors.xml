@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="IncomingMessageBackground">@color/dark_grey</color>
+    <color name="OwnedMessageBackground">@color/dark_purple</color>
+    <color name="NotSentMessageBackground">@color/dark_red</color>
+
+    <color name="statusErrorColor">@color/dark_red</color>
+    <color name="statusNormalColor">@color/dark_purple</color>
+</resources>

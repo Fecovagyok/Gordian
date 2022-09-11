@@ -39,6 +39,13 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
         initSelfId(navController)
+        viewModel.networking.networkStatus.observe(this) {
+            if(it.connected)
+                binding.contentMain.statusBar.setBackgroundResource(R.color.statusNormalColor)
+            else
+                binding.contentMain.statusBar.setBackgroundResource(R.color.statusErrorColor)
+            binding.contentMain.statusBar.text = it.message
+        }
     }
 
     private fun initSelfId(navController: NavController) {

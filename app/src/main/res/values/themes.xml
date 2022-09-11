@@ -20,6 +20,10 @@
     </style>
 
     <style name="Theme.Szakchat.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="Theme.Szakchat.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="Theme.Szakchat.message.Owned" parent="Theme.Szakchat.message">
+
+    </style>
 </resources>
