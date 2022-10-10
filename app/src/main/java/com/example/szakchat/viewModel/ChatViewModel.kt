@@ -9,13 +9,13 @@ import com.example.szakchat.contacts.Contact
 import com.example.szakchat.contacts.ContactRepository
 import com.example.szakchat.messages.Message
 import com.example.szakchat.messages.MessageRepository
-import com.example.szakchat.network.ChatSocket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ChatViewModel : ViewModel() {
+class ChatViewModel() : ViewModel() {
 
-    val networking: NetworkViewModel = NetworkViewModel(this)
+    val networking: NetworkManager = NetworkManager(this)
+    val security = MySecurityManager(this)
     var currentMessages: LiveData<List<Message>>? = null
         private set
     val messageRepository = MessageRepository()
@@ -33,7 +33,7 @@ class ChatViewModel : ViewModel() {
 
     init {
         Log.d("FECO", "ViewModel init called")
-        networking.startPolling()
+        networking.startPollStartJob()
     }
 
     fun getContacts(list: List<String>) = repository.getContacts(list)
@@ -46,5 +46,9 @@ class ChatViewModel : ViewModel() {
     }
     fun insertMessage(messages: List<Message>) = viewModelScope.launch {
         messageRepository.insert(messages)
+    }
+
+    fun removeMessage(msg: Message) = viewModelScope.launch(Dispatchers.IO) {
+        messageRepository.remove(msg)
     }
 }

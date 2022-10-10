@@ -1,18 +1,13 @@
 package com.example.szakchat.network
 
-import android.content.SharedPreferences
 import android.util.Log
-import com.example.szakchat.MainActivity
-import com.example.szakchat.contacts.Contact
 import com.example.szakchat.exceptions.CannotRegister
 import com.example.szakchat.messages.Message
-import com.example.szakchat.viewModel.ChatViewModel
-import com.example.szakchat.viewModel.NetworkViewModel
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.net.Socket
 
-class ChatSocket(var ip: String, var self: String? = null) {
+class ChatSocket(val logger: StatusLogger, var ip: String, var self: String? = null) {
     companion object {
         const val PORT = 9983
         const val PASS = "kalapacsos"
@@ -38,6 +33,7 @@ class ChatSocket(var ip: String, var self: String? = null) {
     fun send(messages: List<Message>){
         if(self == null)
             return
+        postSendMessage("Trying to send...")
         val socket = Socket(ip, PORT)
         val writer = socket.getOutputStream().bufferedWriter()
         writer.auth()
@@ -50,6 +46,7 @@ class ChatSocket(var ip: String, var self: String? = null) {
             }
             flush()
         }
+        postSendMessage("All sent")
         socket.close()
     }
 
@@ -66,12 +63,22 @@ class ChatSocket(var ip: String, var self: String? = null) {
         return false
     }
 
+    private fun postSendMessage(msg: String){
+        logger.postMessage("Sending: $msg")
+    }
+
+    private fun postReceiveMessage(msg: String){
+        logger.postMessage("Receiving: $msg")
+    }
+
     fun receive(): List<UserWithMessages>?{
         self?: return null
         val self = self!!
 
         val received = mutableListOf<UserWithMessages>()
+        postReceiveMessage("Trying to connect...")
         val socket = Socket(ip, PORT)
+        postReceiveMessage("Connected")
         val writer = socket.getOutputStream().bufferedWriter()
         writer.auth()
         writer.receive(self)
@@ -93,6 +100,7 @@ class ChatSocket(var ip: String, var self: String? = null) {
             val messages = UserWithMessages(id, list)
             received.add(messages)
         }
+        postReceiveMessage("All received")
         return received
     }
 }

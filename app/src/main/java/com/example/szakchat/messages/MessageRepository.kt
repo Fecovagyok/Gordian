@@ -23,6 +23,10 @@ class MessageRepository() {
         return dao.insert(message.toRoomModel())
     }
 
+    fun remove(msg: Message){
+        dao.delete(msg.toRoomModel())
+    }
+
     suspend fun insert(messages: List<Message>) = withContext(Dispatchers.IO){
         val roomMessages = messages.map {
             it.toRoomModel()

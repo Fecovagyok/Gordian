@@ -9,13 +9,15 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.IntegerRes
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.example.szakchat.contacts.AddContactDialog
-import com.example.szakchat.contacts.Contact
 import com.example.szakchat.databinding.ActivityMainBinding
 import com.example.szakchat.viewModel.ChatViewModel
-import com.example.szakchat.viewModel.NetworkViewModel
+import com.example.szakchat.viewModel.NetworkManager
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,8 +31,6 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[ChatViewModel::class.java]
 
-
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         initSelfId(navController)
         viewModel.networking.networkStatus.observe(this) {
-            if(it.connected)
+            if(it.normal)
                 binding.contentMain.statusBar.setBackgroundResource(R.color.statusNormalColor)
             else
                 binding.contentMain.statusBar.setBackgroundResource(R.color.statusErrorColor)
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initSelfId(navController: NavController) {
         if (viewModel.networking.self == null) {
-            val self = getPreferences(MODE_PRIVATE).getString(NetworkViewModel.SELF_KEY, null)
+            val self = getPreferences(MODE_PRIVATE).getString(NetworkManager.SELF_KEY, null)
             if (self == null) {
                 navController.navigate(R.id.action_First_to_self)
             } else {
@@ -70,19 +70,18 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_add -> {
-                Log.d("FECO", "self: ${viewModel.networking.self}")
-                val dialog = AddContactDialog()
-                dialog.show(supportFragmentManager, "Add a contact")
-                true
-            }
             R.id.action_settings -> {
                 val controller = findNavController(R.id.nav_host_fragment_content_main)
-                controller.navigate(R.id.giveSelfFragment)
+                if(controller.currentDestination?.id != R.id.giveSelfFragment)
+                    controller.navigate(R.id.giveSelfFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun showSnack(@StringRes msg: Int){
+        Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

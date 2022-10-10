@@ -52,9 +52,9 @@ class ContactsFragment : Fragment(), ContactAdapter.ContactListener {
         }
         binding.listContact.adapter = adapter
 
-        binding.fab.setOnClickListener {  fab ->
-            Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        binding.fab.setOnClickListener {
+            val dialog = AddContactDialog()
+            dialog.show(parentFragmentManager, "Add contact")
         }
 
         //binding.buttonFirst.setOnClickListener {

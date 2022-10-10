@@ -13,5 +13,5 @@ data class RoomContact(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val uniqueId: String,
-    val name: String
+    val name: String,
 )

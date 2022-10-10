@@ -4,6 +4,6 @@
     >
 
     <solid android:color="@color/IncomingMessageBackground"/>
-    <corners android:radius="24dp"/>
+    <corners android:radius="12dp"/>
 
 </shape>

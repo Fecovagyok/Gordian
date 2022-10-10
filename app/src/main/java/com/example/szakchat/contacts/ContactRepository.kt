@@ -19,6 +19,13 @@ class ContactRepository(private val dao: ContactDao) {
         return dao.insertContact(contact.toRoomModel())
     }
 
+    fun insertId(id: String): Long {
+        return dao.insertContact(RoomContact(
+            uniqueId = id,
+            name = id,
+        ))
+    }
+
     fun getContacts(list: List<String>): List<Contact> {
         return dao.getContacts(list).map {
             it.toDomainModel()

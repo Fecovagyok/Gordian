@@ -10,11 +10,13 @@
     <color name="red">#FF0000</color>
     <color name="grey">#C6C6C6</color>
     <color name="light_blue">#94BAF6</color>
+    <color name="pleasant_green">#2EE300</color>
 
     <!-- Darker colors here -->
     <color name="dark_grey">#504C53</color>
     <color name="dark_purple">#2A008A</color>
     <color name="dark_red">#A80000</color>
+    <color name="pleasant_green_dark">#13BD00</color>
 
 
     <!-- Variable colors here -->
@@ -22,6 +24,6 @@
     <color name="OwnedMessageBackground">@color/light_blue</color>
     <color name="NotSentMessageBackground">@color/red</color>
 
-    <color name="statusNormalColor">@color/light_blue</color>
+    <color name="statusNormalColor">@color/pleasant_green</color>
     <color name="statusErrorColor">@color/red</color>
 </resources>

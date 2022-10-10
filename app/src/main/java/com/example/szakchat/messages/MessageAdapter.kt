@@ -29,6 +29,8 @@ class MessageAdapter(private val listener: Listener)
         const val OWNED = 0
     }
 
+    var subscribed: (() -> Unit)? = null
+
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         return if(item.incoming)
@@ -37,6 +39,7 @@ class MessageAdapter(private val listener: Listener)
             OWNED
     }
 
+    var longClickedItem: Message? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
         return when(viewType) {
@@ -44,7 +47,8 @@ class MessageAdapter(private val listener: Listener)
                 MessageOwnedBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent, false
-                )
+                ),
+                this
             )
             else -> IncomingMessageHolder(
                 MessageIncomingBinding.inflate(
@@ -57,6 +61,15 @@ class MessageAdapter(private val listener: Listener)
 
     override fun onBindViewHolder(holder: MessageHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    override fun onCurrentListChanged(
+        previousList: MutableList<Message>,
+        currentList: MutableList<Message>
+    ) {
+        Log.d("FECO", "Adapter: listSize: ${currentList.size}")
+        subscribed?.invoke()
+        super.onCurrentListChanged(previousList, currentList)
     }
 
     interface Listener {

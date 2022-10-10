@@ -60,4 +60,11 @@ class ContactAdapter(private val listener: ContactListener)
             }
         }
     }
+
+    override fun onCurrentListChanged(
+        previousList: MutableList<Contact>,
+        currentList: MutableList<Contact>
+    ) {
+        super.onCurrentListChanged(previousList, currentList)
+    }
 }

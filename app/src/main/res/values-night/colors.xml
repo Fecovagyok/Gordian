@@ -5,5 +5,5 @@
     <color name="NotSentMessageBackground">@color/dark_red</color>
 
     <color name="statusErrorColor">@color/dark_red</color>
-    <color name="statusNormalColor">@color/dark_purple</color>
+    <color name="statusNormalColor">@color/pleasant_green_dark</color>
 </resources>

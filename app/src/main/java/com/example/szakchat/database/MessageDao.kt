@@ -1,10 +1,7 @@
 package com.example.szakchat.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 @Dao
 interface MessageDao {
@@ -25,4 +22,7 @@ interface MessageDao {
 
     @Query("UPDATE messages SET sent=1 WHERE id=:id")
     fun setSent(id: Long)
+
+    @Delete
+    fun delete(msg: RoomMessage)
 }
