@@ -8,19 +8,11 @@ import android.util.Log
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
-import com.google.zxing.qrcode.encoder.QRCode
-import kotlin.math.max
 
 object MyQR {
     private const val width = 120
     private const val height = 120
     private const val scale = 8
-
-    private inline fun times5(iterator: Int, maxSize: Int, block: (Int) -> Unit){
-        for(i in 0 until 5){
-            block(i* maxSize + iterator)
-        }
-    }
 
     fun createQR(byteArray: ByteArray): Bitmap? {
         // this is a small sample use of the QRCodeEncoder class from zxing
@@ -40,17 +32,6 @@ object MyQR {
                 val oldRow = row / scale
                 if(qr.get(oldColumn, oldRow)) BLACK else WHITE
             }
-
-            /*for (y in 0 until qr.height) {
-                times5(y, newHeight) { ny: Int ->
-                    val offset = ny * qr.width
-                    for (x in 0 until qr.width) {
-                        times5(x, newWidth) { nx: Int ->
-                            pixels[offset + nx] = if (qr.get(x, y)) BLACK else WHITE
-                        }
-                    }
-                }
-            }*/
 
             val bitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888)
             bitmap.setPixels(pixels, 0, newWidth, 0, 0, newWidth, newHeight)
