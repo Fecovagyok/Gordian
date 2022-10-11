@@ -13,6 +13,13 @@
         />
 
     <fragment
+        android:id="@+id/read_qr_fragment"
+        tools:layout="@layout/fragment_read_qr"
+        android:name="com.example.szakchat.exchange.ReadQRFragment"
+        android:label="@string/read_your_secret_key"
+        />
+
+    <fragment
         android:id="@+id/exchangeKeyFragment"
         android:label="@string/exchange_your_secret_key"
         tools:layout="@layout/fragment_exchange"
@@ -21,6 +28,10 @@
         <action
             android:id="@+id/navigate_to_qr"
             app:destination="@id/show_qr_fragment"
+            />
+        <action
+            android:id="@+id/navigate_to_camera"
+            app:destination="@id/read_qr_fragment"
             />
     </fragment>
 

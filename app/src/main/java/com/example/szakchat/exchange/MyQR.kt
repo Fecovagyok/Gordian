@@ -20,8 +20,8 @@ object MyQR {
             // generate a 150x150 QR code
             val writer = QRCodeWriter()
             val content = Base64.encodeToString(byteArray, Base64.DEFAULT)
-            Log.d("FECO", "Content: $content")
             val qr = writer.encode(content, BarcodeFormat.QR_CODE, width, height)
+            Log.d("FECO", "ECC: ")
 
             val (newHeight, newWidth) = qr.height* scale to qr.width* scale
 

@@ -27,10 +27,14 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         }
     }
 
-    private val bytesData = MutableLiveData<Message>()
-    val randomBytes get() = bytesData as LiveData<Message>
+    private val bytesData = MutableLiveData<Message?>()
+    val randomBytes get() = bytesData as LiveData<Message?>
     private var getBytesJob: Job? = null
     var secureBytes: ByteArray? = null
+
+    fun clearMessage(){
+        bytesData.value = null
+    }
 
     class Message(
         val state: Int,

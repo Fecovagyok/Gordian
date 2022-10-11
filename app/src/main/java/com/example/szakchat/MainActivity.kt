@@ -1,35 +1,40 @@
 package com.example.szakchat
 
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import androidx.annotation.IntegerRes
-import androidx.annotation.StringRes
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import com.example.szakchat.contacts.AddContactDialog
 import com.example.szakchat.databinding.ActivityMainBinding
+import com.example.szakchat.permissions.MyPerm
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.viewModel.NetworkManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.common.util.concurrent.ListenableFuture
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ChatViewModel
+    private val perm = MyPerm(this)
+
+    private var _camFuture: ListenableFuture<ProcessCameraProvider>? = null
+    val cameraProviderFuture get() = _camFuture!!
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(this)[ChatViewModel::class.java]
+        _camFuture = ProcessCameraProvider.getInstance(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -46,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                 binding.contentMain.statusBar.setBackgroundResource(R.color.statusErrorColor)
             binding.contentMain.statusBar.text = it.message
         }
+        perm.askPermission()
     }
 
     private fun initSelfId(navController: NavController) {
@@ -88,5 +94,13 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    fun permGranted(){
+
+    }
+
+    fun permDenied(){
+
     }
 }

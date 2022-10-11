@@ -1,8 +1,6 @@
 package com.example.szakchat.exchange
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.szakchat.MainActivity
 import com.example.szakchat.R
 import com.example.szakchat.databinding.FragmentExchangeBinding
-import com.example.szakchat.extensions.isEmpty
-import com.example.szakchat.extensions.postSnack
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.viewModel.MySecurityManager
 
@@ -33,6 +29,7 @@ class ExchangeFragment : Fragment() {
         val security = viewModel.security
 
         security.randomBytes.observe(viewLifecycleOwner){
+            it?: return@observe
             when(it.state){
                 MySecurityManager.MSG -> {
                     val activity = requireActivity() as MainActivity
@@ -44,12 +41,17 @@ class ExchangeFragment : Fragment() {
                 MySecurityManager.END -> {
                     binding.createKeyProgress.visibility = View.GONE
                     findNavController().navigate(R.id.navigate_to_qr)
+                    security.clearMessage()
                 }
             }
         }
 
         binding.btnKeyCreate.setOnClickListener {
             security.getBytes(1024)
+        }
+
+        binding.btnKeyRead.setOnClickListener {
+            findNavController().navigate(R.id.navigate_to_camera)
         }
 
         return binding.root
