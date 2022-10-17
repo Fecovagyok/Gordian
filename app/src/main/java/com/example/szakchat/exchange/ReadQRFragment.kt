@@ -1,31 +1,29 @@
 package com.example.szakchat.exchange
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.camera.core.AspectRatio.RATIO_4_3
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.budiyev.android.codescanner.*
 import com.example.szakchat.MainActivity
+import com.example.szakchat.R
 import com.example.szakchat.databinding.FragmentReadQrBinding
+import com.example.szakchat.extensions.toHex
+import com.example.szakchat.messages.Message
 import com.example.szakchat.viewModel.ChatViewModel
-import com.google.common.util.concurrent.Futures.nonCancellationPropagating
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.guava.await
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.google.zxing.BarcodeFormat
 
 class ReadQRFragment : Fragment() {
     private var _binding: FragmentReadQrBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ChatViewModel by activityViewModels()
+    private var _codeScanner: CodeScanner? = null
+    private val codeScanner get() = _codeScanner!!
+    private var _activity: MainActivity? = null
+    private val activity: MainActivity get() = _activity!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,29 +32,56 @@ class ReadQRFragment : Fragment() {
     ): View {
 
         _binding = FragmentReadQrBinding.inflate(layoutInflater, container, false)
-        val activity = requireActivity() as MainActivity
-        binding.qrPreview.implementationMode = PreviewView.ImplementationMode.PERFORMANCE
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val cameraProvider = nonCancellationPropagating(activity.cameraProviderFuture).await()
-            bindPreview(cameraProvider)
-        }
-
         return binding.root
     }
 
-    private suspend fun bindPreview(provider: ProcessCameraProvider){
-        val preview = Preview.Builder()
-            .setTargetAspectRatio(RATIO_4_3)
-            .build()
-        Log.d("FECO", "Res: ${preview.resolutionInfo?.resolution}")
-        val camSelector = CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-            .build()
-        withContext(Dispatchers.Main) {
-            preview.setSurfaceProvider(binding.qrPreview.surfaceProvider)
-            Log.d("FECO", "Res:  ${preview.resolutionInfo}")
-            val camera = provider.bindToLifecycle(viewLifecycleOwner, camSelector, preview)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        _activity = requireActivity() as MainActivity
+        _codeScanner = CodeScanner(activity, binding.qrPreview)
+        initScanner()
+    }
+
+    private fun initScanner(){
+        // Parameters (default values)
+        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
+        codeScanner.formats = listOf(BarcodeFormat.QR_CODE) // list of type BarcodeFormat,
+        // ex. listOf(BarcodeFormat.QR_CODE)
+        codeScanner.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
+        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
+        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
+        codeScanner.isFlashEnabled = false // Whether to enable flash or not
+
+        codeScanner.decodeCallback = DecodeCallback {
+            viewModel.security.setSecureBytes(it.text)
+            viewModel.networking.send(
+                Message(
+                text = viewModel.security.secureSha!!.toHex(),
+                contact = viewModel.currentContact!!,
+                sent = false,
+                incoming = false,
+            )
+            )
+            activity.runOnUiThread {
+                activity.showSnack("Success")
+                findNavController().popBackStack(R.id.SecondFragment, inclusive = false)
+            }
         }
+        codeScanner.errorCallback = ErrorCallback {
+            activity.runOnUiThread {
+                activity.showSnack(it.message.toString())
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        codeScanner.startPreview()
+    }
+
+    override fun onPause() {
+        codeScanner.releaseResources()
+        super.onPause()
     }
 }

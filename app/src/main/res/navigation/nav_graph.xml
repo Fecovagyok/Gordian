@@ -68,7 +68,7 @@
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.example.szakchat.messages.MessagesFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/messages"
         tools:layout="@layout/fragment_second">
 
         <action

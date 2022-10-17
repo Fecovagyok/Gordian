@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.szakchat.databinding.FragmentExchangeBinding
 import com.example.szakchat.databinding.FragmentQrShowBinding
+import com.example.szakchat.extensions.toHex
+import com.example.szakchat.messages.Message
 import com.example.szakchat.viewModel.ChatViewModel
 
 class ShowQRFragment : Fragment() {
@@ -22,7 +23,13 @@ class ShowQRFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentQrShowBinding.inflate(inflater, container, false)
-        val bitmap = MyQR.createQR(viewModel.security.secureBytes!!)
+        val bitmap = MyQR.createQR(viewModel.security.secureString!!)
+        viewModel.networking.send(Message(
+            text = viewModel.security.secureSha!!.toHex(),
+            contact = viewModel.currentContact!!,
+            sent = false,
+            incoming = false,
+        ))
         bitmap?: return binding.root
         binding.qrImage.setImageBitmap(bitmap)
         return binding.root

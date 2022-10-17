@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -17,7 +16,6 @@ import com.example.szakchat.permissions.MyPerm
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.viewModel.NetworkManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.common.util.concurrent.ListenableFuture
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,16 +24,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ChatViewModel
     private val perm = MyPerm(this)
 
-    private var _camFuture: ListenableFuture<ProcessCameraProvider>? = null
-    val cameraProviderFuture get() = _camFuture!!
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(this)[ChatViewModel::class.java]
-        _camFuture = ProcessCameraProvider.getInstance(this)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -51,7 +43,8 @@ class MainActivity : AppCompatActivity() {
                 binding.contentMain.statusBar.setBackgroundResource(R.color.statusErrorColor)
             binding.contentMain.statusBar.text = it.message
         }
-        perm.askPermission()
+        if(android.os.Build.VERSION.SDK_INT >= 23)
+            perm.askPermission()
     }
 
     private fun initSelfId(navController: NavController) {
@@ -89,6 +82,8 @@ class MainActivity : AppCompatActivity() {
     fun showSnack(@StringRes msg: Int){
         Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
     }
+
+    fun showSnack(msg: String) = Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)

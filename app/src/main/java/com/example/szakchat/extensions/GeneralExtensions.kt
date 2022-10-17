@@ -22,3 +22,15 @@ fun RecyclerView.scrollToTheEnd() {
 fun Job?.isRunning() = this?.isCompleted == false
 
 fun View.postSnack(@StringRes msg: Int) = Snackbar.make(this, msg, Snackbar.LENGTH_LONG).show()
+
+fun ByteArray.toHex(): String {
+    val hexString = StringBuilder(2 * size)
+    for (i in indices) {
+        val hex = Integer.toHexString(0xff and this[i].toInt())
+        if (hex.length == 1) {
+            hexString.append('0')
+        }
+        hexString.append(hex)
+    }
+    return hexString.toString()
+}

@@ -1,6 +1,7 @@
 package com.example.szakchat.viewModel
 
 import android.os.Build
+import android.util.Base64
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.example.szakchat.extensions.isRunning
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
 import java.security.SecureRandom
 
 class MySecurityManager(private val viewModel: ChatViewModel) {
@@ -31,6 +33,16 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
     val randomBytes get() = bytesData as LiveData<Message?>
     private var getBytesJob: Job? = null
     var secureBytes: ByteArray? = null
+    val secureString: String? get() = secureBytes?.let {
+        Base64.encodeToString(it, Base64.DEFAULT)
+    }
+    val secureSha get() = secureBytes?.let {
+        MessageDigest.getInstance("SHA-256").digest(it)
+    }
+
+    fun setSecureBytes(msg: String) {
+        secureBytes = Base64.decode(msg, Base64.DEFAULT)
+    }
 
     fun clearMessage(){
         bytesData.value = null

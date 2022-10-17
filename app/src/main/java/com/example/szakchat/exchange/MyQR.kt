@@ -3,7 +3,6 @@ package com.example.szakchat.exchange
 import android.graphics.Bitmap
 import android.graphics.Color.BLACK
 import android.graphics.Color.WHITE
-import android.util.Base64
 import android.util.Log
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
@@ -14,12 +13,11 @@ object MyQR {
     private const val height = 120
     private const val scale = 8
 
-    fun createQR(byteArray: ByteArray): Bitmap? {
+    fun createQR(content: String): Bitmap? {
         // this is a small sample use of the QRCodeEncoder class from zxing
         try {
             // generate a 150x150 QR code
             val writer = QRCodeWriter()
-            val content = Base64.encodeToString(byteArray, Base64.DEFAULT)
             val qr = writer.encode(content, BarcodeFormat.QR_CODE, width, height)
             Log.d("FECO", "ECC: ")
 
