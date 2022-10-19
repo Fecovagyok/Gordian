@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
-import java.time.Duration
 
 
 class NetworkManager(private val viewModel: ChatViewModel) : StatusLogger{
@@ -119,6 +118,7 @@ class NetworkManager(private val viewModel: ChatViewModel) : StatusLogger{
             postError("Could not connect: timed out while $act")
         } catch (e: IOException){
             Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause} Type: ${e.javaClass}")
+            e.printStackTrace()
             postError("${e.message?: "No message"} while $act")
         }
     }

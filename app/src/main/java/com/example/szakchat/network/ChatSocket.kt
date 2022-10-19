@@ -5,7 +5,8 @@ import com.example.szakchat.exceptions.CannotRegister
 import com.example.szakchat.messages.Message
 import java.io.BufferedReader
 import java.io.BufferedWriter
-import java.net.Socket
+import javax.net.SocketFactory
+import javax.net.ssl.SSLSocketFactory
 
 class ChatSocket(val logger: StatusLogger, var ip: String, var self: String? = null) {
     companion object {
@@ -15,10 +16,11 @@ class ChatSocket(val logger: StatusLogger, var ip: String, var self: String? = n
         const val TAKEN = 300
         const val END = 17
         const val EXPECT = 8
+        val factory: SocketFactory = SSLSocketFactory.getDefault()
     }
 
     fun register() {
-        val socket = Socket(ip, PORT)
+        val socket = factory.createSocket(ip, PORT)
         val writer = socket.getOutputStream().bufferedWriter()
         writer.auth()
         writer.apply {
@@ -34,7 +36,7 @@ class ChatSocket(val logger: StatusLogger, var ip: String, var self: String? = n
         if(self == null)
             return
         postSendMessage("Trying to send...")
-        val socket = Socket(ip, PORT)
+        val socket = factory.createSocket(ip, PORT)
         val writer = socket.getOutputStream().bufferedWriter()
         writer.auth()
         writer.apply {
@@ -77,7 +79,7 @@ class ChatSocket(val logger: StatusLogger, var ip: String, var self: String? = n
 
         val received = mutableListOf<UserWithMessages>()
         postReceiveMessage("Trying to connect...")
-        val socket = Socket(ip, PORT)
+        val socket = factory.createSocket(ip, PORT)
         postReceiveMessage("Connected")
         val writer = socket.getOutputStream().bufferedWriter()
         writer.auth()
