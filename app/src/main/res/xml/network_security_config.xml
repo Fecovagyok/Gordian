@@ -6,6 +6,7 @@
             <!-- Trust user added CAs -->
             <certificates src="system" />
             <certificates src="@raw/szakdoggo"/>
+            <certificates src="@raw/szakproba"/>
         </trust-anchors>
     </base-config>
 </network-security-config>
