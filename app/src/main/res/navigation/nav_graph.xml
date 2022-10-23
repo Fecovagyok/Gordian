@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/giveSelfFragment"
-        android:name="com.example.szakchat.identity.IdentityFragment"
+        android:name="com.example.szakchat.identity.LoginFragment"
         android:label="@string/name_yourself"
         tools:layout="@layout/fragment_identity"
         >

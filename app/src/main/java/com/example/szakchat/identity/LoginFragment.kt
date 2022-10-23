@@ -2,22 +2,22 @@ package com.example.szakchat.identity
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.R
 import com.example.szakchat.databinding.FragmentIdentityBinding
 import com.example.szakchat.extensions.isEmpty
+import com.example.szakchat.viewModel.ChatViewModel
 
 /**
  * A simple [Fragment] subclass.
  * create an instance of this fragment.
  */
-class IdentityFragment : Fragment() {
+class LoginFragment : Fragment() {
 
     private var _binding: FragmentIdentityBinding? = null
     private val binding get() = _binding!!
