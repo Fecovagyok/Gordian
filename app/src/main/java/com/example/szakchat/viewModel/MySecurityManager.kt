@@ -29,8 +29,8 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         }
     }
 
-    private val bytesData = MutableLiveData<Message?>()
-    val randomBytes get() = bytesData as LiveData<Message?>
+    private val bytesData = MutableLiveData<StatusMessage?>()
+    val randomBytes get() = bytesData as LiveData<StatusMessage?>
     private var getBytesJob: Job? = null
     var secureBytes: ByteArray? = null
     val secureString: String? get() = secureBytes?.let {
@@ -48,22 +48,22 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         bytesData.value = null
     }
 
-    class Message(
+    class StatusMessage(
         val state: Int,
         val msg: Int = 0,
     )
 
-    fun getBytes(count: Int){
+    fun getBytesAsync(count: Int){
         if(getBytesJob.isRunning()){
-            bytesData.postValue(Message(msg = R.string.secret_key_gen_already_running, state = MSG))
+            bytesData.postValue(StatusMessage(msg = R.string.secret_key_gen_already_running, state = MSG))
             return
         }
         getBytesJob = viewModel.viewModelScope.launch(Dispatchers.Default) {
-            bytesData.postValue(Message(state = START))
+            bytesData.postValue(StatusMessage(state = START))
             val bytes = ByteArray(count)
             random.nextBytes(bytes)
             secureBytes = bytes
-            bytesData.postValue(Message(state = END))
+            bytesData.postValue(StatusMessage(state = END))
         }
     }
 }

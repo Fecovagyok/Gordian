@@ -1,42 +1,24 @@
 package com.example.szakchat.network
 
 import android.util.Log
-import com.example.szakchat.exceptions.CannotRegister
 import com.example.szakchat.messages.Message
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import javax.net.SocketFactory
 import javax.net.ssl.SSLSocketFactory
 
-class ChatSocket(val logger: StatusLogger, var ip: String, var self: String? = null) {
+class ChatSocket(private val logger: StatusLogger, var ip: String, var self: String? = null) {
     companion object {
-        const val PORT = 9983
-        const val PASS = "kalapacsos"
-        const val GOOD = 200
-        const val TAKEN = 300
-        const val END = 17
-        const val EXPECT = 8
+        const val POLLING_PORT = 9983
+        const val SENDING_PORT = 9981
         val factory: SocketFactory = SSLSocketFactory.getDefault()
-    }
-
-    fun register() {
-        val socket = factory.createSocket(ip, PORT)
-        val writer = socket.getOutputStream().bufferedWriter()
-        writer.auth()
-        writer.apply {
-            register()
-            flush()
-        }
-        val result = socket.getInputStream().read()
-        if(result != GOOD)
-            throw CannotRegister("Received: $result")
     }
 
     fun send(messages: List<Message>){
         if(self == null)
             return
         postSendMessage("Trying to send...")
-        val socket = factory.createSocket(ip, PORT)
+        val socket = factory.createSocket(ip, SENDING_PORT)
         val writer = socket.getOutputStream().bufferedWriter()
         writer.auth()
         writer.apply {

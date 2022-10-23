@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
+import com.example.szakchat.identity.MyByteArray
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 
@@ -34,3 +35,6 @@ fun ByteArray.toHex(): String {
     }
     return hexString.toString()
 }
+
+fun ByteArray.toMyByteArray() = MyByteArray(this)
+fun MyByteArray.toHex() = values.toHex()
