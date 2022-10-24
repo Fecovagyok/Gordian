@@ -6,6 +6,12 @@
     app:startDestination="@id/FirstFragment">
 
     <fragment
+        android:id="@+id/preferences_fragment"
+        android:name="com.example.szakchat.MySettingsFragment"
+        android:label="@string/settings"
+        />
+
+    <fragment
         android:id="@+id/show_qr_fragment"
         tools:layout="@layout/fragment_qr_show"
         android:name="com.example.szakchat.exchange.ShowQRFragment"

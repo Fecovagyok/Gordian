@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             R.id.action_settings -> {
                 val controller = findNavController(R.id.nav_host_fragment_content_main)
                 if(controller.currentDestination?.id != R.id.giveSelfFragment)
-                    controller.navigate(R.id.giveSelfFragment)
+                    controller.navigate(R.id.preferences_fragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)
