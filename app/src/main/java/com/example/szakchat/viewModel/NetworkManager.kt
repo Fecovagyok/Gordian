@@ -21,16 +21,17 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 
 
-class NetworkManager(private val viewModel: ChatViewModel) : StatusLogger{
+class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusLogger{
 
     companion object {
         const val SELF_KEY = "SELF_KEY"
         const val DEFAULT_IP = "89.133.85.78"
+        const val IP_KEY = "SERVER_ADDRESS"
         const val POLL_INTERVAL = 3000L //ms
         const val CHECK_INTERVAL = 80L /* sec */ * 1000L
     }
 
-    private val chatSocket = ChatSocket(this, DEFAULT_IP)
+    private val chatSocket = ChatSocket(this, ip)
 
     override fun syncPostMessage(msg: String) {
         _networkStatus.value = ConnectionStatus(

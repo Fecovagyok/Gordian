@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        app:key="SERVER_ADDRESS"
+        app:title="@string/server_address"
+        android:summary="@string/change_server_address"
+        />
+
+
+</PreferenceScreen>

@@ -1,6 +1,5 @@
 package com.example.szakchat.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class ChatViewModel() : ViewModel() {
 
-    val networking: NetworkManager = NetworkManager(this)
+    private var _networking: NetworkManager? = null
+    val networking get() = _networking!!
     val security = MySecurityManager(this)
     var currentMessages: LiveData<List<Message>>? = null
         private set
@@ -31,8 +31,8 @@ class ChatViewModel() : ViewModel() {
     )
     val contacts: LiveData<List<Contact>> = repository.getContacts()
 
-    init {
-        Log.d("FECO", "ViewModel init called")
+    fun initNetwork(ip: String){
+        _networking = NetworkManager(this, ip)
         networking.startPollStartJob()
     }
 

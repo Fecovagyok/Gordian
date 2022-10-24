@@ -1,5 +1,6 @@
 package com.example.szakchat
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,23 +12,27 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.preference.PreferenceManager
 import com.example.szakchat.databinding.ActivityMainBinding
 import com.example.szakchat.permissions.MyPerm
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.viewModel.NetworkManager
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ChatViewModel
+    private lateinit var prefs: SharedPreferences
     private val perm = MyPerm(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(this)[ChatViewModel::class.java]
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        viewModel.initNetwork(prefs.getString(NetworkManager.IP_KEY, null)?: NetworkManager.DEFAULT_IP)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -97,5 +102,22 @@ class MainActivity : AppCompatActivity() {
 
     fun permDenied(){
 
+    }
+
+    override fun onPause() {
+        prefs.unregisterOnSharedPreferenceChangeListener(this)
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        prefs.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
+        prefs?: return
+        if(key == NetworkManager.IP_KEY){
+            viewModel.networking.ip = prefs.getString(key, null)?: NetworkManager.DEFAULT_IP
+        }
     }
 }
