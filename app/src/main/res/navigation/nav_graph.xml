@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    >
 
     <fragment
         android:id="@+id/preferences_fragment"
@@ -42,13 +42,13 @@
     </fragment>
 
     <fragment
-        android:id="@+id/giveSelfFragment"
+        android:id="@+id/graph_login_fragment"
         android:name="com.example.szakchat.identity.LoginFragment"
-        android:label="@string/name_yourself"
+        android:label="@string/login"
         tools:layout="@layout/fragment_identity"
         >
         <action
-            android:id="@+id/action_self_to_first"
+            android:id="@+id/action_login_to_first"
             app:destination="@id/FirstFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true"
@@ -67,7 +67,7 @@
             app:destination="@id/SecondFragment" />
         <action
             android:id="@+id/action_First_to_self"
-            app:destination="@id/giveSelfFragment"
+            app:destination="@id/graph_login_fragment"
             app:popUpToInclusive="true"
             />
     </fragment>

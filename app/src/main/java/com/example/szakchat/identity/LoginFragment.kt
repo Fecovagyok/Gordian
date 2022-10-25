@@ -1,6 +1,5 @@
 package com.example.szakchat.identity
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,22 +29,15 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentIdentityBinding.inflate(inflater, container, false)
-        binding.submitName.setOnClickListener {
-            if(binding.nameField.isEmpty())
+        binding.loginButton.setOnClickListener {
+            if(binding.usernameField.isEmpty() || binding.passwordField.isEmpty())
                 return@setOnClickListener
-            viewModel.networking.setSelfId(
-                binding.nameField.text.toString(),
-                requireActivity().getPreferences(Context.MODE_PRIVATE),
-            )
-            if(!binding.ipField.isEmpty())
-                viewModel.networking.ip = binding.ipField.text.toString()
 
-            findNavController().navigate(R.id.action_self_to_first)
+            findNavController().navigate(R.id.action_login_to_first)
         }
-        binding.ipField.setText(viewModel.networking.ip)
         viewModel.networking.self?.let {
             binding.nameField.setText(it)
         }

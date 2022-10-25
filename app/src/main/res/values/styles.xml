@@ -13,4 +13,9 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
+    <style name="title_text" parent="basic_text">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

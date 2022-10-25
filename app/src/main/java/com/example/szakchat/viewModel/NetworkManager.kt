@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.contacts.Contact
+import com.example.szakchat.exceptions.AlreadyRunning
+import com.example.szakchat.extensions.isRunning
 import com.example.szakchat.messages.Message
 import com.example.szakchat.network.ChatSocket
 import com.example.szakchat.network.ConnectionStatus
@@ -29,18 +31,19 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
         const val IP_KEY = "SERVER_ADDRESS"
         const val POLL_INTERVAL = 3000L //ms
         const val CHECK_INTERVAL = 80L /* sec */ * 1000L
+        const val ID_KEY = "ID_KEY"
     }
 
     private val chatSocket = ChatSocket(this, ip)
 
-    override fun syncPostMessage(msg: String) {
+    fun syncPostMessage(msg: String ) {
         _networkStatus.value = ConnectionStatus(
             normal = true,
             message = msg,
         )
     }
 
-    override fun syncPostError(msg: String) {
+    fun syncPostError(msg: String) {
         _networkStatus.value = ConnectionStatus(
             normal = true,
             message = msg,
@@ -100,11 +103,15 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
     }
 
     override fun postError(msg: String){
-        _networkStatus.postValue(
+        postError(msg, _networkStatus)
+    }
+
+    fun postError(msg: String, data: MutableLiveData<ConnectionStatus>) {
+        data.postValue(
             ConnectionStatus(
-            normal = false,
-            message = msg,
-        )
+                normal = false,
+                message = msg,
+            )
         )
     }
 
@@ -125,7 +132,11 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
     }
 
     override fun postMessage(msg: String){
-        _networkStatus.postValue(ConnectionStatus(
+        postMessage(msg, _networkStatus)
+    }
+
+    fun postMessage(msg: String, data: MutableLiveData<ConnectionStatus>) {
+        data.postValue(ConnectionStatus(
             normal = true,
             message = msg,
         ))
@@ -189,5 +200,28 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
         }
     }
 
+
+    private var loginJob: Job? = null
+    fun loginRequest(username: String, password: String): LiveData<ConnectionStatus> {
+        if(loginJob.isRunning())
+            throw AlreadyRunning("Login request already in progress")
+        val data = MutableLiveData<ConnectionStatus>()
+        val logger = object : StatusLogger {
+            override fun postError(msg: String) {
+                postError(msg, data)
+            }
+
+            override fun postMessage(msg: String) {
+                postMessage(msg, data)
+            }
+        }
+
+        loginJob = viewModel.viewModelScope.launch {
+            robust("Logging in") {
+                chatSocket.auth(username, password, logger)
+            }
+        }
+        return data
+    }
 
 }

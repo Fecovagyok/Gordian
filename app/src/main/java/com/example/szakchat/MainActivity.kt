@@ -1,5 +1,6 @@
 package com.example.szakchat
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -35,11 +37,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         viewModel.initNetwork(prefs.getString(NetworkManager.IP_KEY, null)?: NetworkManager.DEFAULT_IP)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        setSupportActionBar(binding.toolbar)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        val navController = initNavGraph()
+        initActionBar(navController)
         initSelfId(navController)
         viewModel.networking.networkStatus.observe(this) {
             if(it.normal)
@@ -50,6 +49,25 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
         if(android.os.Build.VERSION.SDK_INT >= 23)
             perm.askPermission()
+    }
+
+    private fun initNavGraph(): NavController {
+        val dest = if(getPreferences(Context.MODE_PRIVATE).getString(NetworkManager.ID_KEY, null) == null)
+            R.id.graph_login_fragment else R.id.FirstFragment
+
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        val navController = navHostFragment.navController
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+        navGraph.setStartDestination(dest)
+        navController.graph = navGraph
+        return navController
+    }
+
+    private fun initActionBar(navController: NavController) {
+        setSupportActionBar(binding.toolbar)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     private fun initSelfId(navController: NavController) {
@@ -76,7 +94,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         return when (item.itemId) {
             R.id.action_settings -> {
                 val controller = findNavController(R.id.nav_host_fragment_content_main)
-                if(controller.currentDestination?.id != R.id.giveSelfFragment)
+                if(controller.currentDestination?.id != R.id.graph_login_fragment)
                     controller.navigate(R.id.preferences_fragment)
                 true
             }
