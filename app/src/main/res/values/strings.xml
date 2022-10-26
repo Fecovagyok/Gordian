@@ -29,4 +29,5 @@
     <string name="login_credentials">Please login with your credentials</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="login_request_running">A login request is already in progress</string>
 </resources>

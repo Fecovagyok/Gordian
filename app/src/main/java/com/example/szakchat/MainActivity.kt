@@ -1,6 +1,5 @@
 package com.example.szakchat
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
@@ -15,7 +14,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.example.szakchat.databinding.ActivityMainBinding
+import com.example.szakchat.extensions.toData
+import com.example.szakchat.extensions.toMyByteArray
+import com.example.szakchat.network.Credentials
 import com.example.szakchat.permissions.MyPerm
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.viewModel.NetworkManager
@@ -27,7 +31,23 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ChatViewModel
     private lateinit var prefs: SharedPreferences
+    val safePrefs: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
+        createSafePref()
+    }
     private val perm = MyPerm(this)
+
+    private fun createSafePref(): SharedPreferences{
+        val masterKey = MasterKey.Builder(applicationContext)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+        return EncryptedSharedPreferences.create(
+            this,
+            "szakchat_secret",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +59,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         setContentView(binding.root)
         val navController = initNavGraph()
         initActionBar(navController)
-        initSelfId(navController)
         viewModel.networking.networkStatus.observe(this) {
             if(it.normal)
                 binding.contentMain.statusBar.setBackgroundResource(R.color.statusNormalColor)
@@ -52,10 +71,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     private fun initNavGraph(): NavController {
-        val dest = if(getPreferences(Context.MODE_PRIVATE).getString(NetworkManager.ID_KEY, null) == null)
-            R.id.graph_login_fragment else R.id.FirstFragment
-
-
+        val dest = initSelfId()
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navHostFragment.navController
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
@@ -70,13 +86,22 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    private fun initSelfId(navController: NavController) {
-        if (viewModel.networking.self == null) {
-            val self = getPreferences(MODE_PRIVATE).getString(NetworkManager.SELF_KEY, null)
-            if (self == null) {
-                navController.navigate(R.id.action_First_to_self)
-            } else {
-                viewModel.networking.self = self
+    private fun restoreCredentials(): Boolean {
+        val id = safePrefs.getString(NetworkManager.SELF_KEY, null) ?: return false
+        val pass = prefs.getString(NetworkManager.PASS_KEY, null)
+        viewModel.networking.self = Credentials(id.toData().toMyByteArray(), pass!!)
+        viewModel.networking.username = prefs.getString(NetworkManager.NAME_KEY, null)
+        return true
+    }
+
+    private fun initSelfId(): Int {
+        return if(viewModel.networking.self != null){
+            R.id.FirstFragment
+        } else {
+            if(!restoreCredentials())
+                R.id.graph_login_fragment
+            else {
+                R.id.FirstFragment
             }
         }
     }

@@ -8,7 +8,7 @@ import java.io.BufferedWriter
 import javax.net.SocketFactory
 import javax.net.ssl.SSLSocketFactory
 
-class ChatSocket(private val logger: StatusLogger, var ip: String, var self: String? = null) {
+class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Credentials? = null) {
     companion object {
         const val POLLING_PORT = 9983
         const val SENDING_PORT = 9981

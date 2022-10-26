@@ -28,7 +28,7 @@ class ExchangeFragment : Fragment() {
 
         val security = viewModel.security
 
-        security.randomBytes.observe(viewLifecycleOwner){
+        security.liveRandomBytes.observe(viewLifecycleOwner){
             it?: return@observe
             when(it.state){
                 MySecurityManager.MSG -> {

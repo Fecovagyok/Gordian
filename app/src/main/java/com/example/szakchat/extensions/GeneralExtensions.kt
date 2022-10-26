@@ -1,5 +1,6 @@
 package com.example.szakchat.extensions
 
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -12,6 +13,8 @@ import kotlinx.coroutines.Job
 fun EditText.isEmpty(): Boolean {
     return text == null || text.toString().isEmpty()
 }
+
+fun EditText.moreThan(num: Int) = text.length > num
 
 fun String.isBadText() = contains('\n') || isEmpty()
 
@@ -38,3 +41,4 @@ fun ByteArray.toHex(): String {
 
 fun ByteArray.toMyByteArray() = MyByteArray(this)
 fun MyByteArray.toHex() = values.toHex()
+fun String.toData() = Base64.decode(this, Base64.DEFAULT)

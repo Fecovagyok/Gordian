@@ -29,23 +29,23 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         }
     }
 
-    private val bytesData = MutableLiveData<StatusMessage?>()
-    val randomBytes get() = bytesData as LiveData<StatusMessage?>
+    private val _liveRandomBytes = MutableLiveData<StatusMessage?>()
+    val liveRandomBytes get() = _liveRandomBytes as LiveData<StatusMessage?>
     private var getBytesJob: Job? = null
-    var secureBytes: ByteArray? = null
-    val secureString: String? get() = secureBytes?.let {
+    var generatedLotsOfBytes: ByteArray? = null
+    val secureString: String? get() = generatedLotsOfBytes?.let {
         Base64.encodeToString(it, Base64.DEFAULT)
     }
-    val secureSha get() = secureBytes?.let {
+    val secureSha get() = generatedLotsOfBytes?.let {
         MessageDigest.getInstance("SHA-256").digest(it)
     }
 
     fun setSecureBytes(msg: String) {
-        secureBytes = Base64.decode(msg, Base64.DEFAULT)
+        generatedLotsOfBytes = Base64.decode(msg, Base64.DEFAULT)
     }
 
     fun clearMessage(){
-        bytesData.value = null
+        _liveRandomBytes.value = null
     }
 
     class StatusMessage(
@@ -55,15 +55,15 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
 
     fun getBytesAsync(count: Int){
         if(getBytesJob.isRunning()){
-            bytesData.postValue(StatusMessage(msg = R.string.secret_key_gen_already_running, state = MSG))
+            _liveRandomBytes.postValue(StatusMessage(msg = R.string.secret_key_gen_already_running, state = MSG))
             return
         }
         getBytesJob = viewModel.viewModelScope.launch(Dispatchers.Default) {
-            bytesData.postValue(StatusMessage(state = START))
+            _liveRandomBytes.postValue(StatusMessage(state = START))
             val bytes = ByteArray(count)
             random.nextBytes(bytes)
-            secureBytes = bytes
-            bytesData.postValue(StatusMessage(state = END))
+            generatedLotsOfBytes = bytes
+            _liveRandomBytes.postValue(StatusMessage(state = END))
         }
     }
 }

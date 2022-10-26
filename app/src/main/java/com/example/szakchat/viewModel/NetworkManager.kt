@@ -1,6 +1,7 @@
 package com.example.szakchat.viewModel
 
 import android.content.SharedPreferences
+import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,11 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.extensions.isRunning
+import com.example.szakchat.extensions.toMyByteArray
 import com.example.szakchat.messages.Message
-import com.example.szakchat.network.ChatSocket
-import com.example.szakchat.network.ConnectionStatus
-import com.example.szakchat.network.StatusLogger
-import com.example.szakchat.network.UserWithMessages
+import com.example.szakchat.network.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -31,7 +30,8 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
         const val IP_KEY = "SERVER_ADDRESS"
         const val POLL_INTERVAL = 3000L //ms
         const val CHECK_INTERVAL = 80L /* sec */ * 1000L
-        const val ID_KEY = "ID_KEY"
+        const val NAME_KEY = "NAME_KEY"
+        const val PASS_KEY = "PASS_KEY"
     }
 
     private val chatSocket = ChatSocket(this, ip)
@@ -53,6 +53,9 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
     var ip
     get() = chatSocket.ip
     set(value) { chatSocket.ip = value }
+
+    var username: String? = null
+    var password: String? = null
 
     var self
     get() = chatSocket.self
@@ -97,9 +100,13 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
         }
     }
 
-    fun setSelfId(value: String, prefs: SharedPreferences){
-        self = value
-        prefs.edit().putString(SELF_KEY, value).apply()
+    fun setSelfCredentials(id: String, name: String, pass: String, prefs: SharedPreferences){
+        self = Credentials(Base64.decode(id, Base64.DEFAULT).toMyByteArray(), pass)
+        username = name
+        prefs.edit().putString(SELF_KEY, id)
+            .putString(PASS_KEY, pass)
+            .putString(NAME_KEY, name)
+            .apply()
     }
 
     override fun postError(msg: String){
@@ -206,17 +213,16 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
         if(loginJob.isRunning())
             throw AlreadyRunning("Login request already in progress")
         val data = MutableLiveData<ConnectionStatus>()
-        val logger = object : StatusLogger {
-            override fun postError(msg: String) {
-                postError(msg, data)
-            }
-
-            override fun postMessage(msg: String) {
-                postMessage(msg, data)
-            }
-        }
-
         loginJob = viewModel.viewModelScope.launch {
+            val logger = object : StatusLogger {
+                override fun postError(msg: String) {
+                    postError(msg, data)
+                }
+
+                override fun postMessage(msg: String) {
+                    postMessage(msg, data)
+                }
+            }
             robust("Logging in") {
                 chatSocket.auth(username, password, logger)
             }
