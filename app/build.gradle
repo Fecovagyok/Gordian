@@ -57,6 +57,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
+    implementation "net.zetetic:android-database-sqlcipher:4.5.2" //256-bit AES in CBC Apache 2.0
 
 
     def lifecycle_version = "2.5.1"

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.security.crypto.EncryptedSharedPreferences
 import com.example.szakchat.MainActivity
 import com.example.szakchat.R
 import com.example.szakchat.databinding.FragmentIdentityBinding
@@ -62,7 +61,7 @@ class LoginFragment : Fragment() {
                                 id = it.message,
                                 name = binding.usernameField.text.toString(),
                                 pass = binding.passwordField.text.toString(),
-                                prefs = prefs()
+                                prefs = prefs(),
                             )
                             findNavController().navigate(R.id.action_login_to_first)
                         }
@@ -81,7 +80,6 @@ class LoginFragment : Fragment() {
         viewModel.networking.username?.let {
             binding.usernameField.setText(it)
         }
-        EncryptedSharedPreferences.create(requireActivity(), )
         return binding.root
     }
 }

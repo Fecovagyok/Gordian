@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.szakchat.database.ContactDao
 import com.example.szakchat.database.RoomContact
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.example.szakchat.extensions.toBase64String
+import com.example.szakchat.extensions.toUserID
+import com.example.szakchat.security.MyKeyProvider
+import com.example.szakchat.security.MySecretKey
 
 class ContactRepository(private val dao: ContactDao) {
     fun getContacts(): LiveData<List<Contact>> = dao.getContacts()
@@ -32,10 +34,28 @@ class ContactRepository(private val dao: ContactDao) {
         }
     }
 
-    private fun RoomContact.toDomainModel() = Contact(id, name, uniqueId)
+    private fun RoomContact.toDomainModel() = Contact(
+        id = id,
+        owner = owner.toUserID(),
+        uniqueId = uniqueId.toUserID(),
+        name = name,
+        sendKey = MyKeyProvider(
+            baseKey = MySecretKey(sendKey),
+            _seqNum = sendNumber,
+        ),
+        receiveKey = MyKeyProvider(
+            baseKey = MySecretKey(receiveKey),
+            _seqNum = receiveNumber,
+        ),
+    )
     private fun Contact.toRoomModel() = RoomContact(
         id = id,
         name = name,
-        uniqueId = uniqueId,
+        owner = owner.values.toBase64String(),
+        sendKey = sendKey.lastKey.values,
+        sendNumber = sendKey.sequenceNumber,
+        receiveKey = receiveKey.lastKey.values,
+        receiveNumber = receiveKey.sequenceNumber,
+        uniqueId = uniqueId.values.toBase64String(),
     )
 }

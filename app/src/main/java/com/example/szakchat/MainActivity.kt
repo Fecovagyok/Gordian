@@ -14,8 +14,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import com.example.szakchat.databinding.ActivityMainBinding
 import com.example.szakchat.extensions.toData
 import com.example.szakchat.extensions.toMyByteArray
@@ -31,23 +29,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ChatViewModel
     private lateinit var prefs: SharedPreferences
-    val safePrefs: SharedPreferences by lazy(LazyThreadSafetyMode.NONE) {
-        createSafePref()
-    }
     private val perm = MyPerm(this)
-
-    private fun createSafePref(): SharedPreferences{
-        val masterKey = MasterKey.Builder(applicationContext)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
-        return EncryptedSharedPreferences.create(
-            this,
-            "szakchat_secret",
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,8 +69,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     private fun restoreCredentials(): Boolean {
-        val id = safePrefs.getString(NetworkManager.SELF_KEY, null) ?: return false
-        val pass = prefs.getString(NetworkManager.PASS_KEY, null)
+        val id = prefs.getString(NetworkManager.SELF_KEY, null) ?: return false
+        val pass = ChatApplication.safePrefs.getString(NetworkManager.PASS_KEY, null)
         viewModel.networking.self = Credentials(id.toData().toMyByteArray(), pass!!)
         viewModel.networking.username = prefs.getString(NetworkManager.NAME_KEY, null)
         return true

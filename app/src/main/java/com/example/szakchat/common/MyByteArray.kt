@@ -1,6 +1,6 @@
-package com.example.szakchat.identity
+package com.example.szakchat.common
 
-data class MyByteArray(
+open class MyByteArray(
     val values: ByteArray
 ) {
     override fun equals(other: Any?): Boolean {
@@ -17,4 +17,7 @@ data class MyByteArray(
     override fun hashCode(): Int {
         return values.contentHashCode()
     }
+
+    operator fun get(idx: Int) = values[idx]
+    val size get() = values.size
 }

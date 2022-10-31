@@ -1,15 +1,27 @@
 package com.example.szakchat.database
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
-@Entity(tableName = "messages")
+@Entity(
+    tableName = "messages",
+    foreignKeys = [
+            ForeignKey(
+            entity = RoomMessage::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("contact"),
+            onDelete = ForeignKey.CASCADE
+        ),
+    ],
+    indices = [
+        Index(value = ["owner", "contact"], unique = false)
+    ]
+)
 data class RoomMessage(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     @ColumnInfo(name = "contact_id")
     val contactId: Long,
+    val owner: String,
     val text: String,
     val incoming: Boolean,
     val sent: Boolean,

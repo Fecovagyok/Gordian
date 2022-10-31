@@ -11,10 +11,9 @@ import com.budiyev.android.codescanner.*
 import com.example.szakchat.MainActivity
 import com.example.szakchat.R
 import com.example.szakchat.databinding.FragmentReadQrBinding
-import com.example.szakchat.extensions.toHex
-import com.example.szakchat.messages.Message
 import com.example.szakchat.viewModel.ChatViewModel
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.Result
 
 class ReadQRFragment : Fragment() {
     private var _binding: FragmentReadQrBinding? = null
@@ -54,15 +53,7 @@ class ReadQRFragment : Fragment() {
         codeScanner.isFlashEnabled = false // Whether to enable flash or not
 
         codeScanner.decodeCallback = DecodeCallback {
-            viewModel.security.setSecureBytes(it.text)
-            viewModel.networking.send(
-                Message(
-                text = viewModel.security.secureSha!!.toHex(),
-                contact = viewModel.currentContact!!,
-                sent = false,
-                incoming = false,
-            )
-            )
+            onReadSuccess(it)
             activity.runOnUiThread {
                 activity.showSnack("Success")
                 findNavController().popBackStack(R.id.SecondFragment, inclusive = false)
@@ -83,5 +74,9 @@ class ReadQRFragment : Fragment() {
     override fun onPause() {
         codeScanner.releaseResources()
         super.onPause()
+    }
+
+    private fun onReadSuccess(result: Result){
+        viewModel.security.setSecureBytes(result.text)
     }
 }

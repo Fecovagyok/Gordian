@@ -47,7 +47,7 @@ class ExchangeFragment : Fragment() {
         }
 
         binding.btnKeyCreate.setOnClickListener {
-            security.getBytesAsync(1024)
+            security.getBytesAsync(1024-8)
         }
 
         binding.btnKeyRead.setOnClickListener {

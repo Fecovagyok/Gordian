@@ -1,16 +1,16 @@
 package com.example.szakchat.messages
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.szakchat.ChatApplication
 import com.example.szakchat.contacts.Contact
-import com.example.szakchat.database.MessageDao
 import com.example.szakchat.database.RoomMessage
+import com.example.szakchat.extensions.toBase64String
+import com.example.szakchat.extensions.toUserID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MessageRepository() {
+class MessageRepository {
     private val dao = ChatApplication.database.messageDao()
     fun getMessages(contact: Contact): LiveData<List<Message>> = dao.getMessages(contact.id)
         .map { roomMessages ->
@@ -43,6 +43,7 @@ class MessageRepository() {
         text = text,
         contact = contact,
         incoming = incoming,
+        owner = owner.toUserID(),
         sent = sent,
     )
     private fun Message.toRoomModel() = RoomMessage(
@@ -50,6 +51,7 @@ class MessageRepository() {
         contactId = contact.id,
         text = text,
         incoming = incoming,
+        owner = owner.values.toBase64String(),
         sent = sent,
     )
 }

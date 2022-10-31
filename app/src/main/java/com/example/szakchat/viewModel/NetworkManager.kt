@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.szakchat.ChatApplication
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.extensions.isRunning
@@ -22,7 +23,8 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 
 
-class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusLogger{
+class NetworkManager(private val viewModel: ChatViewModel, ip: String)
+    : StatusLogger {
 
     companion object {
         const val SELF_KEY = "SELF_KEY"
@@ -62,9 +64,7 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
     set(value) { chatSocket.self = value}
 
     private var pollJob: Job? = null
-
     private var sendJob: Job? = null
-
     private val checkPollChannel = Channel<Unit>(Channel.CONFLATED)
 
     private val _networkStatus = MutableLiveData<ConnectionStatus>()
@@ -103,10 +103,11 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
     fun setSelfCredentials(id: String, name: String, pass: String, prefs: SharedPreferences){
         self = Credentials(Base64.decode(id, Base64.DEFAULT).toMyByteArray(), pass)
         username = name
-        prefs.edit().putString(SELF_KEY, id)
-            .putString(PASS_KEY, pass)
+        prefs.edit()
+            .putString(SELF_KEY, id)
             .putString(NAME_KEY, name)
             .apply()
+        ChatApplication.safePrefs.edit().putString(PASS_KEY, pass).apply()
     }
 
     override fun postError(msg: String){
@@ -229,5 +230,4 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String) : StatusL
         }
         return data
     }
-
 }

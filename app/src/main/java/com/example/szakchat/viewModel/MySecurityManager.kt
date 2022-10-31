@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.R
 import com.example.szakchat.extensions.isRunning
+import com.example.szakchat.security.MySecurityProtocol
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         const val MSG = 3
     }
 
-    private val random: SecureRandom by lazy {
+    private val randomObject: SecureRandom by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             SecureRandom.getInstanceStrong()
         } else {
@@ -29,10 +30,13 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         }
     }
 
+    val myProto = MySecurityProtocol(randomObject)
+
     private val _liveRandomBytes = MutableLiveData<StatusMessage?>()
     val liveRandomBytes get() = _liveRandomBytes as LiveData<StatusMessage?>
     private var getBytesJob: Job? = null
     var generatedLotsOfBytes: ByteArray? = null
+        private set
     val secureString: String? get() = generatedLotsOfBytes?.let {
         Base64.encodeToString(it, Base64.DEFAULT)
     }
@@ -61,8 +65,11 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         getBytesJob = viewModel.viewModelScope.launch(Dispatchers.Default) {
             _liveRandomBytes.postValue(StatusMessage(state = START))
             val bytes = ByteArray(count)
-            random.nextBytes(bytes)
-            generatedLotsOfBytes = bytes
+            randomObject.nextBytes(bytes)
+            val bytesWithID = ByteArray(count + 8)
+            bytes.copyInto(bytesWithID)
+            viewModel.networking.self!!.id.values.copyInto(bytesWithID, count,)
+            generatedLotsOfBytes = bytesWithID
             _liveRandomBytes.postValue(StatusMessage(state = END))
         }
     }
