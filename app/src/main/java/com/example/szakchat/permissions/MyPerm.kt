@@ -11,7 +11,7 @@ class MyPerm(private val activity: MainActivity) {
         const val permission = Manifest.permission.CAMERA
     }
 
-    val launcher = activity.registerForActivityResult(
+    private val launcher = activity.registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted)

@@ -59,7 +59,7 @@ class ChatApplication : Application() {
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
         val msg = masterKey.isStrongBoxBacked
-        Log.d("FECO", "$msg")
+        Log.d("FECO", "MasterKeyStrongBoxed: $msg")
         return EncryptedSharedPreferences.create(
             applicationContext,
             "szakchat_secret",
