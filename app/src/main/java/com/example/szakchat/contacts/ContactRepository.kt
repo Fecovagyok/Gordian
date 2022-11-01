@@ -6,6 +6,7 @@ import com.example.szakchat.database.ContactDao
 import com.example.szakchat.database.RoomContact
 import com.example.szakchat.extensions.toBase64String
 import com.example.szakchat.extensions.toUserID
+import com.example.szakchat.identity.UserID
 import com.example.szakchat.security.MyKeyProvider
 import com.example.szakchat.security.MySecretKey
 
@@ -28,8 +29,12 @@ class ContactRepository(private val dao: ContactDao) {
         ))
     }
 
-    fun getContacts(list: List<String>): List<Contact> {
-        return dao.getContacts(list).map {
+    fun getContacts(list: List<UserID>): List<Contact> {
+        return dao.getContacts(
+            list.map {
+                it.values.toBase64String()
+            }
+        ).map {
             it.toDomainModel()
         }
     }

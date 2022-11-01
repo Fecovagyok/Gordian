@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.extensions.toUserID
 import com.example.szakchat.messages.Message
+import com.example.szakchat.security.GcmMessage
 import java.io.*
 import javax.net.SocketFactory
 import javax.net.ssl.SSLSocketFactory
@@ -61,41 +62,21 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         logger.postMessage("Receiving: $msg")
     }
 
-    fun receive(): List<UserWithMessages>?{
-        self?: return null
-        val self = self!!
-
-        val received = mutableListOf<UserWithMessages>()
+    fun receive(): List<GcmMessage> {
         postReceiveMessage("Trying to connect...")
         val socket = factory.createSocket(ip, POLLING_PORT)
         postReceiveMessage("Connected")
-        val writer = socket.getOutputStream().bufferedWriter()
-        writer.auth()
-        writer.receive(self)
-
-        val reader = socket.getInputStream().bufferedReader()
-        while (true){
-            if(checkEnd(reader, writer))
-                break
-            // He does not know if the user exists
-            val id = reader.readLine()
-            val list = mutableListOf<String>()
-            while (true) {
-                if(checkEnd(reader, writer))
-                    break
-
-                val text = reader.readLine()
-                list.add(text)
-            }
-            val messages = UserWithMessages(id, list)
-            received.add(messages)
+        val inS = socket.getInputStream()
+        val out = socket.getOutputStream()
+        val received = withAuth(out = out, inS = inS) {
+            inS.readAllMessages()
         }
         postReceiveMessage("All received")
         return received
     }
 
-    private inline fun withAuth(out: OutputStream, inS: InputStream, block: () -> Unit){
-        if(auth(out, inS)){
+    private inline fun <T> withAuth(out: OutputStream, inS: InputStream, block: () -> T): T{
+        return if(auth(out, inS)){
             block()
         } else {
             val msg = inS.readString()

@@ -27,7 +27,7 @@ class MessageRepository {
         dao.delete(msg.toRoomModel())
     }
 
-    suspend fun insert(messages: List<Message>) = withContext(Dispatchers.IO){
+    fun insert(messages: List<Message>) {
         val roomMessages = messages.map {
             it.toRoomModel()
         }

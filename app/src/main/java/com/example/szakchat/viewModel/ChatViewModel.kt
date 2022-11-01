@@ -44,9 +44,6 @@ class ChatViewModel() : ViewModel() {
     fun insertMessage(message: Message) = viewModelScope.launch(Dispatchers.IO) {
         messageRepository.insert(message)
     }
-    fun insertMessage(messages: List<Message>) = viewModelScope.launch {
-        messageRepository.insert(messages)
-    }
 
     fun removeMessage(msg: Message) = viewModelScope.launch(Dispatchers.IO) {
         messageRepository.remove(msg)

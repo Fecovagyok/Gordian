@@ -7,18 +7,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.ChatApplication
-import com.example.szakchat.contacts.Contact
 import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.extensions.isRunning
+import com.example.szakchat.extensions.toBase64String
 import com.example.szakchat.extensions.toMyByteArray
 import com.example.szakchat.messages.Message
 import com.example.szakchat.network.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.example.szakchat.security.GcmMessage
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -158,31 +156,15 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         ))
     }
 
-    private suspend fun insertReceived(received: List<UserWithMessages>){
+    private suspend fun insertReceived(received: List<GcmMessage>){
         val userIds = received.map {
-            it.userId
+            it.src.values.toBase64String()
         }
         val contacts = viewModel.getContacts(userIds)
-        // To Spawn the contacts into existence
-        val map = HashMap<String, Contact>()
-        contacts.forEach { map[it.uniqueId] = it }
-        received.forEach {
-            val contact = map[it.userId] ?: run {
-                val id = viewModel.repository.insertId(it.userId)
-                Contact(
-                    id = id,
-                    uniqueId = it.userId,
-                )
-            }
-            val toInsert = it.messages.map { text ->
-                Message(
-                    contact = contact,
-                    text = text,
-                    incoming = true,
-                )
-            }
-            viewModel.messageRepository.insert(toInsert)
+        val messages = withContext(Dispatchers.Default) {
+            convertToMessages(contacts, received, viewModel.security.myProto)
         }
+        viewModel.messageRepository.insert(messages)
     }
 
     fun startPollStartJob(){
@@ -209,7 +191,8 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
             robust("polling") {
                 while (true) {
                     delay(POLL_INTERVAL)
-                    val received = chatSocket.receive() ?: continue
+                    val received = chatSocket.receive()
+                    if(received.isEmpty()) continue
                     insertReceived(received)
                 }
             }

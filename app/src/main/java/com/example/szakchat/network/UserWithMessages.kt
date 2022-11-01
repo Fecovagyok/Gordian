@@ -1,9 +1,8 @@
 package com.example.szakchat.network
 
-import com.example.szakchat.contacts.Contact
-import com.example.szakchat.messages.Message
+import com.example.szakchat.identity.UserID
 
 data class UserWithMessages(
-    val userId: String,
+    val userId: UserID,
     val messages: List<String>,
     )
