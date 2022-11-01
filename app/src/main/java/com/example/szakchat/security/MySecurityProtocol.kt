@@ -11,7 +11,7 @@ import javax.crypto.spec.GCMParameterSpec
 
 class MySecurityProtocol(private val random: SecureRandom){
     companion object {
-        const val TYPE_MESSAGE: Byte = 1
+        const val TYPE_MESSAGE = 1
         const val MSG_VERSION = 1
         const val GCM_HEADER_LENGTH = 33
         const val TAG_LENGTH = 128 // in bytes
@@ -20,7 +20,7 @@ class MySecurityProtocol(private val random: SecureRandom){
     private val cipher = Cipher.getInstance("AES/GCM/NoPadding")
 
     private fun aadOf(
-        type: Byte,
+        type: Int,
         len: Int,
         seqNum: Int,
         rnd: ByteArray,
@@ -73,7 +73,11 @@ class MySecurityProtocol(private val random: SecureRandom){
         return text
     }
 
-    fun encode(message: Message, keyProvider: SenderKeyProvider, type: Byte = TYPE_MESSAGE): GcmMessage {
+    fun encode(
+        message: Message,
+        keyProvider: SenderKeyProvider = message.contact.sendKey,
+        type: Int = TYPE_MESSAGE,
+    ): GcmMessage {
         val plainTextBytes = message.text.toByteArray(Charsets.UTF_8)
         if(plainTextBytes.size > Short.MAX_VALUE)
             throw TooLongMessage()

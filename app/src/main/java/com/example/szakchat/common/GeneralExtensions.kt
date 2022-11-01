@@ -10,6 +10,8 @@ import com.example.szakchat.common.MyByteArray
 import com.example.szakchat.identity.UserID
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
+import java.net.Socket
+import java.net.SocketException
 import java.security.SecureRandom
 
 fun EditText.isEmpty(): Boolean {
@@ -87,4 +89,13 @@ fun SecureRandom.nextAndCreateBytes(num: Int): ByteArray {
     val bytes = ByteArray(num)
     nextBytes(bytes)
     return bytes
+}
+
+fun Socket.awaitClose() {
+    try {
+        Log.d("FECO", "Waiting for the peer to close the socket")
+        getInputStream().read()
+    } catch (e: SocketException){
+        Log.d("FECO", "Socket closed when I wanted it to")
+    }
 }

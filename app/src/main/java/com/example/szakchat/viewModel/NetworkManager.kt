@@ -1,7 +1,6 @@
 package com.example.szakchat.viewModel
 
 import android.content.SharedPreferences
-import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +9,7 @@ import com.example.szakchat.ChatApplication
 import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.extensions.isRunning
-import com.example.szakchat.extensions.toMyByteArray
+import com.example.szakchat.extensions.toUserID
 import com.example.szakchat.messages.Message
 import com.example.szakchat.network.*
 import com.example.szakchat.security.GcmMessage
@@ -55,7 +54,6 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
     set(value) { chatSocket.ip = value }
 
     var username: String? = null
-    var password: String? = null
 
     val self
     get() = chatSocket.self?.id
@@ -89,16 +87,19 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
     }
 
     private fun startSend(message: Message) = viewModel.viewModelScope.launch(Dispatchers.IO) {
+        val gcmMessage = withContext(Dispatchers.Default){
+            viewModel.security.myProto.encode(message)
+        }
         robust("sending") {
             val id = viewModel.messageRepository.insert(message)
-            chatSocket.send(listOf(message))
+            chatSocket.send(listOf(gcmMessage))
             message.sent = true
             viewModel.messageRepository.setSent(id)
         }
     }
 
     fun setSelfCredentials(id: String, name: String, pass: String, prefs: SharedPreferences){
-        self = Credentials(Base64.decode(id, Base64.DEFAULT).toMyByteArray(), pass)
+        chatSocket.self = Credentials(id.toUserID(), pass)
         username = name
         prefs.edit()
             .putString(SELF_KEY, id)

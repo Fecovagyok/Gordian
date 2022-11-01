@@ -1,6 +1,7 @@
 package com.example.szakchat.network
 
 import com.example.szakchat.exceptions.AuthError
+import com.example.szakchat.extensions.awaitClose
 import com.example.szakchat.extensions.toUserID
 import com.example.szakchat.security.GcmMessage
 import java.io.IOException
@@ -29,9 +30,9 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         val out = socket.getOutputStream()
         withAuth(out, inS) {
             out.writeAll(messages)
+            socket.awaitClose()
         }
         postSendMessage("All sent")
-        socket.close()
     }
 
     private fun postSendMessage(msg: String){
@@ -51,6 +52,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         val received = withAuth(out = out, inS = inS) {
             inS.readAllMessages()
         }
+        socket.close()
         postReceiveMessage("All received")
         return received
     }
