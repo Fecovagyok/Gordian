@@ -7,8 +7,9 @@ import com.example.szakchat.database.RoomContact
 import com.example.szakchat.extensions.toBase64String
 import com.example.szakchat.extensions.toUserID
 import com.example.szakchat.identity.UserID
-import com.example.szakchat.security.MyKeyProvider
 import com.example.szakchat.security.MySecretKey
+import com.example.szakchat.security.ReceiverKeyProvider
+import com.example.szakchat.security.SenderKeyProvider
 
 class ContactRepository(private val dao: ContactDao) {
     fun getContacts(): LiveData<List<Contact>> = dao.getContacts()
@@ -20,13 +21,6 @@ class ContactRepository(private val dao: ContactDao) {
 
     fun insert(contact: Contact): Long  {
         return dao.insertContact(contact.toRoomModel())
-    }
-
-    fun insertId(id: String): Long {
-        return dao.insertContact(RoomContact(
-            uniqueId = id,
-            name = id,
-        ))
     }
 
     fun getContacts(list: List<UserID>): List<Contact> {
@@ -44,13 +38,13 @@ class ContactRepository(private val dao: ContactDao) {
         owner = owner.toUserID(),
         uniqueId = uniqueId.toUserID(),
         name = name,
-        sendKey = MyKeyProvider(
+        sendKey = SenderKeyProvider(
             baseKey = MySecretKey(sendKey),
-            _seqNum = sendNumber,
+            seqNum = sendNumber,
         ),
-        receiveKey = MyKeyProvider(
+        receiveKey = ReceiverKeyProvider(
             baseKey = MySecretKey(receiveKey),
-            _seqNum = receiveNumber,
+            seqNum = receiveNumber,
         ),
     )
     private fun Contact.toRoomModel() = RoomContact(

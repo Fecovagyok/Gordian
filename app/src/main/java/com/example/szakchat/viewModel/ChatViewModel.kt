@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.szakchat.ChatApplication
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.contacts.ContactRepository
+import com.example.szakchat.identity.UserID
 import com.example.szakchat.messages.Message
 import com.example.szakchat.messages.MessageRepository
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +37,7 @@ class ChatViewModel() : ViewModel() {
         networking.startPollStartJob()
     }
 
-    fun getContacts(list: List<String>) = repository.getContacts(list)
+    fun getContacts(list: List<UserID>) = repository.getContacts(list)
 
     fun insertContact(contact: Contact) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(contact)

@@ -6,14 +6,15 @@ import androidx.room.*
     tableName = "messages",
     foreignKeys = [
             ForeignKey(
-            entity = RoomMessage::class,
+            entity = RoomContact::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("contact"),
+            childColumns = arrayOf("contact_id"),
             onDelete = ForeignKey.CASCADE
         ),
     ],
     indices = [
-        Index(value = ["owner", "contact"], unique = false)
+        Index(value = ["owner", "contact"], unique = false),
+        Index(value = ["contact_id"], unique = false)
     ]
 )
 data class RoomMessage(

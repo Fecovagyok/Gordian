@@ -11,11 +11,6 @@ interface MessageDao {
     )
     fun getMessages(id: Long): LiveData<List<RoomMessage>>
 
-    /*@Transaction
-    @Query("SELECT * FROM contacts " +
-            "WHERE id = :other and contacts.owner = :owner")
-    fun getMessagesWithContact(owner: String, other: Long): LiveData<List<ContactWithMessage>>*/
-
     @Insert
     fun insert(message: RoomMessage): Long
 

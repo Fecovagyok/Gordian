@@ -10,7 +10,6 @@ import com.example.szakchat.ChatApplication
 import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.extensions.isRunning
-import com.example.szakchat.extensions.toBase64String
 import com.example.szakchat.extensions.toMyByteArray
 import com.example.szakchat.messages.Message
 import com.example.szakchat.network.*
@@ -158,7 +157,7 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
 
     private suspend fun insertReceived(received: List<GcmMessage>){
         val userIds = received.map {
-            it.src.values.toBase64String()
+            it.src
         }
         val contacts = viewModel.getContacts(userIds)
         val messages = withContext(Dispatchers.Default) {
