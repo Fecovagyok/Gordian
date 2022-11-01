@@ -1,11 +1,11 @@
 package com.example.szakchat.network
 
-import android.util.Log
 import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.extensions.toUserID
-import com.example.szakchat.messages.Message
 import com.example.szakchat.security.GcmMessage
-import java.io.*
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import javax.net.SocketFactory
 import javax.net.ssl.SSLSocketFactory
 
@@ -21,37 +21,17 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         val factory: SocketFactory = SSLSocketFactory.getDefault()
     }
 
-    fun send(messages: List<Message>){
-        if(self == null)
-            return
-        postSendMessage("Trying to send...")
+    fun send(messages: List<GcmMessage>){
+        postReceiveMessage("Trying to connect...")
         val socket = factory.createSocket(ip, SENDING_PORT)
-        val writer = socket.getOutputStream().bufferedWriter()
-        writer.auth()
-        writer.apply {
-            send()
-            writeLine(self!!)
-            for (msg in messages) {
-                writeLine(msg.contact.uniqueId)
-                writeLine(msg.text)
-            }
-            flush()
+        postReceiveMessage("Connected")
+        val inS = socket.getInputStream()
+        val out = socket.getOutputStream()
+        withAuth(out, inS) {
+            out.writeAll(messages)
         }
         postSendMessage("All sent")
         socket.close()
-    }
-
-    private fun checkEnd(reader: BufferedReader, writer: BufferedWriter): Boolean {
-        val header = reader.read()
-        if(header == END) {
-            writer.apply { write(END); flush() }
-            return true
-        }
-        if (header != EXPECT){
-            Log.e("FECO", "The first sent integer is not EXPECT: $header")
-            return true
-        }
-        return false
     }
 
     private fun postSendMessage(msg: String){

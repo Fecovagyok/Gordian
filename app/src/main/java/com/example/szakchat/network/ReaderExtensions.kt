@@ -40,13 +40,15 @@ fun InputStream.throwReadBytes(b: ByteArray) {
 
 fun InputStream.readGcmMessage(): GcmMessage {
     val version = readInt16()
-    val type = throwRead().toByte()
+    val type = throwRead()
     val length = readInt16()
     val seqNum = readInt32()
     val rnd = readAndCreateBytes(7).toMyByteArray()
     val src = readAndCreateBytes(8).toUserID()
     val dst = readAndCreateBytes(8).toUserID()
     val ciphered = readAndCreateBytes(length).toMyByteArray()
+    /*if(seqNum < 0)
+        throw IllegalStateException("Read sequence number bigger than zero")*/
     return GcmMessage(
         version, type, length, seqNum, rnd,
         src, dst, ciphered,

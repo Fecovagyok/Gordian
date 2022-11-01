@@ -5,7 +5,7 @@ import com.example.szakchat.identity.UserID
 
 data class GcmMessage(
     val version: Int,
-    val type: Byte,
+    val type: Int,
     val length: Int,
     val seqNum: Int,
     val rnd: MyByteArray,

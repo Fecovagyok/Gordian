@@ -1,6 +1,7 @@
 package com.example.szakchat.network
 
 import com.example.szakchat.common.MyByteArray
+import com.example.szakchat.security.GcmMessage
 import java.io.OutputStream
 
 fun OutputStream.writeString(str: String) {
@@ -24,8 +25,19 @@ fun OutputStream.writeInt32(value: Int) {
 
 fun OutputStream.write(b: MyByteArray) = write(b.values)
 
+fun OutputStream.writeGcmMessage(msg: GcmMessage){
+    writeInt16(msg.version)
+    write(msg.type)
+    writeInt16(msg.length)
+    writeInt32(msg.seqNum)
+    write(msg.rnd)
+    write(msg.src)
+    write(msg.dst)
+    write(msg.ciphered)
+}
+
 // With fear, that it will be too less, the message count is sent as 16 bit value
-fun OutputStream.writeAll(list: List<Message>) {
+fun OutputStream.writeAll(list: List<GcmMessage>) {
     if (list.size > Short.MAX_VALUE)
         throw IllegalArgumentException("Message count exceeded 16 bits")
     writeInt16(list.size)
