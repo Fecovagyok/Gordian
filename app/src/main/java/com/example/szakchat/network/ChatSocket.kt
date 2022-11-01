@@ -1,10 +1,10 @@
 package com.example.szakchat.network
 
-import android.util.Base64
 import android.util.Log
+import com.example.szakchat.exceptions.AuthError
+import com.example.szakchat.extensions.toUserID
 import com.example.szakchat.messages.Message
-import java.io.BufferedReader
-import java.io.BufferedWriter
+import java.io.*
 import javax.net.SocketFactory
 import javax.net.ssl.SSLSocketFactory
 
@@ -67,7 +67,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
 
         val received = mutableListOf<UserWithMessages>()
         postReceiveMessage("Trying to connect...")
-        val socket = factory.createSocket(ip, PORT)
+        val socket = factory.createSocket(ip, POLLING_PORT)
         postReceiveMessage("Connected")
         val writer = socket.getOutputStream().bufferedWriter()
         writer.auth()
@@ -94,6 +94,28 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         return received
     }
 
+    private inline fun withAuth(out: OutputStream, inS: InputStream, block: () -> Unit){
+        if(auth(out, inS)){
+            block()
+        } else {
+            val msg = inS.readString()
+            throw AuthError(msg)
+        }
+    }
+
+    private fun auth(out: OutputStream, iStream: InputStream): Boolean {
+        val meSelf = self?: throw IllegalStateException("No logged on user")
+        out.write(AUTH_WITH_ID)
+        out.write(meSelf.id.values)
+        out.writeString(meSelf.pass)
+        out.write(AUTH_ONLY+4)
+        return when(iStream.throwRead()) {
+            AUTH_OK -> true
+            AUTH_NOK -> false
+            else -> throw IOException("Bad auth message")
+        }
+    }
+
     fun auth(username: String, password: String, out: StatusLogger){
         val socket = factory.createSocket(ip, POLLING_PORT)
         val outStream = socket.getOutputStream()
@@ -101,11 +123,12 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         outStream.write(AUTH_WITH_NAME)
         outStream.writeString(username)
         outStream.writeString(password)
-        when(inStream.read()) {
+        when(inStream.throwRead()) {
             AUTH_OK -> {
                 outStream.write(AUTH_ONLY)
                 val myId = inStream.readAndCreateBytes(8)
-                out.postMessage(Base64.encodeToString(myId, Base64.DEFAULT))
+                self = Credentials(id = myId.toUserID(), password)
+                out.postMessage("Success")
             }
 
             AUTH_NOK -> {

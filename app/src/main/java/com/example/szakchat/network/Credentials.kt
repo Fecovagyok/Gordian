@@ -1,8 +1,8 @@
 package com.example.szakchat.network
 
-import com.example.szakchat.common.MyByteArray
+import com.example.szakchat.identity.UserID
 
 data class Credentials(
-    val id: MyByteArray,
+    val id: UserID,
     val pass: String,
 )

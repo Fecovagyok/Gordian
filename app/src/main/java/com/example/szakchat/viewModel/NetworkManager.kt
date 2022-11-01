@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.szakchat.ChatApplication
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.exceptions.AlreadyRunning
+import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.extensions.isRunning
 import com.example.szakchat.extensions.toMyByteArray
 import com.example.szakchat.messages.Message
@@ -59,9 +60,8 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
     var username: String? = null
     var password: String? = null
 
-    var self
-    get() = chatSocket.self
-    set(value) { chatSocket.self = value}
+    val self
+    get() = chatSocket.self?.id
 
     private var pollJob: Job? = null
     private var sendJob: Job? = null
@@ -133,6 +133,14 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
             Log.e("FECO", "SocketTimeoutException: ${e.message}")
             postError("Could not connect: timed out while $act")
         } catch (e: IOException){
+            Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause} Type: ${e.javaClass}")
+            e.printStackTrace()
+            postError("${e.message?: "No message"} while $act")
+        } catch (e: IllegalStateException){
+            Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause} Type: ${e.javaClass}")
+            e.printStackTrace()
+            postError("${e.message?: "No message"} while $act")
+        } catch (e: AuthError) {
             Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause} Type: ${e.javaClass}")
             e.printStackTrace()
             postError("${e.message?: "No message"} while $act")
