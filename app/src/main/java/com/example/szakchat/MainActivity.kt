@@ -15,9 +15,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.example.szakchat.databinding.ActivityMainBinding
-import com.example.szakchat.extensions.toData
-import com.example.szakchat.extensions.toMyByteArray
-import com.example.szakchat.network.Credentials
+import com.example.szakchat.extensions.toUserID
 import com.example.szakchat.permissions.MyPerm
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.viewModel.NetworkManager
@@ -28,7 +26,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: ChatViewModel
-    private lateinit var prefs: SharedPreferences
+    private lateinit var prefs: SharedPreferences // For settings
     private val perm = MyPerm(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,9 +67,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     private fun restoreCredentials(): Boolean {
+        viewModel.networking.self?: return true
         val id = prefs.getString(NetworkManager.SELF_KEY, null) ?: return false
         val pass = ChatApplication.safePrefs.getString(NetworkManager.PASS_KEY, null)
-        viewModel.networking.self = Credentials(id.toData().toMyByteArray(), pass!!)
+        viewModel.networking.initSelfCredentials(id.toUserID(), pass!!)
         viewModel.networking.username = prefs.getString(NetworkManager.NAME_KEY, null)
         return true
     }

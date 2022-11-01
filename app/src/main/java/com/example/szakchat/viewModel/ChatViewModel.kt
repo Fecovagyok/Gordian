@@ -33,8 +33,10 @@ class ChatViewModel() : ViewModel() {
     val contacts: LiveData<List<Contact>> = repository.getContacts()
 
     fun initNetwork(ip: String){
-        _networking = NetworkManager(this, ip)
-        networking.startPollStartJob()
+        _networking?: run {
+            _networking = NetworkManager(this, ip)
+            networking.startPollStartJob()
+        }
     }
 
     fun getContacts(list: List<UserID>) = repository.getContacts(list)

@@ -10,6 +10,7 @@ import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.extensions.isRunning
 import com.example.szakchat.extensions.toUserID
+import com.example.szakchat.identity.UserID
 import com.example.szakchat.messages.Message
 import com.example.szakchat.network.*
 import com.example.szakchat.security.GcmMessage
@@ -98,7 +99,11 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         }
     }
 
-    fun setSelfCredentials(id: String, name: String, pass: String, prefs: SharedPreferences){
+    fun initSelfCredentials(id: UserID, pass: String){
+        chatSocket.self = Credentials(id, pass)
+    }
+
+    fun setSelfCredentialsPermanently(id: String, name: String, pass: String, prefs: SharedPreferences){
         chatSocket.self = Credentials(id.toUserID(), pass)
         username = name
         prefs.edit()
