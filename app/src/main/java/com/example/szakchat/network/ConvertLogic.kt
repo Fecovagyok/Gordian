@@ -11,7 +11,7 @@ import com.example.szakchat.security.MySecurityProtocol
 fun convertToMessages(contacts: List<Contact>, list: List<GcmMessage>, security: MySecurityProtocol): List<Message> {
     val mappedContacts = HashMap<UserID, Contact>(contacts.size)
     contacts.forEach {
-        mappedContacts[it.uniqueId] = it
+        mappedContacts[it.uniqueId!!] = it
     }
     val messages = mutableListOf<Message>()
     list.forEach {
@@ -20,7 +20,7 @@ fun convertToMessages(contacts: List<Contact>, list: List<GcmMessage>, security:
             Log.w("FECO", "Received message was not among contacts")
             return@forEach
         }
-        val text = security.decode(contact.receiveKey, it)
+        val text = security.decode(contact.keys!!.receiver, it)
         val message = Message(
             id = 0,
             text = text,

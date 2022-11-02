@@ -38,39 +38,41 @@ class LoginFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentIdentityBinding.inflate(inflater, container, false)
+        viewModel.networking.authData.observe(viewLifecycleOwner) {
+            val a = requireActivity() as MainActivity
+            when(it.normal) {
+                true -> {
+                    viewModel.networking.setSelfCredentialsPermanently(
+                        id = it.message,
+                        name = binding.usernameField.text.toString(),
+                        pass = binding.passwordField.text.toString(),
+                        prefs = prefs(),
+                    )
+                    findNavController().navigate(R.id.action_login_to_first)
+                }
+                false -> {
+                    a.showSnack(it.message)
+                }
+            }
+            binding.loginProgress.visibility = View.GONE
+        }
         binding.loginButton.setOnClickListener {
             val a = requireActivity() as MainActivity
             try {
 
-                if (binding.usernameField.isEmpty() || binding.passwordField.isEmpty())
+                if (binding.usernameField.isEmpty() || binding.passwordField.isEmpty()) {
                     return@setOnClickListener
+                }
                 if (binding.usernameField.moreThan(50) || binding.passwordField.moreThan(50)) {
                     return@setOnClickListener
                 }
 
                 binding.loginProgress.visibility = View.VISIBLE
-                val data = viewModel.networking.loginRequest(
+                viewModel.networking.loginRequest(
                     binding.usernameField.text.toString(),
                     binding.passwordField.text.toString(),
                 )
 
-                data.observe(viewLifecycleOwner) {
-                    when(it.normal) {
-                        true -> {
-                            viewModel.networking.setSelfCredentialsPermanently(
-                                id = it.message,
-                                name = binding.usernameField.text.toString(),
-                                pass = binding.passwordField.text.toString(),
-                                prefs = prefs(),
-                            )
-                            findNavController().navigate(R.id.action_login_to_first)
-                        }
-                        false -> {
-                            a.showSnack(it.message)
-                        }
-                    }
-                    binding.loginProgress.visibility = View.GONE
-                }
 
             } catch (e: AlreadyRunning){
                 a.showSnack(R.string.login_request_running)

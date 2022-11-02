@@ -46,8 +46,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 binding.contentMain.statusBar.setBackgroundResource(R.color.statusErrorColor)
             binding.contentMain.statusBar.text = it.message
         }
-        if(android.os.Build.VERSION.SDK_INT >= 23)
-            perm.askPermission()
+        perm.askPermission()
     }
 
     private fun initNavGraph(): NavController {
@@ -67,7 +66,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     private fun restoreCredentials(): Boolean {
-        viewModel.networking.self?: return true
+        if(viewModel.networking.self != null) return true
         val id = prefs.getString(NetworkManager.SELF_KEY, null) ?: return false
         val pass = ChatApplication.safePrefs.getString(NetworkManager.PASS_KEY, null)
         viewModel.networking.initSelfCredentials(id.toUserID(), pass!!)

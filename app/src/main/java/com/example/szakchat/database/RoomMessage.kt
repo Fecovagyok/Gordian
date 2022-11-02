@@ -13,8 +13,8 @@ import androidx.room.*
         ),
     ],
     indices = [
-        Index(value = ["owner", "contact"], unique = false),
-        Index(value = ["contact_id"], unique = false)
+        Index(value = ["owner", "contact_id"], unique = false),
+        Index(value = ["contact_id"], unique = false),
     ]
 )
 data class RoomMessage(

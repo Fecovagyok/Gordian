@@ -75,7 +75,7 @@ class MySecurityProtocol(private val random: SecureRandom){
 
     fun encode(
         message: Message,
-        keyProvider: SenderKeyProvider = message.contact.sendKey,
+        keyProvider: SenderKeyProvider = message.contact.keys!!.sender,
         type: Int = TYPE_MESSAGE,
     ): GcmMessage {
         val plainTextBytes = message.text.toByteArray(Charsets.UTF_8)
@@ -94,7 +94,7 @@ class MySecurityProtocol(private val random: SecureRandom){
             rnd = rnd,
             seqNum = keyProvider.sequenceNumber,
             src = message.owner,
-            dst = message.contact.uniqueId,
+            dst = message.contact.uniqueId!!,
         )
         cipher.updateAAD(myAAD)
         val outBytes = ByteArray(len)

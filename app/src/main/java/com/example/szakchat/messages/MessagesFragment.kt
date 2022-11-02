@@ -3,21 +3,17 @@ package com.example.szakchat.messages
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.example.szakchat.R
-import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.databinding.FragmentSecondBinding
 import com.example.szakchat.extensions.isBadText
 import com.example.szakchat.extensions.scrollToTheEnd
-import com.example.szakchat.network.ChatSocket
-import com.google.android.material.snackbar.Snackbar
+import com.example.szakchat.viewModel.ChatViewModel
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -104,6 +100,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
 
             val contact = viewModel.currentContact!!
             val message = Message(
+                owner = viewModel.networking.self!!,
                 contact = contact,
                 text = text,
                 incoming = false,

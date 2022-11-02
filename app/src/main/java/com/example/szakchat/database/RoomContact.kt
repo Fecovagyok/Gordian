@@ -15,14 +15,14 @@ import androidx.room.PrimaryKey
 data class RoomContact(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val uniqueId: String,
+    val uniqueId: String?,
     val owner: String,
     val name: String,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    val sendKey: ByteArray,
+    val sendKey: ByteArray?,
     val sendNumber: Int,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    val receiveKey: ByteArray,
+    val receiveKey: ByteArray?,
     val receiveNumber: Int,
 
 ) {

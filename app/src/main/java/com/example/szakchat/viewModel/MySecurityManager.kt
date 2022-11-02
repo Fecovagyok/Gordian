@@ -11,7 +11,6 @@ import com.example.szakchat.security.MySecurityProtocol
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.security.MessageDigest
 import java.security.SecureRandom
 
 class MySecurityManager(private val viewModel: ChatViewModel) {
@@ -40,9 +39,6 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
     val secureString: String? get() = generatedLotsOfBytes?.let {
         Base64.encodeToString(it, Base64.DEFAULT)
     }
-    val secureSha get() = generatedLotsOfBytes?.let {
-        MessageDigest.getInstance("SHA-256").digest(it)
-    }
 
     fun setSecureBytes(msg: String) {
         generatedLotsOfBytes = Base64.decode(msg, Base64.DEFAULT)
@@ -68,7 +64,7 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
             randomObject.nextBytes(bytes)
             val bytesWithID = ByteArray(count + 8)
             bytes.copyInto(bytesWithID)
-            viewModel.networking.self!!.id.values.copyInto(bytesWithID, count,)
+            viewModel.networking.self!!.values.copyInto(bytesWithID, count,)
             generatedLotsOfBytes = bytesWithID
             _liveRandomBytes.postValue(StatusMessage(state = END))
         }

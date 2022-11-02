@@ -1,6 +1,5 @@
 package com.example.szakchat.contacts
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +31,8 @@ class AddContactDialog : DialogFragment() {
             if(text.isBadText())
                 return@setOnClickListener
             val contact = Contact(
-                uniqueId = text,
+                owner = viewModel.networking.self!!,
+                name = text,
             )
             viewModel.insertContact(contact)
             dismiss()

@@ -1,6 +1,8 @@
 package com.example.szakchat.network
 
+import android.util.Log
 import com.example.szakchat.exceptions.AuthError
+import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.awaitClose
 import com.example.szakchat.extensions.toUserID
 import com.example.szakchat.security.GcmMessage
@@ -67,6 +69,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
     }
 
     private fun auth(out: OutputStream, iStream: InputStream): Boolean {
+        Log.d("FECO", "Credentials in socket: $self")
         val meSelf = self?: throw IllegalStateException("No logged on user")
         out.write(AUTH_WITH_ID)
         out.write(meSelf.id.values)
@@ -99,7 +102,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
                 out.postError("Auth error: $msg")
             }
 
-            else -> out.postError("Unknown authentication error")
+            else -> throw ProtocolException("Unknown auth message")
         }
     }
 }

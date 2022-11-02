@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.szakchat.ChatApplication
 import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.exceptions.AuthError
+import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.isRunning
 import com.example.szakchat.extensions.toUserID
 import com.example.szakchat.identity.UserID
@@ -141,7 +142,6 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
             postError("${e.message?: "No message"} while $act")
         } catch (e: IllegalStateException){
             Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause} Type: ${e.javaClass}")
-            e.printStackTrace()
             postError("${e.message?: "No message"} while $act")
         } catch (e: AuthError) {
             Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause} Type: ${e.javaClass}")
@@ -204,26 +204,36 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         }
     }
 
+    private val _authData by lazy(LazyThreadSafetyMode.NONE){
+        MutableLiveData<ConnectionStatus>()
+    }
+    val authData get() = _authData as LiveData<ConnectionStatus>
 
     private var loginJob: Job? = null
     fun loginRequest(username: String, password: String): LiveData<ConnectionStatus> {
         if(loginJob.isRunning())
             throw AlreadyRunning("Login request already in progress")
-        val data = MutableLiveData<ConnectionStatus>()
-        loginJob = viewModel.viewModelScope.launch {
+        val data = MutableLiveData<ConnectionStatus?>(null)
+        loginJob = viewModel.viewModelScope.launch(Dispatchers.IO) {
             val logger = object : StatusLogger {
                 override fun postError(msg: String) {
-                    postError(msg, data)
+                    postError(msg, _authData)
                 }
 
                 override fun postMessage(msg: String) {
-                    postMessage(msg, data)
+                    postMessage(msg, _authData)
                 }
             }
-            robust("Logging in") {
+            try {
                 chatSocket.auth(username, password, logger)
+            } catch (e: ProtocolException){
+                Log.e("FECO", "ProtocolException: ${e.message} while logging in")
+                logger.postError(e.message?: "Unknown auth error")
+            } catch (e: IOException){
+                Log.e("FECO", "IOException while logging in: ${e.message}")
+                logger.postError(e.message?: "Unknown network error")
             }
         }
-        return data
+        return authData
     }
 }
