@@ -32,4 +32,6 @@
     <string name="login_request_running">A login request is already in progress</string>
     <string name="cancel">cancel</string>
     <string name="done">Done</string>
+    <string name="exchange_keys">Exchange keys</string>
+    <string name="no_secret_key">The exchanged secret with this contact is expired or non-existent</string>
 </resources>

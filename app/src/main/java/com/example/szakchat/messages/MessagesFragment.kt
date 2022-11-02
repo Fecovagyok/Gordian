@@ -31,9 +31,12 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        if(viewModel.currentContact!!.keys == null)
+            binding.expiredOverlayLayout.visibility = View.VISIBLE
+
         return binding.root
 
     }

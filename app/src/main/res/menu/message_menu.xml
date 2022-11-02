@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_exchange_secret"
         android:icon="@android:drawable/ic_secure"
-        android:title="@string/exchange_secret_menu"
+        android:title="@string/exchange_keys"
         app:showAsAction="ifRoom" />
 
 </menu>

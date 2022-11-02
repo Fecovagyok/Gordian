@@ -54,17 +54,18 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
     )
 
     fun getBytesAsync(count: Int){
+        val countWithOutId = count-8
         if(getBytesJob.isRunning()){
             _liveRandomBytes.postValue(StatusMessage(msg = R.string.secret_key_gen_already_running, state = MSG))
             return
         }
         getBytesJob = viewModel.viewModelScope.launch(Dispatchers.Default) {
             _liveRandomBytes.postValue(StatusMessage(state = START))
-            val bytes = ByteArray(count)
+            val bytes = ByteArray(countWithOutId)
             randomObject.nextBytes(bytes)
-            val bytesWithID = ByteArray(count + 8)
+            val bytesWithID = ByteArray(count)
             bytes.copyInto(bytesWithID)
-            viewModel.networking.self!!.values.copyInto(bytesWithID, count,)
+            viewModel.networking.self!!.values.copyInto(bytesWithID, countWithOutId,)
             generatedLotsOfBytes = bytesWithID
             _liveRandomBytes.postValue(StatusMessage(state = END))
         }

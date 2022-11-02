@@ -1,13 +1,9 @@
 package com.example.szakchat.messages
 
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.example.szakchat.R
 import com.example.szakchat.databinding.MessageIncomingBinding
 import com.example.szakchat.databinding.MessageOwnedBinding
 
@@ -67,7 +63,6 @@ class MessageAdapter(private val listener: Listener)
         previousList: MutableList<Message>,
         currentList: MutableList<Message>
     ) {
-        Log.d("FECO", "Adapter: listSize: ${currentList.size}")
         subscribed?.invoke()
         super.onCurrentListChanged(previousList, currentList)
     }

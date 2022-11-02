@@ -21,6 +21,7 @@
         <entry key="..\:/android/szakdoggo/app/src/main/res/drawable/incoming_background.xml" value="0.1235" />
         <entry key="..\:/android/szakdoggo/app/src/main/res/drawable/message_ground.xml" value="0.2265" />
         <entry key="..\:/android/szakdoggo/app/src/main/res/drawable/not_sent_message_ground.xml" value="0.1245" />
+        <entry key="..\:/android/szakdoggo/app/src/main/res/drawable/transparent_overlay.xml" value="0.2265" />
         <entry key="..\:/android/szakdoggo/app/src/main/res/layout/activity_main.xml" value="0.11302083333333333" />
         <entry key="..\:/android/szakdoggo/app/src/main/res/layout/add_contact.xml" value="0.22826086956521738" />
         <entry key="..\:/android/szakdoggo/app/src/main/res/layout/content_main.xml" value="0.11302083333333333" />
