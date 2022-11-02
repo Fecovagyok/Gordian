@@ -12,12 +12,12 @@ import javax.crypto.spec.GCMParameterSpec
 class MySecurityProtocol(private val random: SecureRandom){
     companion object {
         const val TYPE_MESSAGE = 1
+        const val TYPE_HELLO = 2
         const val MSG_VERSION = 1
         const val GCM_HEADER_LENGTH = 33
         const val TAG_LENGTH = 128 // in bytes
     }
 
-    private val cipher = Cipher.getInstance("AES/GCM/NoPadding")
 
     private fun aadOf(
         type: Int,
@@ -56,6 +56,7 @@ class MySecurityProtocol(private val random: SecureRandom){
         keyProvider: ReceiverKeyProvider,
         gcmMessage: GcmMessage,
     ): String {
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         val key = keyProvider.getKeyUntil(gcmMessage.seqNum)
         val aad = aadOf(
             type = gcmMessage.type,
@@ -78,6 +79,7 @@ class MySecurityProtocol(private val random: SecureRandom){
         keyProvider: SenderKeyProvider = message.contact.keys!!.sender,
         type: Int = TYPE_MESSAGE,
     ): GcmMessage {
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         val plainTextBytes = message.text.toByteArray(Charsets.UTF_8)
         if(plainTextBytes.size > Short.MAX_VALUE)
             throw TooLongMessage()
@@ -111,6 +113,43 @@ class MySecurityProtocol(private val random: SecureRandom){
             src = message.owner,
             dst = message.contact.uniqueId,
             ciphered = outBytes.toMyByteArray(),
+        )
+    }
+
+    private fun gcmSpecOf(keyProvider: MyKeyProvider, rnd: ByteArray): GCMParameterSpec {
+        val iv = ivOf(keyProvider.sequenceNumber, rnd)
+        return GCMParameterSpec(TAG_LENGTH*8, iv)
+    }
+
+    fun craftHelloMessage(keyProvider: MyKeyProvider, id: UserID, owner: UserID): GcmMessage {
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        val key = keyProvider.lastKey
+        val rnd = random.nextAndCreateBytes(7)
+        cipher.init(Cipher.ENCRYPT_MODE, key, gcmSpecOf(keyProvider, rnd))
+        val len = cipher.getOutputSize(0)
+        val myAAD = aadOf(
+            type = TYPE_HELLO,
+            len = len,
+            seqNum = keyProvider.sequenceNumber,
+            rnd,
+            src = owner,
+            dst = id,
+        )
+        cipher.updateAAD(myAAD)
+        val outBytes = ByteArray(len)
+        val outLen = cipher.doFinal(ByteArray(0), 0, 0, outBytes)
+        if(outLen != len)
+            throw IllegalStateException("AES_GCM output is not what expected")
+
+        return GcmMessage(
+            version = MSG_VERSION,
+            type = TYPE_HELLO,
+            length = len,
+            seqNum = keyProvider.sequenceNumber,
+            rnd = rnd.toMyByteArray(),
+            src = owner,
+            dst = id,
+            ciphered = outBytes.toMyByteArray()
         )
     }
 }

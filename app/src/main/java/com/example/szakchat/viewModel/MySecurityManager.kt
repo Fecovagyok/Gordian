@@ -6,11 +6,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.R
+import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.isRunning
-import com.example.szakchat.security.MySecurityProtocol
+import com.example.szakchat.extensions.toMySecretKey
+import com.example.szakchat.extensions.toUserID
+import com.example.szakchat.identity.UserID
+import com.example.szakchat.security.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
 import java.security.SecureRandom
 
 class MySecurityManager(private val viewModel: ChatViewModel) {
@@ -27,6 +32,10 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         } else {
             SecureRandom()
         }
+    }
+
+    private val shaObject by lazy(LazyThreadSafetyMode.NONE) {
+        MessageDigest.getInstance("SHA-256")
     }
 
     val myProto = MySecurityProtocol(randomObject)
@@ -52,6 +61,41 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         val state: Int,
         val msg: Int = 0,
     )
+
+    private fun createBiggerArrays(randomSize: Int, bytes: ByteArray): ByteArray{
+        val abBytes = ByteArray(randomSize+2)
+        bytes.copyInto(abBytes, endIndex = randomSize)
+        return abBytes
+    }
+
+    private inline fun<T: MyKeyProvider> ByteArray.toMyKeyProvider(
+        createKeyProvider: (MySecretKey, Int) -> T
+    ): T {
+        val key = shaObject.digest(this).toMySecretKey()
+        return createKeyProvider(key, 0)
+    }
+
+    fun processQrData(bytes: ByteArray): Pair<UserID, KeyProviders> {
+        if(bytes.size != 1024)
+            throw ProtocolException("Not enough secret bytes through QR code")
+        val randomSize = 1024-8
+        val shaDigest = MessageDigest.getInstance("SHA-256")
+
+        val abBytes = createBiggerArrays(randomSize, bytes)
+        abBytes[randomSize] = 'A'.code.toByte()
+        abBytes[randomSize+1] = 'B'.code.toByte()
+        val baBytes = createBiggerArrays(randomSize, bytes)
+        baBytes[randomSize] = 'B'.code.toByte()
+        baBytes[randomSize+1] = 'A'.code.toByte()
+
+        val keys = KeyProviders(
+            sender = baBytes.toMyKeyProvider { mySecretKey, i -> SenderKeyProvider(mySecretKey, i) },
+            receiver = abBytes.toMyKeyProvider { key, num -> ReceiverKeyProvider(key, num) }
+        )
+
+        val id = bytes.sliceArray(randomSize until 1024).toUserID()
+        return id to keys
+    }
 
     fun getBytesAsync(count: Int){
         val countWithOutId = count-8

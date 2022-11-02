@@ -34,4 +34,5 @@
     <string name="done">Done</string>
     <string name="exchange_keys">Exchange keys</string>
     <string name="no_secret_key">The exchanged secret with this contact is expired or non-existent</string>
+    <string name="waiting_confirm_exchange">Waiting for the peer to confirm the exchange</string>
 </resources>

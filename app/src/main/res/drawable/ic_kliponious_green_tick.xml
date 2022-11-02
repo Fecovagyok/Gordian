@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="173.52dp"
+    android:height="198.57dp"
+    android:viewportWidth="173.52"
+    android:viewportHeight="198.57">
+  <!-- Public domain svg -->
+  <path
+      android:pathData="m0,143.38 l20,-30c16.51,12.91 17.77,19.64 24.95,30.91 36.8,-72.31 74.95,-104.96 128.57,-144.29 -51.91,53.35 -83.23,89.32 -130,198.58 -16.19,-26.29 -27.33,-53.62 -43.52,-55.2z"
+      android:fillColor="#008000"/>
+</vector>

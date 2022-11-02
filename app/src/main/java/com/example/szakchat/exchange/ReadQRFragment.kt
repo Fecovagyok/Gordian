@@ -10,7 +10,9 @@ import androidx.navigation.fragment.findNavController
 import com.budiyev.android.codescanner.*
 import com.example.szakchat.MainActivity
 import com.example.szakchat.R
+import com.example.szakchat.contacts.Contact
 import com.example.szakchat.databinding.FragmentReadQrBinding
+import com.example.szakchat.extensions.toData
 import com.example.szakchat.viewModel.ChatViewModel
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
@@ -76,7 +78,19 @@ class ReadQRFragment : Fragment() {
         super.onPause()
     }
 
+    private fun Contact.toContactWithKey(result: Result): Contact {
+        val bytes = result.text.toData()
+        val (uid, keyProviders) = viewModel.security.processQrData(bytes)
+        return Contact(
+            id = id,
+            owner = owner,
+            uniqueId = uid,
+            name = name,
+            keys = keyProviders
+        )
+    }
+
     private fun onReadSuccess(result: Result){
-        viewModel.security.setSecureBytes(result.text)
+        viewModel.currentContact = viewModel.currentContact!!.toContactWithKey(result)
     }
 }

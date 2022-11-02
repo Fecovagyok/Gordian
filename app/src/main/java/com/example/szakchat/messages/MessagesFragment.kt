@@ -28,7 +28,6 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
     private val binding get() = _binding!!
     private val viewModel: ChatViewModel by activityViewModels()
     private lateinit var adapter: MessageAdapter
-    private var overlayBinding: SecretExpiredLayoutBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +36,18 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
         if(viewModel.currentContact!!.keys == null){
-            overlayBinding = SecretExpiredLayoutBinding.inflate(inflater, binding.root, false)
-            binding.root.addView(overlayBinding!!.root)
+            initOverlay(inflater)
         }
         return binding.root
 
+    }
+
+    private fun initOverlay(inflater: LayoutInflater){
+        val overlayBinding = SecretExpiredLayoutBinding.inflate(inflater, binding.root, false)
+        overlayBinding.exchangeKeyOverlayBtn.setOnClickListener {
+            findNavController().navigate(R.id.navigate_to_exchange)
+        }
+        binding.root.addView(overlayBinding.root)
     }
 
     override fun onCreateContextMenu(

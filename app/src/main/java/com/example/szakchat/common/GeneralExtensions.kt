@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import com.example.szakchat.common.MyByteArray
 import com.example.szakchat.identity.UserID
+import com.example.szakchat.security.MySecretKey
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import java.net.Socket
@@ -44,10 +45,11 @@ fun ByteArray.toHex(): String {
 }
 
 fun ByteArray.toMyByteArray() = MyByteArray(this)
+fun ByteArray.toMySecretKey() = MySecretKey(this)
 fun ByteArray.toUserID() = UserID(this)
 fun MyByteArray.toHex() = values.toHex()
-fun String.toData() = Base64.decode(this, Base64.DEFAULT)
-fun ByteArray.toBase64String() = Base64.encodeToString(this, Base64.DEFAULT)
+fun String.toData(): ByteArray = Base64.decode(this, Base64.DEFAULT)
+fun ByteArray.toBase64String(): String = Base64.encodeToString(this, Base64.DEFAULT)
 fun String.toUserID() = UserID(Base64.decode(this, Base64.DEFAULT))
 fun Int.copyBytes(dest: ByteArray){
     dest[0] = toLastMostByte()
