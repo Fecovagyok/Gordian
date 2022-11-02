@@ -20,6 +20,7 @@ import kotlinx.coroutines.channels.Channel
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import javax.net.ssl.SSLProtocolException
 
 
 class NetworkManager(private val viewModel: ChatViewModel, ip: String)
@@ -133,9 +134,15 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         } catch (e: ConnectException) {
             Log.e("FECO", "ConnectionException: ${e.message}")
             postError("Could not connect while $act")
-        } catch (e: SocketTimeoutException){
+        } catch (e: SocketTimeoutException) {
             Log.e("FECO", "SocketTimeoutException: ${e.message}")
             postError("Could not connect: timed out while $act")
+        } catch (e: SSLProtocolException){
+            Log.e("FECO", e.message?: "SSLProtocol unknown")
+            if(e.message?.substring(0, 10) == "Read error")
+                postError("Socket closed from remote end")
+            else
+                postError(e.message?: "Unknown TLS socket error")
         } catch (e: IOException){
             Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause} Type: ${e.javaClass}")
             e.printStackTrace()

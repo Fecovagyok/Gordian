@@ -1,7 +1,9 @@
 package com.example.szakchat
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.StringRes
@@ -67,10 +69,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     private fun restoreCredentials(): Boolean {
         if(viewModel.networking.self != null) return true
-        val id = prefs.getString(NetworkManager.SELF_KEY, null) ?: return false
+        val id = getPreferences(Context.MODE_PRIVATE).getString(NetworkManager.SELF_KEY, null) ?: return false
         val pass = ChatApplication.safePrefs.getString(NetworkManager.PASS_KEY, null)
         viewModel.networking.initSelfCredentials(id.toUserID(), pass!!)
         viewModel.networking.username = prefs.getString(NetworkManager.NAME_KEY, null)
+        Log.d("FECO", "id was present, credentials loaded from prefs")
         return true
     }
 

@@ -1,6 +1,5 @@
 package com.example.szakchat.network
 
-import android.util.Log
 import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.awaitClose
@@ -25,6 +24,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
     }
 
     fun send(messages: List<GcmMessage>){
+        val meSelf = self?: throw IllegalStateException("No logged on user")
         postReceiveMessage("Trying to connect...")
         val socket = factory.createSocket(ip, SENDING_PORT)
         postReceiveMessage("Connected")
@@ -46,6 +46,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
     }
 
     fun receive(): List<GcmMessage> {
+        val meSelf = self?: throw IllegalStateException("No logged on user")
         postReceiveMessage("Trying to connect...")
         val socket = factory.createSocket(ip, POLLING_PORT)
         postReceiveMessage("Connected")
@@ -69,8 +70,8 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
     }
 
     private fun auth(out: OutputStream, iStream: InputStream): Boolean {
-        Log.d("FECO", "Credentials in socket: $self")
-        val meSelf = self?: throw IllegalStateException("No logged on user")
+        //Log.d("FECO", "Credentials in socket: $self")
+        val meSelf = self!!
         out.write(AUTH_WITH_ID)
         out.write(meSelf.id.values)
         out.writeString(meSelf.pass)
@@ -99,7 +100,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
 
             AUTH_NOK -> {
                 val msg = inStream.readString()
-                out.postError("Auth error: $msg")
+                out.postError("Login failed: $msg")
             }
 
             else -> throw ProtocolException("Unknown auth message")

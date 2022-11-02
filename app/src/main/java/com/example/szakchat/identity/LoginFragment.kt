@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.szakchat.MainActivity
 import com.example.szakchat.R
 import com.example.szakchat.databinding.FragmentIdentityBinding
@@ -15,6 +17,7 @@ import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.extensions.isEmpty
 import com.example.szakchat.extensions.moreThan
 import com.example.szakchat.viewModel.ChatViewModel
+import com.example.szakchat.viewModel.NetworkManager
 
 /**
  * A simple [Fragment] subclass.
@@ -38,6 +41,7 @@ class LoginFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentIdentityBinding.inflate(inflater, container, false)
+        binding.usernameField.setText(prefs().getString(NetworkManager.NAME_KEY, null))
         viewModel.networking.authData.observe(viewLifecycleOwner) {
             val a = requireActivity() as MainActivity
             when(it.normal) {
@@ -48,7 +52,12 @@ class LoginFragment : Fragment() {
                         pass = binding.passwordField.text.toString(),
                         prefs = prefs(),
                     )
-                    findNavController().navigate(R.id.action_login_to_first)
+                    // Appbar fix
+                    val controller = findNavController()
+                    controller.graph.setStartDestination(R.id.FirstFragment)
+                    val configuration = AppBarConfiguration(controller.graph)
+                    controller.navigate(R.id.action_login_to_first)
+                    a.setupActionBarWithNavController(controller, configuration)
                 }
                 false -> {
                     a.showSnack(it.message)

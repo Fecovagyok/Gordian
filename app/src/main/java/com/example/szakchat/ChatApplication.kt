@@ -3,7 +3,6 @@ package com.example.szakchat
 import android.app.Application
 import android.content.SharedPreferences
 import android.os.Build
-import android.util.Log
 import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
@@ -59,7 +58,6 @@ class ChatApplication : Application() {
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
         val msg = masterKey.isStrongBoxBacked
-        Log.d("FECO", "MasterKeyStrongBoxed: $msg")
         return EncryptedSharedPreferences.create(
             applicationContext,
             "szakchat_secret",
