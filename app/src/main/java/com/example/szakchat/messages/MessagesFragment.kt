@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.szakchat.R
 import com.example.szakchat.databinding.FragmentSecondBinding
+import com.example.szakchat.databinding.SecretExpiredLayoutBinding
 import com.example.szakchat.extensions.isBadText
 import com.example.szakchat.extensions.scrollToTheEnd
 import com.example.szakchat.viewModel.ChatViewModel
@@ -27,6 +28,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
     private val binding get() = _binding!!
     private val viewModel: ChatViewModel by activityViewModels()
     private lateinit var adapter: MessageAdapter
+    private var overlayBinding: SecretExpiredLayoutBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +36,10 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
     ): View {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
-        if(viewModel.currentContact!!.keys == null)
-            binding.expiredOverlayLayout.visibility = View.VISIBLE
-
+        if(viewModel.currentContact!!.keys == null){
+            overlayBinding = SecretExpiredLayoutBinding.inflate(inflater, binding.root, false)
+            binding.root.addView(overlayBinding!!.root)
+        }
         return binding.root
 
     }
