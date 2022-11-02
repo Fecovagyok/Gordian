@@ -1,5 +1,6 @@
 package com.example.szakchat.network
 
+import android.util.Log
 import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.toMyByteArray
 import com.example.szakchat.extensions.toUserID
@@ -68,6 +69,7 @@ fun InputStream.readAllMessages(): List<GcmMessage> {
 
 fun InputStream.readAndCreateBytes(num: Int): ByteArray {
     val bytes = ByteArray(num)
+    Log.d("FECO", "Size of read byteArray: ${bytes.size}")
     throwReadBytes(bytes)
     return bytes
 }

@@ -47,7 +47,6 @@ class LoginFragment : Fragment() {
             when(it.normal) {
                 true -> {
                     viewModel.networking.setSelfCredentialsPermanently(
-                        id = it.message,
                         name = binding.usernameField.text.toString(),
                         pass = binding.passwordField.text.toString(),
                         prefs = prefs(),

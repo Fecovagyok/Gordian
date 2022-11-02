@@ -10,7 +10,7 @@ import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.isRunning
-import com.example.szakchat.extensions.toUserID
+import com.example.szakchat.extensions.toBase64String
 import com.example.szakchat.identity.UserID
 import com.example.szakchat.messages.Message
 import com.example.szakchat.network.*
@@ -105,11 +105,10 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         chatSocket.self = Credentials(id, pass)
     }
 
-    fun setSelfCredentialsPermanently(id: String, name: String, pass: String, prefs: SharedPreferences){
-        chatSocket.self = Credentials(id.toUserID(), pass)
+    fun setSelfCredentialsPermanently(name: String, pass: String, prefs: SharedPreferences){
         username = name
         prefs.edit()
-            .putString(SELF_KEY, id)
+            .putString(SELF_KEY, self!!.values.toBase64String())
             .putString(NAME_KEY, name)
             .apply()
         ChatApplication.safePrefs.edit().putString(PASS_KEY, pass).apply()
@@ -220,7 +219,6 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
     fun loginRequest(username: String, password: String): LiveData<ConnectionStatus> {
         if(loginJob.isRunning())
             throw AlreadyRunning("Login request already in progress")
-        val data = MutableLiveData<ConnectionStatus?>(null)
         loginJob = viewModel.viewModelScope.launch(Dispatchers.IO) {
             val logger = object : StatusLogger {
                 override fun postError(msg: String) {
