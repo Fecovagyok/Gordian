@@ -9,6 +9,7 @@ data class GcmMessage(
     val length: Int,
     val seqNum: Int,
     val rnd: MyByteArray,
+    val date: Long,
     val src: UserID,
     val dst: UserID,
     val ciphered: MyByteArray,

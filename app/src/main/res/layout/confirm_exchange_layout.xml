@@ -11,14 +11,26 @@
         android:layout_height="wrap_content"
         style="@style/title_text"
         android:padding="12dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/waiting_confirm_exchange"
         android:textAlignment="center"
         />
+
 
     <ProgressBar
         android:id="@+id/exchange_confirm_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/basic_text"
+        android:padding="10dp"
+        android:layout_margin="5dp"
+        android:textAlignment="center"
+        android:text=""
         />
 
     <ImageView

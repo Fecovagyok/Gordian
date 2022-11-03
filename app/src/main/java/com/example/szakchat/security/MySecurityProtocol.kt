@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.szakchat.common.MSG_VERSION
 import com.example.szakchat.common.TYPE_HELLO
 import com.example.szakchat.common.TYPE_MESSAGE
+import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.exceptions.TooLongMessage
 import com.example.szakchat.extensions.*
 import com.example.szakchat.identity.UserID
@@ -15,8 +16,9 @@ import javax.crypto.spec.GCMParameterSpec
 
 class MySecurityProtocol(private val random: SecureRandom){
     companion object {
-        const val GCM_HEADER_LENGTH = 33
+        const val GCM_HEADER_LENGTH = 33 + 8 // = 41
         const val TAG_LENGTH = 128 // in bytes
+        const val RND_LENGTH = 8
     }
 
 
@@ -25,6 +27,7 @@ class MySecurityProtocol(private val random: SecureRandom){
         len: Int,
         seqNum: Int,
         rnd: ByteArray,
+        date: Long,
         src: UserID,
         dst: UserID,
     ): ByteArray {
@@ -39,9 +42,10 @@ class MySecurityProtocol(private val random: SecureRandom){
             array[index] = byte
         }
         System.arraycopy(rnd, 0, array, 9, rnd.size)
-        array[16] = rnd.last()
         System.arraycopy(src.values, 0, array, 17, src.values.size)
         System.arraycopy(dst.values, 0, array, 25, dst.values.size)
+        val dateArray = date.toByteArray()
+        System.arraycopy(dateArray, 0, array, 33, dateArray.size)
         return array
     }
 
@@ -64,6 +68,7 @@ class MySecurityProtocol(private val random: SecureRandom){
             len = gcmMessage.length,
             seqNum = gcmMessage.seqNum,
             rnd = gcmMessage.rnd.values,
+            date = gcmMessage.date,
             src = gcmMessage.src,
             dst = gcmMessage.dst
         )
@@ -85,7 +90,7 @@ class MySecurityProtocol(private val random: SecureRandom){
         if(plainTextBytes.size > Short.MAX_VALUE-16)
             throw TooLongMessage()
         val key = keyProvider.nextKey()
-        val rnd = random.nextAndCreateBytes(7)
+        val rnd = random.nextAndCreateBytes(RND_LENGTH)
         val iv = ivOf(keyProvider.sequenceNumber, rnd)
         val spec = GCMParameterSpec(TAG_LENGTH*8, iv)
 
@@ -97,6 +102,7 @@ class MySecurityProtocol(private val random: SecureRandom){
             len = len,
             rnd = rnd,
             seqNum = keyProvider.sequenceNumber,
+            date = message.date,
             src = message.owner,
             dst = message.contact.uniqueId!!,
         )
@@ -112,6 +118,7 @@ class MySecurityProtocol(private val random: SecureRandom){
             length = len,
             seqNum = keyProvider.sequenceNumber,
             rnd = rnd.toMyByteArray(),
+            date = message.date,
             src = message.owner,
             dst = message.contact.uniqueId,
             ciphered = outBytes.toMyByteArray(),
@@ -126,14 +133,16 @@ class MySecurityProtocol(private val random: SecureRandom){
     fun craftHelloMessage(keyProvider: MyKeyProvider, id: UserID, owner: UserID): GcmMessage {
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         val key = keyProvider.lastKey
-        val rnd = random.nextAndCreateBytes(7)
+        val rnd = random.nextAndCreateBytes(RND_LENGTH)
         cipher.init(Cipher.ENCRYPT_MODE, key, gcmSpecOf(keyProvider, rnd))
         val len = cipher.getOutputSize(0)
+        val date = System.currentTimeMillis()
         val myAAD = aadOf(
             type = TYPE_HELLO,
             len = len,
             seqNum = keyProvider.sequenceNumber,
-            rnd,
+            rnd = rnd,
+            date = date,
             src = owner,
             dst = id,
         )
@@ -151,7 +160,29 @@ class MySecurityProtocol(private val random: SecureRandom){
             rnd = rnd.toMyByteArray(),
             src = owner,
             dst = id,
+            date = date,
             ciphered = outBytes.toMyByteArray()
         )
     }
+
+    fun decodeHelloMessage(gcmMessage: GcmMessage, keyProvider: ReceiverKeyProvider) {
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        val key = keyProvider.lastKey
+        val aad = aadOf(
+            type = gcmMessage.type,
+            len = gcmMessage.length,
+            seqNum = gcmMessage.seqNum,
+            rnd = gcmMessage.rnd.values,
+            date = gcmMessage.date,
+            src = gcmMessage.src,
+            dst = gcmMessage.dst
+        )
+        val spec = GCMParameterSpec(TAG_LENGTH*8, aad, 5, 12)
+        cipher.init(Cipher.DECRYPT_MODE, key, spec)
+        cipher.updateAAD(aad)
+        val text = cipher.doFinal(gcmMessage.ciphered.values, 0, gcmMessage.length)
+        if(text.isNotEmpty())
+            throw ProtocolException("Payload empty while decoding hello message")
+    }
+
 }

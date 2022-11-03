@@ -8,6 +8,7 @@ data class Message(
     val text: String,
     val contact: Contact,
     val incoming: Boolean,
+    val date: Long,
     val owner: UserID,
     var sent: Boolean = true,
 )

@@ -34,6 +34,10 @@ class ContactRepository(private val dao: ContactDao) {
         }
     }
 
+    fun updateContact(contact: Contact) {
+        dao.updateContact(contact.toRoomModel())
+    }
+
     private fun RoomContact.toDomainModel() = Contact(
         id = id,
         owner = owner.toUserID(),

@@ -80,10 +80,28 @@ fun Int.toLastMostByte(): Byte {
 
 fun Int.toByteArray(): ByteArray {
     val bytes = ByteArray(4)
+    copyToBytes(bytes)
+    return bytes
+}
+
+fun Int.copyToBytes(bytes: ByteArray){
     bytes[0] = toByte()
     bytes[1] = toSecondMostByte()
     bytes[2] = toThirdMostByte()
     bytes[3] = toLastMostByte()
+}
+
+fun Int.copyToBytes(bytes: ByteArray, offset: Int){
+    bytes[0+offset] = toByte()
+    bytes[1+offset] = toSecondMostByte()
+    bytes[2+ offset] = toThirdMostByte()
+    bytes[3+offset] = toLastMostByte()
+}
+
+fun Long.toByteArray(): ByteArray {
+    val bytes = ByteArray(8)
+    toInt().copyToBytes(bytes)
+    (this ushr 32).toInt().copyToBytes(bytes, 4)
     return bytes
 }
 

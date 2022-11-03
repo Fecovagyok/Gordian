@@ -22,7 +22,7 @@
     <string name="exchange_your_secret_key">Exchange your secret key</string>
     <string name="your_secret_key">Your secret key</string>
     <string name="read_your_secret_key">Read your secret key</string>
-    <string name="messages">messages</string>
+    <string name="messages">Messages</string>
     <string name="server_address">Server address</string>
     <string name="change_server_address">Change the server used by this application</string>
     <string name="settings">Settings</string>
@@ -38,4 +38,8 @@
     <string name="sending_hello_message">Sending hello message…</string>
     <string name="waiting_hello_reply">Waiting for hello reply message</string>
     <string name="waiting_hello_message">Waiting for hello message</string>
+    <string name="confirm_the_exchange">Confirm the exchange</string>
+    <string name="pairing_failed">Pairing failed</string>
+    <string name="hello_authenticate_failed">Pairing failed because the hello message could not be authenticated</string>
+    <string name="hello_message_had_payload">Pairing failed because hello message contained payload</string>
 </resources>

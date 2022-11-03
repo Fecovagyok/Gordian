@@ -22,6 +22,7 @@ data class RoomMessage(
     val id: Long = 0,
     @ColumnInfo(name = "contact_id")
     val contactId: Long,
+    val date: Long,
     val owner: String,
     val text: String,
     val incoming: Boolean,

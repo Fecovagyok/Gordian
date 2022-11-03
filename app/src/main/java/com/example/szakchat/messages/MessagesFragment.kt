@@ -116,6 +116,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
                 contact = contact,
                 text = text,
                 incoming = false,
+                date = System.currentTimeMillis(),
                 sent = false,
             )
 

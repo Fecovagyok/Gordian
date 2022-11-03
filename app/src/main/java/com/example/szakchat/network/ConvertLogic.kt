@@ -26,6 +26,7 @@ fun convertToMessages(contacts: List<Contact>, list: List<GcmMessage>, security:
             text = text,
             contact = contact,
             incoming = true,
+            date = it.date,
             owner = it.dst,
         )
         messages.add(message)

@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.ChatApplication
+import com.example.szakchat.common.TYPE_HELLO
+import com.example.szakchat.common.TYPE_MESSAGE
 import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.exceptions.AuthError
 import com.example.szakchat.exceptions.ProtocolException
@@ -181,6 +183,13 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         return received
     }
 
+    private suspend fun insertHelloMessage(received: List<GcmMessage>){
+        helloChannel?.let {
+            val latest = received.maxBy { it.date }
+            it.send(latest)
+        }
+    }
+
     private suspend fun insertReceived(received: List<GcmMessage>){
         val userIds = received.map {
             it.src
@@ -190,11 +199,6 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
             convertToMessages(contacts, received, viewModel.security.myProto)
         }
         viewModel.messageRepository.insert(messages)
-    }
-
-    private suspend fun insertHello(received: List<GcmMessage>){
-        if(received.size != 1)
-            throw ProtocolException("Received hello messages")
     }
 
     fun startPollStartJob(){
@@ -222,9 +226,10 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
                 while (true) {
                     delay(POLL_INTERVAL)
                     val received = chatSocket.receive()
-
-                    if(received.isEmpty()) continue
-                    insertReceived(received)
+                    if(received[TYPE_HELLO].isNotEmpty())
+                        insertHelloMessage(received[TYPE_HELLO])
+                    if(received[TYPE_MESSAGE].isNotEmpty())
+                        insertReceived(received[TYPE_MESSAGE])
                 }
             }
         }

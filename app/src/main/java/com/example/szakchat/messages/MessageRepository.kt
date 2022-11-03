@@ -44,6 +44,7 @@ class MessageRepository {
         contact = contact,
         incoming = incoming,
         owner = owner.toUserID(),
+        date = date,
         sent = sent,
     )
     private fun Message.toRoomModel() = RoomMessage(
@@ -52,6 +53,7 @@ class MessageRepository {
         text = text,
         incoming = incoming,
         owner = owner.values.toBase64String(),
+        date = date,
         sent = sent,
     )
 }

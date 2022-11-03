@@ -23,6 +23,11 @@ fun OutputStream.writeInt32(value: Int) {
     writeInt16(value)
 }
 
+fun OutputStream.writeLong(value: Long){
+    writeInt32((value ushr 32).toInt())
+    writeInt32(value.toInt())
+}
+
 fun OutputStream.write(b: MyByteArray) = write(b.values)
 
 fun OutputStream.writeGcmMessage(msg: GcmMessage){
@@ -31,6 +36,7 @@ fun OutputStream.writeGcmMessage(msg: GcmMessage){
     writeInt16(msg.length)
     writeInt32(msg.seqNum)
     write(msg.rnd)
+    writeLong(msg.date)
     write(msg.src)
     write(msg.dst)
     write(msg.ciphered)

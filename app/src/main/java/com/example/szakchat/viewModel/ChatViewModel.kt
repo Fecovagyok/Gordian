@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.ChatApplication
 import com.example.szakchat.R
+import com.example.szakchat.common.END
+import com.example.szakchat.common.ERROR
 import com.example.szakchat.common.MSG
 import com.example.szakchat.common.StatusMessage
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.contacts.ContactRepository
 import com.example.szakchat.exceptions.AlreadyRunning
+import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.isRunning
 import com.example.szakchat.identity.UserID
 import com.example.szakchat.messages.Message
@@ -78,6 +81,39 @@ class ChatViewModel() : ViewModel() {
                 networking.sendHello(helloMessage)
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.waiting_hello_reply))
 
+            }
+        }
+    }
+
+    private fun Contact.toContactWithUserID(userID: UserID) = Contact(
+        id = id,
+        owner = owner,
+        uniqueId = userID,
+        name = name,
+        keys = keys,
+    )
+
+    fun listenHello(contact: Contact) {
+        if(helloJob.isRunning())
+            throw AlreadyRunning("PairingJob is already running")
+        pairData.value = null
+        helloJob = viewModelScope.launch(Dispatchers.IO) {
+            val helloMessage = networking.getHelloMessage()
+            withContext(Dispatchers.Default) {
+                try {
+                    security.myProto.decodeHelloMessage(helloMessage, contact.keys!!.receiver)
+                    val newContact = contact.toContactWithUserID(helloMessage.src)
+                    currentContact = newContact
+                    withContext(Dispatchers.IO){
+                        repository.updateContact(newContact)
+                    }
+                    pairData.postValue(StatusMessage(state = END,))
+
+                } catch (e: javax.crypto.AEADBadTagException){
+                    pairData.postValue(StatusMessage(state = ERROR, msg = R.string.hello_authenticate_failed))
+                } catch (e: ProtocolException){
+                    pairData.postValue(StatusMessage(state = ERROR, msg = R.string.hello_message_had_payload))
+                }
             }
         }
     }

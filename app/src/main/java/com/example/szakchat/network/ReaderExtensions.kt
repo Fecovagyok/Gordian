@@ -25,6 +25,11 @@ fun InputStream.readInt32(): Int {
     return input or readInt16()
 }
 
+fun InputStream.readLong(): Long {
+    val input = (readInt32() shl 32).toLong()
+    return input or readInt32().toLong()
+}
+
 // Read a string from the input stream with a max size of 255
 fun InputStream.readString(): String {
     val size = throwRead()
@@ -44,14 +49,15 @@ fun InputStream.readGcmMessage(): GcmMessage {
     val type = throwRead()
     val length = readInt16()
     val seqNum = readInt32()
-    val rnd = readAndCreateBytes(7).toMyByteArray()
+    val rnd = readAndCreateBytes(8).toMyByteArray()
+    val date = readLong()
     val src = readAndCreateBytes(8).toUserID()
     val dst = readAndCreateBytes(8).toUserID()
     val ciphered = readAndCreateBytes(length).toMyByteArray()
     /*if(seqNum < 0)
         throw IllegalStateException("Read sequence number bigger than zero")*/
     return GcmMessage(
-        version, type, length, seqNum, rnd,
+        version, type, length, seqNum, rnd, date,
         src, dst, ciphered,
     )
 }

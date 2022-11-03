@@ -72,22 +72,33 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         return createKeyProvider(key, 0)
     }
 
-    fun processQrData(bytes: ByteArray): Pair<UserID, KeyProviders> {
+    private fun processGeneratedBytes(bytes: ByteArray, randomSize: Int, senderCode: Char, receiverCode: Char): KeyProviders {
+
+        val senderBytes = createBiggerArrays(randomSize, bytes)
+        senderBytes[randomSize] = senderCode.code.toByte()
+        senderBytes[randomSize+1] = receiverCode.code.toByte()
+        val receiverBytes = createBiggerArrays(randomSize, bytes)
+        receiverBytes[randomSize] = receiverCode.code.toByte()
+        receiverBytes[randomSize+1] = senderCode.code.toByte()
+
+        return KeyProviders(
+            sender = senderBytes.toMyKeyProvider { mySecretKey, i -> SenderKeyProvider(mySecretKey, i) },
+            receiver = receiverBytes.toMyKeyProvider { key, num -> ReceiverKeyProvider(key, num) }
+        )
+    }
+
+    fun processQrDataAsShower(bytes: ByteArray): KeyProviders {
+        if(bytes.size != 1024)
+            throw ProtocolException("Not enough secret bytes generated")
+        return processGeneratedBytes(bytes, 1024-8, 'A', 'B')
+    }
+
+    fun processQrDataAsReader(bytes: ByteArray): Pair<UserID, KeyProviders> {
         if(bytes.size != 1024)
             throw ProtocolException("Not enough secret bytes through QR code")
         val randomSize = 1024-8
 
-        val abBytes = createBiggerArrays(randomSize, bytes)
-        abBytes[randomSize] = 'A'.code.toByte()
-        abBytes[randomSize+1] = 'B'.code.toByte()
-        val baBytes = createBiggerArrays(randomSize, bytes)
-        baBytes[randomSize] = 'B'.code.toByte()
-        baBytes[randomSize+1] = 'A'.code.toByte()
-
-        val keys = KeyProviders(
-            sender = baBytes.toMyKeyProvider { mySecretKey, i -> SenderKeyProvider(mySecretKey, i) },
-            receiver = abBytes.toMyKeyProvider { key, num -> ReceiverKeyProvider(key, num) }
-        )
+        val keys = processGeneratedBytes(bytes, randomSize, 'B', 'A')
 
         val id = bytes.sliceArray(randomSize until 1024).toUserID()
         return id to keys

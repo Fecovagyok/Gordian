@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    version = 10,
+    version = 11,
     entities = [RoomContact::class, RoomMessage::class],
     exportSchema = false,
 )

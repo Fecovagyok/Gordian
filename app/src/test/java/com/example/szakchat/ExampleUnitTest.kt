@@ -1,5 +1,6 @@
 package com.example.szakchat
 
+import com.example.szakchat.extensions.toByteArray
 import org.junit.Test
 
 /**
@@ -9,6 +10,9 @@ import org.junit.Test
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
+    fun longShiftCorrect() {
+        val test = Long.MAX_VALUE
+        val bytes = test.toByteArray()
+        org.junit.Assert.assertArrayEquals(bytes, byteArrayOf(127, -1, -1, -1, -1, -1, -1, -1))
     }
 }

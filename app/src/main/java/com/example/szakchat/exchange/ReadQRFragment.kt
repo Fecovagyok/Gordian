@@ -59,7 +59,7 @@ class ReadQRFragment : Fragment() {
             onReadSuccess(it)
             activity.runOnUiThread {
                 activity.showSnack("Success")
-                findNavController().popBackStack(R.id.SecondFragment, inclusive = false)
+                findNavController().navigate(R.id.from_read_to_confirm)
             }
         }
         codeScanner.errorCallback = ErrorCallback {
@@ -81,7 +81,7 @@ class ReadQRFragment : Fragment() {
 
     private fun Contact.toContactWithKey(result: Result): Contact {
         val bytes = result.text.toData()
-        val (uid, keyProviders) = viewModel.security.processQrData(bytes)
+        val (uid, keyProviders) = viewModel.security.processQrDataAsReader(bytes)
         Log.d("FECO", "Paired userID size: ${uid.size}")
         return Contact(
             id = id,
