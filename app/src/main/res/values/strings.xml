@@ -30,9 +30,12 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login_request_running">A login request is already in progress</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="done">Done</string>
     <string name="exchange_keys">Exchange keys</string>
     <string name="no_secret_key">The exchanged secret with this contact is expired or non-existent</string>
     <string name="waiting_confirm_exchange">Waiting for the peer to confirm the exchange</string>
+    <string name="sending_hello_message">Sending hello message…</string>
+    <string name="waiting_hello_reply">Waiting for hello reply message</string>
+    <string name="waiting_hello_message">Waiting for hello message</string>
 </resources>

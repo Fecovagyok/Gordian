@@ -56,11 +56,11 @@ fun InputStream.readGcmMessage(): GcmMessage {
     )
 }
 
-fun InputStream.readAllMessages(): List<GcmMessage> {
+fun InputStream.readAllMessages(): GcmMessagesWithType {
     val count = readInt16()
     if(count < 0 || count > Short.MAX_VALUE)
         throw ProtocolException("Invalid message count: $count")
-    val list = ArrayList<GcmMessage>(count)
+    val list = GcmMessagesWithType(count)
     for(i in 0 until count){
         list.add(readGcmMessage())
     }

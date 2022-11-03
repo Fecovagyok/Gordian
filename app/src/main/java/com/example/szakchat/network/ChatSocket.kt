@@ -45,7 +45,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         logger.postMessage("Receiving: $msg")
     }
 
-    fun receive(): List<GcmMessage> {
+    fun receive(): GcmMessagesWithType {
         val meSelf = self?: throw IllegalStateException("No logged on user")
         postReceiveMessage("Trying to connect...")
         val socket = factory.createSocket(ip, POLLING_PORT)

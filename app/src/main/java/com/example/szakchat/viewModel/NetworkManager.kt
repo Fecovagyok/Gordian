@@ -89,6 +89,10 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         return false
     }
 
+    fun sendHello(message: GcmMessage) {
+        chatSocket.send(listOf(message))
+    }
+
     private fun startSend(message: Message) = viewModel.viewModelScope.launch(Dispatchers.IO) {
         val gcmMessage = withContext(Dispatchers.Default){
             viewModel.security.myProto.encode(message)
@@ -167,6 +171,16 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         ))
     }
 
+    private var helloChannel: Channel<GcmMessage>? = null
+
+    suspend fun getHelloMessage(): GcmMessage {
+        val channel = Channel<GcmMessage>(Channel.CONFLATED)
+        helloChannel = channel
+        val received = channel.receive()
+        helloChannel = null
+        return received
+    }
+
     private suspend fun insertReceived(received: List<GcmMessage>){
         val userIds = received.map {
             it.src
@@ -176,6 +190,11 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
             convertToMessages(contacts, received, viewModel.security.myProto)
         }
         viewModel.messageRepository.insert(messages)
+    }
+
+    private suspend fun insertHello(received: List<GcmMessage>){
+        if(received.size != 1)
+            throw ProtocolException("Received hello messages")
     }
 
     fun startPollStartJob(){
@@ -203,6 +222,7 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
                 while (true) {
                     delay(POLL_INTERVAL)
                     val received = chatSocket.receive()
+
                     if(received.isEmpty()) continue
                     insertReceived(received)
                 }

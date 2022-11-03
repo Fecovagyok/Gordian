@@ -1,5 +1,9 @@
 package com.example.szakchat.security
 
+import android.util.Log
+import com.example.szakchat.common.MSG_VERSION
+import com.example.szakchat.common.TYPE_HELLO
+import com.example.szakchat.common.TYPE_MESSAGE
 import com.example.szakchat.exceptions.TooLongMessage
 import com.example.szakchat.extensions.*
 import com.example.szakchat.identity.UserID
@@ -11,9 +15,6 @@ import javax.crypto.spec.GCMParameterSpec
 
 class MySecurityProtocol(private val random: SecureRandom){
     companion object {
-        const val TYPE_MESSAGE = 1
-        const val TYPE_HELLO = 2
-        const val MSG_VERSION = 1
         const val GCM_HEADER_LENGTH = 33
         const val TAG_LENGTH = 128 // in bytes
     }
@@ -81,7 +82,7 @@ class MySecurityProtocol(private val random: SecureRandom){
     ): GcmMessage {
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         val plainTextBytes = message.text.toByteArray(Charsets.UTF_8)
-        if(plainTextBytes.size > Short.MAX_VALUE)
+        if(plainTextBytes.size > Short.MAX_VALUE-16)
             throw TooLongMessage()
         val key = keyProvider.nextKey()
         val rnd = random.nextAndCreateBytes(7)
@@ -90,6 +91,7 @@ class MySecurityProtocol(private val random: SecureRandom){
 
         cipher.init(Cipher.ENCRYPT_MODE, key, spec)
         val len = cipher.getOutputSize(plainTextBytes.size)
+        Log.d("FECO", "Bytes size: ${plainTextBytes.size} cipher size: $len Difference: ${len-plainTextBytes.size}")
         val myAAD = aadOf(
             type = type,
             len = len,

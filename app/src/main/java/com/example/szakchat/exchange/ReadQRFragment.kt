@@ -1,6 +1,7 @@
 package com.example.szakchat.exchange
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,6 +82,7 @@ class ReadQRFragment : Fragment() {
     private fun Contact.toContactWithKey(result: Result): Contact {
         val bytes = result.text.toData()
         val (uid, keyProviders) = viewModel.security.processQrData(bytes)
+        Log.d("FECO", "Paired userID size: ${uid.size}")
         return Contact(
             id = id,
             owner = owner,

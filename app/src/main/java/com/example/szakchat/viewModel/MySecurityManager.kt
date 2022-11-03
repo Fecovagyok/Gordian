@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.R
+import com.example.szakchat.common.StatusMessage
 import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.isRunning
 import com.example.szakchat.extensions.toMySecretKey
@@ -57,10 +58,6 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         _liveRandomBytes.value = null
     }
 
-    class StatusMessage(
-        val state: Int,
-        val msg: Int = 0,
-    )
 
     private fun createBiggerArrays(randomSize: Int, bytes: ByteArray): ByteArray{
         val abBytes = ByteArray(randomSize+2)
@@ -79,7 +76,6 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         if(bytes.size != 1024)
             throw ProtocolException("Not enough secret bytes through QR code")
         val randomSize = 1024-8
-        val shaDigest = MessageDigest.getInstance("SHA-256")
 
         val abBytes = createBiggerArrays(randomSize, bytes)
         abBytes[randomSize] = 'A'.code.toByte()

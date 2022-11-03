@@ -1,16 +1,24 @@
 package com.example.szakchat.viewModel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.szakchat.ChatApplication
+import com.example.szakchat.R
+import com.example.szakchat.common.MSG
+import com.example.szakchat.common.StatusMessage
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.contacts.ContactRepository
+import com.example.szakchat.exceptions.AlreadyRunning
+import com.example.szakchat.extensions.isRunning
 import com.example.szakchat.identity.UserID
 import com.example.szakchat.messages.Message
 import com.example.szakchat.messages.MessageRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ChatViewModel() : ViewModel() {
 
@@ -50,5 +58,27 @@ class ChatViewModel() : ViewModel() {
 
     fun removeMessage(msg: Message) = viewModelScope.launch(Dispatchers.IO) {
         messageRepository.remove(msg)
+    }
+
+    private var helloJob: Job? = null
+    val pairData = MutableLiveData<StatusMessage?>()
+
+    fun startHello(contact: Contact) {
+        if(helloJob.isRunning())
+            throw AlreadyRunning("PairingJob is already running")
+        pairData.value = null
+        helloJob = viewModelScope.launch(Dispatchers.Default) {
+            val helloMessage = security.myProto.craftHelloMessage(
+                keyProvider = contact.keys!!.sender,
+                owner = contact.owner,
+                id = contact.uniqueId!!
+            )
+            withContext(Dispatchers.IO){
+                pairData.postValue(StatusMessage(state = MSG, msg = R.string.sending_hello_message))
+                networking.sendHello(helloMessage)
+                pairData.postValue(StatusMessage(state = MSG, msg = R.string.waiting_hello_reply))
+
+            }
+        }
     }
 }
