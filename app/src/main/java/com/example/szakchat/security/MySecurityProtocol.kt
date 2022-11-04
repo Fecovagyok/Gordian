@@ -17,7 +17,7 @@ import javax.crypto.spec.GCMParameterSpec
 class MySecurityProtocol(private val random: SecureRandom){
     companion object {
         const val GCM_HEADER_LENGTH = 33 + 8 // = 41
-        const val TAG_LENGTH = 128 // in bytes
+        const val TAG_LENGTH = 128 // in bits
         const val RND_LENGTH = 8
     }
 
@@ -72,7 +72,7 @@ class MySecurityProtocol(private val random: SecureRandom){
             src = gcmMessage.src,
             dst = gcmMessage.dst
         )
-        val spec = GCMParameterSpec(TAG_LENGTH*8, aad, 5, 12)
+        val spec = GCMParameterSpec(TAG_LENGTH, aad, 5, 12)
         cipher.init(Cipher.DECRYPT_MODE, key, spec)
         cipher.updateAAD(aad)
         val text = cipher.doFinal(gcmMessage.ciphered.values, 0, gcmMessage.length)
@@ -92,7 +92,7 @@ class MySecurityProtocol(private val random: SecureRandom){
         val key = keyProvider.nextKey()
         val rnd = random.nextAndCreateBytes(RND_LENGTH)
         val iv = ivOf(keyProvider.sequenceNumber, rnd)
-        val spec = GCMParameterSpec(TAG_LENGTH*8, iv)
+        val spec = GCMParameterSpec(TAG_LENGTH, iv)
 
         cipher.init(Cipher.ENCRYPT_MODE, key, spec)
         val len = cipher.getOutputSize(plainTextBytes.size)
@@ -127,7 +127,7 @@ class MySecurityProtocol(private val random: SecureRandom){
 
     private fun gcmSpecOf(keyProvider: MyKeyProvider, rnd: ByteArray): GCMParameterSpec {
         val iv = ivOf(keyProvider.sequenceNumber, rnd)
-        return GCMParameterSpec(TAG_LENGTH*8, iv)
+        return GCMParameterSpec(TAG_LENGTH, iv)
     }
 
     fun craftHelloMessage(keyProvider: MyKeyProvider, id: UserID, owner: UserID): GcmMessage {
@@ -177,7 +177,7 @@ class MySecurityProtocol(private val random: SecureRandom){
             src = gcmMessage.src,
             dst = gcmMessage.dst
         )
-        val spec = GCMParameterSpec(TAG_LENGTH*8, aad, 5, 12)
+        val spec = GCMParameterSpec(TAG_LENGTH, aad, 5, 12)
         cipher.init(Cipher.DECRYPT_MODE, key, spec)
         cipher.updateAAD(aad)
         val text = cipher.doFinal(gcmMessage.ciphered.values, 0, gcmMessage.length)
