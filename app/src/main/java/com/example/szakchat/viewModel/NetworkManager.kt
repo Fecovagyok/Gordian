@@ -177,18 +177,24 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
 
     private var helloChannel: Channel<GcmMessage>? = null
 
+    fun startHelloChannel(){
+        helloChannel = Channel(Channel.CONFLATED)
+    }
+
+    fun cancelChannel() {
+        helloChannel = null
+    }
+
     suspend fun getHelloMessage(): GcmMessage {
-        val channel = Channel<GcmMessage>(Channel.CONFLATED)
-        helloChannel = channel
-        val received = channel.receive()
+        val received = helloChannel!!.receive()
         helloChannel = null
         return received
     }
 
     private suspend fun insertHelloMessage(received: List<GcmMessage>){
-        helloChannel?.let {
+        helloChannel?.let { message ->
             val latest = received.maxBy { it.date }
-            it.send(latest)
+            message.send(latest)
         }
     }
 

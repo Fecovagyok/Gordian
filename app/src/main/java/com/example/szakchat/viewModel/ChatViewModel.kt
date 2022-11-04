@@ -77,6 +77,7 @@ class ChatViewModel() : ViewModel() {
                 id = contact.uniqueId!!
             )
             val ackMessage = withContext(Dispatchers.IO){
+                networking.startHelloChannel()
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.sending_hello_message))
                 networking.sendHello(helloMessage)
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.waiting_hello_reply))
@@ -101,7 +102,7 @@ class ChatViewModel() : ViewModel() {
         keys = keys,
     )
 
-    // to be called on the main thread
+    // to be called on the default thread
     private suspend inline fun withGoodHelloMessage(
         contact: Contact,
         helloMessage: GcmMessage,

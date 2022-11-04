@@ -57,7 +57,6 @@ class ReadQRFragment : Fragment() {
 
         codeScanner.decodeCallback = DecodeCallback {
             activity.runOnUiThread {
-                activity.showSnack("Success")
                 onReadSuccess(it)
             }
         }

@@ -24,22 +24,22 @@ class ShowQRFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentQrShowBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         val bitmap = MyQR.createQR(viewModel.security.secureString!!)
-        /*viewModel.networking.send(Message(
-            text = viewModel.security.secureSha!!.toHex(),
-            contact = viewModel.currentContact!!,
-            sent = false,
-            incoming = false,
-        ))*/
+        viewModel.networking.startHelloChannel()
         binding.btnCancelQr.setOnClickListener {
+            viewModel.networking.cancelChannel()
             findNavController().popBackStack()
         }
-        bitmap?: return binding.root
+        bitmap?: return
         binding.btnSuccessQr.setOnClickListener {
             secretExchangeSuccess()
         }
         binding.qrImage.setImageBitmap(bitmap)
-        return binding.root
     }
 
     private fun Contact.toContactWithKey(bytes: ByteArray) : Contact {
