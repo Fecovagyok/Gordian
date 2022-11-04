@@ -134,6 +134,7 @@ class ChatViewModel() : ViewModel() {
             return false
         pairData.value = null
         helloJob = viewModelScope.launch(Dispatchers.IO) {
+            pairData.postValue(StatusMessage(state = MSG, R.string.waiting_hello_message))
             val helloMessage = networking.getHelloMessage()
             withContext(Dispatchers.Default) {
                 withGoodHelloMessage(contact, helloMessage) { newContact ->
