@@ -5,7 +5,6 @@ import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.awaitClose
 import com.example.szakchat.extensions.toUserID
 import com.example.szakchat.security.GcmMessage
-import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.net.Inet4Address
@@ -56,6 +55,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         val inS = socket.getInputStream()
         val out = socket.getOutputStream()
         val received = withAuth(out = out, inS = inS) {
+            out.write(AUTH_ONLY+4)
             inS.readAllMessages()
         }
         socket.close()
@@ -78,11 +78,10 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         out.write(AUTH_WITH_ID)
         out.write(meSelf.id.values)
         out.writeString(meSelf.pass)
-        out.write(AUTH_ONLY+4)
-        return when(iStream.throwRead()) {
+        return when(iStream.throwRead()){
             AUTH_OK -> true
             AUTH_NOK -> false
-            else -> throw IOException("Bad auth message")
+            else -> throw ProtocolException("Unknown auth status")
         }
     }
 

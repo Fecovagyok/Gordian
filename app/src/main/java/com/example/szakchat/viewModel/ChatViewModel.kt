@@ -12,7 +12,6 @@ import com.example.szakchat.common.MSG
 import com.example.szakchat.common.StatusMessage
 import com.example.szakchat.contacts.Contact
 import com.example.szakchat.contacts.ContactRepository
-import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.isRunning
 import com.example.szakchat.identity.UserID
@@ -67,9 +66,9 @@ class ChatViewModel() : ViewModel() {
     private var helloJob: Job? = null
     val pairData = MutableLiveData<StatusMessage?>()
 
-    fun startHello(contact: Contact) {
+    fun startHello(contact: Contact): Boolean {
         if(helloJob.isRunning())
-            throw AlreadyRunning("PairingJob is already running")
+            return false
         pairData.value = null
         helloJob = viewModelScope.launch(Dispatchers.Default) {
             val helloMessage = security.myProto.craftHelloMessage(
@@ -91,6 +90,7 @@ class ChatViewModel() : ViewModel() {
                 )
             }
         }
+        return true
     }
 
     private fun Contact.toContactWithUserID(userID: UserID) = Contact(
@@ -129,9 +129,9 @@ class ChatViewModel() : ViewModel() {
         }
     }
 
-    fun listenHello(contact: Contact) {
+    fun listenHello(contact: Contact): Boolean {
         if(helloJob.isRunning())
-            throw AlreadyRunning("PairingJob is already running")
+            return false
         pairData.value = null
         helloJob = viewModelScope.launch(Dispatchers.IO) {
             val helloMessage = networking.getHelloMessage()
@@ -150,6 +150,7 @@ class ChatViewModel() : ViewModel() {
                 }
             }
         }
+        return true
     }
 
 }

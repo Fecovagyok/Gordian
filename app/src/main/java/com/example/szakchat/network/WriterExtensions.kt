@@ -1,5 +1,6 @@
 package com.example.szakchat.network
 
+import android.util.Log
 import com.example.szakchat.common.MyByteArray
 import com.example.szakchat.security.GcmMessage
 import java.io.OutputStream
@@ -35,6 +36,7 @@ fun OutputStream.writeGcmMessage(msg: GcmMessage){
     write(msg.type)
     writeInt16(msg.length)
     writeInt32(msg.seqNum)
+    Log.d("FECO", "Size of rnd: ${msg.rnd.size}")
     write(msg.rnd)
     writeLong(msg.date)
     write(msg.src)
