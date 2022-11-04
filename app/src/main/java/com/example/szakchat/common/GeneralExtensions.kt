@@ -12,8 +12,8 @@ import com.example.szakchat.security.MySecretKey
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import java.net.Socket
-import java.net.SocketException
 import java.security.SecureRandom
+import javax.net.ssl.SSLProtocolException
 
 fun EditText.isEmpty(): Boolean {
     return text == null || text.toString().isEmpty()
@@ -119,7 +119,7 @@ fun Socket.awaitClose() {
     try {
         Log.d("FECO", "Waiting for the peer to close the socket")
         getInputStream().read()
-    } catch (e: SocketException){
+    } catch (e: SSLProtocolException){
         Log.d("FECO", "Socket closed when I wanted it to")
     }
 }
