@@ -7,8 +7,10 @@
     <ImageView
         android:id="@+id/qr_image"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_cancel_qr"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
@@ -18,12 +20,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/cancel"
+        android:paddingVertical="8dp"
+        android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_success_qr"
         />
 
     <Button
+        android:paddingVertical="8dp"
+        android:layout_marginHorizontal="10dp"
         android:id="@+id/btn_success_qr"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

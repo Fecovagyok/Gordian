@@ -84,7 +84,6 @@ class LoginFragment : Fragment() {
 
             } catch (e: AlreadyRunning){
                 a.showSnack(R.string.login_request_running)
-                binding.loginProgress.visibility = View.GONE
             }
         }
         viewModel.networking.username?.let {

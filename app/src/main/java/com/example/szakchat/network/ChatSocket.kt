@@ -8,6 +8,8 @@ import com.example.szakchat.security.GcmMessage
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.net.Inet4Address
+import java.net.InetSocketAddress
 import javax.net.SocketFactory
 import javax.net.ssl.SSLSocketFactory
 
@@ -20,6 +22,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         private const val AUTH_ONLY = 10
         private const val AUTH_OK = 20
         private const val AUTH_NOK = 22
+        const val TIMEOUT = 12000
         val factory: SocketFactory = SSLSocketFactory.getDefault()
     }
 
@@ -84,7 +87,9 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
     }
 
     fun auth(username: String, password: String, out: StatusLogger){
-        val socket = factory.createSocket(ip, POLLING_PORT)
+        val address = InetSocketAddress(Inet4Address.getByName(ip), POLLING_PORT)
+        val socket = factory.createSocket()
+        socket.connect(address, TIMEOUT)
         val outStream = socket.getOutputStream()
         val inStream = socket.getInputStream()
         outStream.write(AUTH_WITH_NAME)

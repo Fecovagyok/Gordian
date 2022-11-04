@@ -56,10 +56,9 @@ class ReadQRFragment : Fragment() {
         codeScanner.isFlashEnabled = false // Whether to enable flash or not
 
         codeScanner.decodeCallback = DecodeCallback {
-            onReadSuccess(it)
             activity.runOnUiThread {
                 activity.showSnack("Success")
-                findNavController().navigate(R.id.from_read_to_confirm)
+                onReadSuccess(it)
             }
         }
         codeScanner.errorCallback = ErrorCallback {

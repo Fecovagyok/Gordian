@@ -14,6 +14,9 @@
         <entry key="..\:/BME/szakdolgozat/szakdoggo/app/src/main/res/layout/row_contact.xml" value="0.4" />
         <entry key="..\:/Feco/szakdoggo/app/src/main/res/drawable/not_sent_message_ground.xml" value="0.181" />
         <entry key="..\:/Feco/szakdoggo/app/src/main/res/drawable/sent_message_border.xml" value="0.181" />
+        <entry key="..\:/Feco/szakdoggo/app/src/main/res/drawable/transparent_overlay.xml" value="0.196" />
+        <entry key="..\:/Feco/szakdoggo/app/src/main/res/layout/fragment_qr_show.xml" value="0.18802083333333333" />
+        <entry key="..\:/Feco/szakdoggo/app/src/main/res/layout/secret_expired_layout.xml" value="0.18802083333333333" />
         <entry key="..\:/Feco/szakdoggo/app/src/main/res/menu/menu_main.xml" value="0.18802083333333333" />
         <entry key="..\:/android/szakdoggo/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1245" />
         <entry key="..\:/android/szakdoggo/app/src/main/res/drawable/border.xml" value="0.2265" />

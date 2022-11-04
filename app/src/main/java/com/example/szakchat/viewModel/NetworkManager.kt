@@ -151,6 +151,8 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         } catch (e: IOException){
             Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause} Type: ${e.javaClass}")
             e.printStackTrace()
+            if(e.message?.matches(Regex("^failed to connect")) == true)
+                postError("$act request timed out")
             postError("${e.message?: "No message"} while $act")
         } catch (e: IllegalStateException){
             Log.e("FECO", "ErrorMessage: ${e.message} Cause ${e.cause} Type: ${e.javaClass}")
@@ -261,7 +263,10 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
                 logger.postError(e.message?: "Unknown auth error")
             } catch (e: IOException){
                 Log.e("FECO", "IOException while logging in: ${e.message}")
-                logger.postError(e.message?: "Unknown network error")
+                if(e.message?.matches(Regex("${ChatSocket.TIMEOUT}ms\\s*\$", RegexOption.MULTILINE)) == true)
+                    logger.postError("Logging in request timed out")
+                else
+                    logger.postError("Logging request failed")
             }
         }
         return authData
