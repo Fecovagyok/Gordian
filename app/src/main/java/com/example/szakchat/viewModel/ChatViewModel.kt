@@ -18,6 +18,7 @@ import com.example.szakchat.extensions.isRunning
 import com.example.szakchat.identity.UserID
 import com.example.szakchat.messages.Message
 import com.example.szakchat.messages.MessageRepository
+import com.example.szakchat.security.GcmMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -76,11 +77,18 @@ class ChatViewModel() : ViewModel() {
                 owner = contact.owner,
                 id = contact.uniqueId!!
             )
-            withContext(Dispatchers.IO){
+            val ackMessage = withContext(Dispatchers.IO){
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.sending_hello_message))
                 networking.sendHello(helloMessage)
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.waiting_hello_reply))
-
+                networking.getHelloMessage()
+            }
+            withGoodHelloMessage(contact, ackMessage){
+                pairData.postValue(
+                    StatusMessage(
+                        state = END,
+                    )
+                )
             }
         }
     }
@@ -93,6 +101,34 @@ class ChatViewModel() : ViewModel() {
         keys = keys,
     )
 
+    // to be called on the main thread
+    private suspend inline fun withGoodHelloMessage(
+        contact: Contact,
+        helloMessage: GcmMessage,
+        block: suspend (Contact) -> Unit,
+    ) {
+        try {
+            security.myProto.decodeHelloMessage(helloMessage, contact.keys!!.receiver)
+            val newContact = contact.toContactWithUserID(helloMessage.src)
+            currentContact = newContact
+            block(newContact)
+        } catch (e: javax.crypto.AEADBadTagException) {
+            pairData.postValue(
+                StatusMessage(
+                    state = ERROR,
+                    msg = R.string.hello_authenticate_failed
+                )
+            )
+        } catch (e: ProtocolException) {
+            pairData.postValue(
+                StatusMessage(
+                    state = ERROR,
+                    msg = R.string.hello_message_had_payload
+                )
+            )
+        }
+    }
+
     fun listenHello(contact: Contact) {
         if(helloJob.isRunning())
             throw AlreadyRunning("PairingJob is already running")
@@ -100,21 +136,20 @@ class ChatViewModel() : ViewModel() {
         helloJob = viewModelScope.launch(Dispatchers.IO) {
             val helloMessage = networking.getHelloMessage()
             withContext(Dispatchers.Default) {
-                try {
-                    security.myProto.decodeHelloMessage(helloMessage, contact.keys!!.receiver)
-                    val newContact = contact.toContactWithUserID(helloMessage.src)
-                    currentContact = newContact
-                    withContext(Dispatchers.IO){
+                withGoodHelloMessage(contact, helloMessage) { newContact ->
+                    val myHello = security.myProto.craftHelloMessage(
+                        keyProvider = contact.keys!!.sender,
+                        owner = newContact.owner,
+                        id = newContact.uniqueId!!
+                    )
+                    withContext(Dispatchers.IO) {
                         repository.updateContact(newContact)
+                        networking.sendHello(myHello) // Sending the ack
                     }
                     pairData.postValue(StatusMessage(state = END,))
-
-                } catch (e: javax.crypto.AEADBadTagException){
-                    pairData.postValue(StatusMessage(state = ERROR, msg = R.string.hello_authenticate_failed))
-                } catch (e: ProtocolException){
-                    pairData.postValue(StatusMessage(state = ERROR, msg = R.string.hello_message_had_payload))
                 }
             }
         }
     }
+
 }

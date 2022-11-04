@@ -93,6 +93,9 @@ class ReadQRFragment : Fragment() {
     }
 
     private fun onReadSuccess(result: Result){
-        viewModel.currentContact = viewModel.currentContact!!.toContactWithKey(result)
+        val newContact = viewModel.currentContact!!.toContactWithKey(result)
+        viewModel.currentContact = newContact
+        viewModel.startHello(newContact)
+        findNavController().navigate(R.id.from_read_to_confirm)
     }
 }

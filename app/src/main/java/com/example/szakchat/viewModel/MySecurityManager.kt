@@ -35,10 +35,6 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         }
     }
 
-    private val shaObject by lazy(LazyThreadSafetyMode.NONE) {
-        MessageDigest.getInstance("SHA-256")
-    }
-
     val myProto = MySecurityProtocol(randomObject)
 
     private val _liveRandomBytes = MutableLiveData<StatusMessage?>()
@@ -68,6 +64,7 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
     private inline fun<T: MyKeyProvider> ByteArray.toMyKeyProvider(
         createKeyProvider: (MySecretKey, Int) -> T
     ): T {
+        val shaObject = MessageDigest.getInstance("SHA-256")
         val key = shaObject.digest(this).toMySecretKey()
         return createKeyProvider(key, 0)
     }
@@ -101,6 +98,8 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
         val keys = processGeneratedBytes(bytes, randomSize, 'B', 'A')
 
         val id = bytes.sliceArray(randomSize until 1024).toUserID()
+        if(id.size != 8)
+            throw IllegalStateException("UserID must be exactly 8 bytes, got: ${id.size}")
         return id to keys
     }
 

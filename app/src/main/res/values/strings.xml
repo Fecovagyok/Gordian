@@ -42,4 +42,9 @@
     <string name="pairing_failed">Pairing failed</string>
     <string name="hello_authenticate_failed">Pairing failed because the hello message could not be authenticated</string>
     <string name="hello_message_had_payload">Pairing failed because hello message contained payload</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="wait_pairing_completes">Please wait until the pairing completes</string>
+    <string name="try_again">Try again</string>
+    <string name="get_back_messaging">Get back to messaging</string>
 </resources>

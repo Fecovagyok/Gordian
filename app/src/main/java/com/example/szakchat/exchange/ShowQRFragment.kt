@@ -55,7 +55,9 @@ class ShowQRFragment : Fragment() {
 
     private fun secretExchangeSuccess(){
         val bytes = viewModel.security.generatedLotsOfBytes!!
-        viewModel.currentContact = viewModel.currentContact!!.toContactWithKey(bytes)
+        val newContact = viewModel.currentContact!!.toContactWithKey(bytes)
+        viewModel.currentContact = newContact
+        viewModel.listenHello(newContact)
         findNavController().navigate(R.id.from_show_to_confirm)
     }
 }

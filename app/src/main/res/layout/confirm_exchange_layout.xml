@@ -7,6 +7,7 @@
     >
 
     <TextView
+        android:id="@+id/confirm_big_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/title_text"
@@ -24,6 +25,7 @@
         />
 
     <TextView
+        android:id="@+id/confirm_small_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/basic_text"
@@ -33,13 +35,36 @@
         android:text=""
         />
 
-    <ImageView
-        android:visibility="gone"
-        android:id="@+id/confirm_done_img"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_kliponious_green_tick"
-        />
+        android:layout_marginBottom="20dp"
+        >
+        <ImageView
+            android:visibility="invisible"
+            android:id="@+id/confirm_done_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_kliponious_green_tick"
+            />
 
+        <ImageView
+            android:id="@+id/confirm_error_img"
+            android:visibility="invisible"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_red_x_icon"
+            />
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/confirm_back_btn"
+        android:enabled="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:text="@string/wait_pairing_completes"
+    />
 
 </LinearLayout>

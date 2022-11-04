@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.szakchat"
-        minSdk 23
+        minSdk 23 // Android 6.0 is the minimum - Codename marshmallow
         targetSdk 32
         versionCode 1
         versionName "1.0"

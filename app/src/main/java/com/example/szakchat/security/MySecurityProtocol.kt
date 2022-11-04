@@ -165,7 +165,7 @@ class MySecurityProtocol(private val random: SecureRandom){
         )
     }
 
-    fun decodeHelloMessage(gcmMessage: GcmMessage, keyProvider: ReceiverKeyProvider) {
+    fun decodeHelloMessage(gcmMessage: GcmMessage, keyProvider: ReceiverKeyProvider){
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         val key = keyProvider.lastKey
         val aad = aadOf(

@@ -46,7 +46,11 @@ fun ByteArray.toHex(): String {
 
 fun ByteArray.toMyByteArray() = MyByteArray(this)
 fun ByteArray.toMySecretKey() = MySecretKey(this)
-fun ByteArray.toUserID() = UserID(this)
+fun ByteArray.toUserID(): UserID {
+    /*if(size != 8)
+        throw IllegalStateException("UserID must be exactly 8 bytes, given: $size")*/
+    return UserID(this)
+}
 fun MyByteArray.toHex() = values.toHex()
 fun String.toData(): ByteArray = Base64.decode(this, Base64.DEFAULT)
 fun ByteArray.toBase64String(): String = Base64.encodeToString(this, Base64.DEFAULT)
