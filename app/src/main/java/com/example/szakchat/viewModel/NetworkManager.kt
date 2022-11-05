@@ -57,7 +57,7 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
     val networkStatus: LiveData<ConnectionStatus>
     get() = _networkStatus
 
-    private fun checkPollingSync(){
+    fun checkPollingSync(){
         viewModel.viewModelScope.launch(Dispatchers.IO) {
             checkPollChannel.send(Unit)
         }

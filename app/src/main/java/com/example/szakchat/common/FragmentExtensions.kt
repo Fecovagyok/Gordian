@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.szakchat.MainActivity
+import com.google.android.material.textfield.TextInputLayout
 
 inline fun Fragment.reSetupActionBar(a: MainActivity, startDest: Int, navigateBlock: (NavController) -> Unit){
     val controller = findNavController()
@@ -13,4 +14,9 @@ inline fun Fragment.reSetupActionBar(a: MainActivity, startDest: Int, navigateBl
     val configuration = AppBarConfiguration(controller.graph)
     navigateBlock(controller)
     a.setupActionBarWithNavController(controller, configuration)
+}
+
+fun TextInputLayout.onError(str: String){
+    error = str
+    requestFocus()
 }

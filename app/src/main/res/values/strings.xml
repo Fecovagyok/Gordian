@@ -52,4 +52,5 @@
     <string name="max_characters_first_half">Can be maximum </string>
     <string name="max_characters_second_half"> characters</string>
     <string name="log_out">Log out</string>
+    <string name="empty_msg_not_sent">Empty message will not be sent</string>
 </resources>

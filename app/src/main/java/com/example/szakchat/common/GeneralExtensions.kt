@@ -21,7 +21,7 @@ fun EditText.isEmpty(): Boolean {
 
 fun EditText.moreThan(num: Int) = text.length > num
 
-fun String.isBadText() = contains('\n') || isEmpty()
+fun String.isBadText() = trim().isEmpty()
 
 fun RecyclerView.scrollToTheEnd() {
     Log.d("FECO", "AdapterItemCount: ${adapter!!.itemCount}")

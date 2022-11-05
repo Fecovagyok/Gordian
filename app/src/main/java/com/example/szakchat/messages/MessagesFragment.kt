@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.szakchat.R
+import com.example.szakchat.common.onError
 import com.example.szakchat.databinding.FragmentSecondBinding
 import com.example.szakchat.databinding.SecretExpiredLayoutBinding
 import com.example.szakchat.extensions.isBadText
@@ -75,6 +77,15 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
         }
     }
 
+    private fun MessageAdapter.scrollToTheEnd(size: Int){
+        subscribed = {
+            if(adapter.itemCount == size){
+                binding.messagesView.scrollToPosition(size-1)
+                adapter.subscribed = null
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as AppCompatActivity
@@ -89,13 +100,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
         binding.messagesView.adapter = adapter
         viewModel.currentMessages?.observe(viewLifecycleOwner) { messages ->
             adapter.submitList(messages)
-            val size = messages.size
-            adapter.subscribed = {
-                if(adapter.itemCount == size){
-                    binding.messagesView.scrollToPosition(messages.size - 1)
-                    adapter.subscribed = null
-                }
-            }
+            adapter.scrollToTheEnd(messages.size)
         }
 
         registerForContextMenu(binding.messagesView)
@@ -106,7 +111,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
             val text = binding.msgField.text.toString().trim()
             if(text.isBadText()){
                 binding.messagesView.scrollToTheEnd()
-                Log.d("FECO", "BadText, Textbox: $text")
+                binding.msgInputLayout.onError(getString(R.string.empty_msg_not_sent))
                 return@setOnClickListener
             }
 
@@ -124,6 +129,9 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
             binding.msgField.text.clear()
         }
         requireActivity().addMenuProvider(this, viewLifecycleOwner)
+        binding.msgField.addTextChangedListener {
+            binding.msgInputLayout.isErrorEnabled = false
+        }
     }
 
     override fun onDestroyView() {

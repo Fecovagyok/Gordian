@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.szakchat.MainActivity
 import com.example.szakchat.R
+import com.example.szakchat.common.onError
 import com.example.szakchat.common.reSetupActionBar
 import com.example.szakchat.databinding.FragmentIdentityBinding
 import com.example.szakchat.exceptions.AlreadyRunning
@@ -17,7 +18,6 @@ import com.example.szakchat.extensions.isEmpty
 import com.example.szakchat.extensions.moreThan
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.viewModel.NetworkManager
-import com.google.android.material.textfield.TextInputLayout
 
 /**
  * A simple [Fragment] subclass.
@@ -64,6 +64,7 @@ class LoginFragment : Fragment() {
                         pass = binding.passwordField.text.toString(),
                         prefs = prefs(),
                     )
+                    viewModel.networking.checkPollingSync()
                     // Appbar fix
                     reSetupActionBar(a, R.id.FirstFragment) { controller ->
                         controller.navigate(R.id.action_login_to_first)
@@ -94,11 +95,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun TextInputLayout.onError(str: String){
-        error = str
-        requestFocus()
-    }
-
     private fun checkInputs(): Boolean{
         if (binding.usernameField.isEmpty()) {
             binding.usernameLayout.onError(getString(R.string.username_cannot_empty))
@@ -109,11 +105,11 @@ class LoginFragment : Fragment() {
             return false
         }
         if (binding.usernameField.moreThan(MAX_CHARS)) {
-            binding.usernameLayout.error = maxCharError
+            binding.usernameLayout.onError(maxCharError)
             return false
         }
         if(binding.passwordField.moreThan(MAX_CHARS)) {
-            binding.passwordLayout.error = maxCharError
+            binding.passwordLayout.onError(maxCharError)
             return false
         }
         return true
