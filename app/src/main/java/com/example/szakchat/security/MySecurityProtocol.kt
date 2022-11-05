@@ -182,7 +182,7 @@ class MySecurityProtocol(private val random: SecureRandom){
         cipher.updateAAD(aad)
         val text = cipher.doFinal(gcmMessage.ciphered.values, 0, gcmMessage.length)
         if(text.isNotEmpty())
-            throw ProtocolException("Payload empty while decoding hello message")
+            throw ProtocolException("Payload not empty while decoding hello message")
     }
 
 }
