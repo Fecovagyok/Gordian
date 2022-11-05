@@ -104,8 +104,8 @@ fun Int.copyToBytes(bytes: ByteArray, offset: Int){
 
 fun Long.toByteArray(): ByteArray {
     val bytes = ByteArray(8)
-    toInt().copyToBytes(bytes)
-    (this ushr 32).toInt().copyToBytes(bytes, 4)
+    (this ushr 32).toInt().copyToBytes(bytes)
+    toInt().copyToBytes(bytes, 4)
     return bytes
 }
 
