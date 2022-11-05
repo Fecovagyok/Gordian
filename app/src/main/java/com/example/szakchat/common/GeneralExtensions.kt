@@ -89,10 +89,10 @@ fun Int.toByteArray(): ByteArray {
 }
 
 fun Int.copyToBytes(bytes: ByteArray){
-    bytes[0] = toByte()
-    bytes[1] = toSecondMostByte()
-    bytes[2] = toThirdMostByte()
-    bytes[3] = toLastMostByte()
+    bytes[0] = toLastMostByte()
+    bytes[1] = toThirdMostByte()
+    bytes[2] = toSecondMostByte()
+    bytes[3] = toByte()
 }
 
 fun Int.copyToBytes(bytes: ByteArray, offset: Int){
