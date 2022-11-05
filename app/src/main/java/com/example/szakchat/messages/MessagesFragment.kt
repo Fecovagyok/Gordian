@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.szakchat.R
-import com.example.szakchat.common.onError
 import com.example.szakchat.databinding.FragmentSecondBinding
 import com.example.szakchat.databinding.SecretExpiredLayoutBinding
 import com.example.szakchat.extensions.isBadText
@@ -111,7 +110,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
             val text = binding.msgField.text.toString().trim()
             if(text.isBadText()){
                 binding.messagesView.scrollToTheEnd()
-                binding.msgInputLayout.onError(getString(R.string.empty_msg_not_sent))
+                binding.msgField.error = getString(R.string.empty_msg_not_sent)
                 return@setOnClickListener
             }
 
@@ -130,7 +129,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
         }
         requireActivity().addMenuProvider(this, viewLifecycleOwner)
         binding.msgField.addTextChangedListener {
-            binding.msgInputLayout.isErrorEnabled = false
+            binding.msgField.error = null
         }
     }
 
