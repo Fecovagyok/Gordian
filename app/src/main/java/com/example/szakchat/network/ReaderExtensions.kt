@@ -1,6 +1,5 @@
 package com.example.szakchat.network
 
-import android.util.Log
 import com.example.szakchat.exceptions.ProtocolException
 import com.example.szakchat.extensions.toMyByteArray
 import com.example.szakchat.extensions.toUserID
@@ -10,8 +9,6 @@ import java.io.InputStream
 
 fun InputStream.throwRead(): Int {
     val red = read()
-    if(red == 1)
-        Log.d("FECO", "I read one")
     if (red == -1)
         throw IOException("Vege")
     return red
@@ -66,8 +63,6 @@ fun InputStream.readGcmMessage(): GcmMessage {
 
 fun InputStream.readAllMessages(): GcmMessagesWithType {
     val count = readInt16()
-    if(count > 0)
-        Log.d("FECO", "Read count: $count")
     if(count < 0 || count > Short.MAX_VALUE)
         throw ProtocolException("Invalid message count: $count")
     val list = GcmMessagesWithType(count)
@@ -79,7 +74,6 @@ fun InputStream.readAllMessages(): GcmMessagesWithType {
 
 fun InputStream.readAndCreateBytes(num: Int): ByteArray {
     val bytes = ByteArray(num)
-    Log.d("FECO", "Size of read byteArray: ${bytes.size}")
     throwReadBytes(bytes)
     return bytes
 }
