@@ -53,7 +53,6 @@ class MySecurityProtocol(private val random: SecureRandom){
         val bytes = ByteArray(12)
         seqNum.copyBytes(bytes)
         System.arraycopy(rnd, 0, bytes, 4, rnd.size)
-        bytes[11] = rnd[rnd.lastIndex]
         return bytes
     }
 
