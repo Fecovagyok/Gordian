@@ -41,7 +41,7 @@
         android:layout_marginBottom="20dp"
         >
         <ImageView
-            android:visibility="invisible"
+            android:visibility="gone"
             android:id="@+id/confirm_done_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -50,7 +50,7 @@
 
         <ImageView
             android:id="@+id/confirm_error_img"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_red_x_icon"
