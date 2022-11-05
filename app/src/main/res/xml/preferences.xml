@@ -8,5 +8,10 @@
         android:summary="@string/change_server_address"
         />
 
+    <Preference
+        android:key="LOGOUT"
+        android:title="@string/log_out"
+        />
+
 
 </PreferenceScreen>

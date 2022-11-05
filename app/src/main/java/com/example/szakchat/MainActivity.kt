@@ -146,4 +146,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             viewModel.networking.ip = prefs.getString(key, null)?: NetworkManager.DEFAULT_IP
         }
     }
+
+    fun logout() {
+        viewModel.networking.logout(getPreferences(Context.MODE_PRIVATE))
+    }
 }

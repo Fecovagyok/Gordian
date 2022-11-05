@@ -5,19 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.szakchat.MainActivity
 import com.example.szakchat.R
+import com.example.szakchat.common.reSetupActionBar
 import com.example.szakchat.databinding.FragmentIdentityBinding
 import com.example.szakchat.exceptions.AlreadyRunning
 import com.example.szakchat.extensions.isEmpty
 import com.example.szakchat.extensions.moreThan
 import com.example.szakchat.viewModel.ChatViewModel
 import com.example.szakchat.viewModel.NetworkManager
+import com.google.android.material.textfield.TextInputLayout
 
 /**
  * A simple [Fragment] subclass.
@@ -41,6 +41,19 @@ class LoginFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentIdentityBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        binding.usernameField.addTextChangedListener {
+            binding.usernameLayout.isErrorEnabled = false
+        }
+        binding.passwordField.addTextChangedListener {
+            binding.passwordLayout.isErrorEnabled = false
+        }
         binding.usernameField.setText(prefs().getString(NetworkManager.NAME_KEY, null))
         viewModel.networking.authData.observe(viewLifecycleOwner) {
             val a = requireActivity() as MainActivity
@@ -52,11 +65,9 @@ class LoginFragment : Fragment() {
                         prefs = prefs(),
                     )
                     // Appbar fix
-                    val controller = findNavController()
-                    controller.graph.setStartDestination(R.id.FirstFragment)
-                    val configuration = AppBarConfiguration(controller.graph)
-                    controller.navigate(R.id.action_login_to_first)
-                    a.setupActionBarWithNavController(controller, configuration)
+                    reSetupActionBar(a, R.id.FirstFragment) { controller ->
+                        controller.navigate(R.id.action_login_to_first)
+                    }
                 }
                 false -> {
                     a.showSnack(it.message)
@@ -67,21 +78,13 @@ class LoginFragment : Fragment() {
         binding.loginButton.setOnClickListener {
             val a = requireActivity() as MainActivity
             try {
-
-                if (binding.usernameField.isEmpty() || binding.passwordField.isEmpty()) {
+                if(!checkInputs())
                     return@setOnClickListener
-                }
-                if (binding.usernameField.moreThan(50) || binding.passwordField.moreThan(50)) {
-                    return@setOnClickListener
-                }
-
                 binding.loginProgress.visibility = View.VISIBLE
                 viewModel.networking.loginRequest(
                     binding.usernameField.text.toString(),
                     binding.passwordField.text.toString(),
                 )
-
-
             } catch (e: AlreadyRunning){
                 a.showSnack(R.string.login_request_running)
             }
@@ -89,6 +92,35 @@ class LoginFragment : Fragment() {
         viewModel.networking.username?.let {
             binding.usernameField.setText(it)
         }
-        return binding.root
+    }
+
+    private fun TextInputLayout.onError(str: String){
+        error = str
+        requestFocus()
+    }
+
+    private fun checkInputs(): Boolean{
+        if (binding.usernameField.isEmpty()) {
+            binding.usernameLayout.onError(getString(R.string.username_cannot_empty))
+            return false
+        }
+        if(binding.passwordField.isEmpty()) {
+            binding.passwordLayout.onError(getString(R.string.password_cannot_empty))
+            return false
+        }
+        if (binding.usernameField.moreThan(MAX_CHARS)) {
+            binding.usernameLayout.error = maxCharError
+            return false
+        }
+        if(binding.passwordField.moreThan(MAX_CHARS)) {
+            binding.passwordLayout.error = maxCharError
+            return false
+        }
+        return true
+    }
+
+    private val maxCharError by lazy(LazyThreadSafetyMode.NONE){
+        getString(R.string.max_characters_first_half) +
+                MAX_CHARS.toString() + getString(R.string.max_characters_second_half)
     }
 }

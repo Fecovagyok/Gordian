@@ -41,12 +41,14 @@ class ConfirmExchangeFragment : Fragment() {
                     binding.confirmBigText.setText(R.string.error)
                     binding.confirmSmallText.setText(it.msg)
                     binding.confirmErrorImg.visibility = View.VISIBLE
+                    binding.exchangeConfirmProgress.visibility = View.GONE
                     setButtonOnError()
                 }
                 END -> {
                     binding.confirmBigText.setText(R.string.success)
                     binding.confirmSmallText.text = ""
                     binding.confirmDoneImg.visibility = View.VISIBLE
+                    binding.exchangeConfirmProgress.visibility = View.GONE
                     setButtonOnSuccess()
                 }
             }

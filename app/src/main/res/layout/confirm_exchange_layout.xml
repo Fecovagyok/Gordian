@@ -63,7 +63,8 @@
         android:enabled="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
+        android:paddingVertical="12dp"
+        android:layout_marginTop="15dp"
         android:text="@string/wait_pairing_completes"
     />
 

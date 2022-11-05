@@ -40,20 +40,6 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
 
     private val chatSocket = ChatSocket(this, ip)
 
-    fun syncPostMessage(msg: String ) {
-        _networkStatus.value = ConnectionStatus(
-            normal = true,
-            message = msg,
-        )
-    }
-
-    fun syncPostError(msg: String) {
-        _networkStatus.value = ConnectionStatus(
-            normal = true,
-            message = msg,
-        )
-    }
-
     var ip
     get() = chatSocket.ip
     set(value) { chatSocket.ip = value }
@@ -118,6 +104,16 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
             .putString(NAME_KEY, name)
             .apply()
         ChatApplication.safePrefs.edit().putString(PASS_KEY, pass).apply()
+    }
+
+    fun logout(prefs: SharedPreferences) {
+        username = null
+        prefs.edit()
+            .remove(SELF_KEY)
+            .remove(NAME_KEY)
+            .apply()
+        ChatApplication.safePrefs.edit().remove(PASS_KEY).apply()
+        chatSocket.self = null
     }
 
     override fun postError(msg: String){

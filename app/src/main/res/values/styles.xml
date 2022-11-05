@@ -14,7 +14,7 @@
     </style>
 
     <style name="title_text" parent="basic_text">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 

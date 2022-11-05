@@ -47,4 +47,9 @@
     <string name="wait_pairing_completes">Please wait until the pairing completes</string>
     <string name="try_again">Try again</string>
     <string name="get_back_messaging">Get back to messaging</string>
+    <string name="username_cannot_empty">Username cannot be empty</string>
+    <string name="password_cannot_empty">Password cannot be empty</string>
+    <string name="max_characters_first_half">Can be maximum </string>
+    <string name="max_characters_second_half"> characters</string>
+    <string name="log_out">Log out</string>
 </resources>
