@@ -64,7 +64,7 @@ fun InputStream.readGcmMessage(): GcmMessage {
 
 fun InputStream.readAllMessages(): GcmMessagesWithType {
     val count = readInt16()
-    Log.d("FECO", "Read count: $count")
+    //Log.d("FECO", "Read count: $count")
     if(count < 0 || count > Short.MAX_VALUE)
         throw ProtocolException("Invalid message count: $count")
     val list = GcmMessagesWithType(count)
