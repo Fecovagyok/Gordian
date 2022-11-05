@@ -8,6 +8,7 @@ abstract class MyKeyProvider(protected var baseKey: MySecretKey, protected var _
     private val digester: MessageDigest = MessageDigest.getInstance("SHA-256")
     fun nextKey(): MySecretKey {
         val newKey = digester.digest(baseKey.values)
+        digester.reset()
         baseKey.setCanBeDestroyed(true, this)
         baseKey = MySecretKey(newKey)
         _seqNum++

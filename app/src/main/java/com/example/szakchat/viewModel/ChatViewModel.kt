@@ -84,6 +84,7 @@ class ChatViewModel() : ViewModel() {
                 networking.getHelloMessage()
             }
             withGoodHelloMessage(contact, ackMessage){
+                repository.updateContact(contact)
                 pairData.postValue(
                     StatusMessage(
                         state = END,
