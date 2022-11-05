@@ -26,7 +26,7 @@ fun InputStream.readInt32(): Int {
 }
 
 fun InputStream.readLong(): Long {
-    val input = (readInt32() shl 32).toLong()
+    val input = readInt32().toLong() shl 32
     return input or readInt32().toLong()
 }
 

@@ -2,6 +2,7 @@ package com.example.szakchat.network
 
 import android.util.Log
 import com.example.szakchat.common.MyByteArray
+import com.example.szakchat.extensions.toHex
 import com.example.szakchat.security.GcmMessage
 import java.io.OutputStream
 
@@ -25,6 +26,9 @@ fun OutputStream.writeInt32(value: Int) {
 }
 
 fun OutputStream.writeLong(value: Long){
+    val left = value ushr 32
+    val kalap = left.toHex()
+    val right = value.toInt().toHex()
     writeInt32((value ushr 32).toInt())
     writeInt32(value.toInt())
 }

@@ -52,6 +52,8 @@ fun ByteArray.toUserID(): UserID {
     return UserID(this)
 }
 fun MyByteArray.toHex() = values.toHex()
+fun Long.toHex() = toByteArray().toHex()
+fun Int.toHex() = toByteArray().toHex()
 fun String.toData(): ByteArray = Base64.decode(this, Base64.DEFAULT)
 fun ByteArray.toBase64String(): String = Base64.encodeToString(this, Base64.DEFAULT)
 fun String.toUserID() = UserID(Base64.decode(this, Base64.DEFAULT))
