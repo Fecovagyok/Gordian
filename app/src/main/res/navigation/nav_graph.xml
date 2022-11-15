@@ -71,7 +71,7 @@
         android:id="@+id/graph_login_fragment"
         android:name="hu.bme.hit.hu.mcold.gordian.identity.LoginFragment"
         android:label="@string/login"
-        tools:layout="@layout/fragment_identity"
+        tools:layout="@layout/fragment_login"
         >
         <action
             android:id="@+id/action_login_to_first"
@@ -85,8 +85,8 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="hu.bme.hit.hu.mcold.gordian.contacts.ContactsFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:label="@string/contact_fragment_label"
+        tools:layout="@layout/fragment_contact">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -101,7 +101,7 @@
         android:id="@+id/SecondFragment"
         android:name="hu.bme.hit.hu.mcold.gordian.messages.MessagesFragment"
         android:label="@string/messages"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_message">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"

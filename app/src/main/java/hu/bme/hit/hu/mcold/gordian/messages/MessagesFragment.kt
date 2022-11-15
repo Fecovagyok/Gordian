@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.gordian.hu.mcold.gordian.R
-import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentSecondBinding
+import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentMessageBinding
 import hu.bme.gordian.hu.mcold.gordian.databinding.SecretExpiredLayoutBinding
 import hu.bme.hit.hu.mcold.gordian.common.isBadText
 import hu.bme.hit.hu.mcold.gordian.common.scrollToTheEnd
@@ -23,7 +23,7 @@ import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
  */
 class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentMessageBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -36,7 +36,7 @@ class MessagesFragment : Fragment(), MessageAdapter.Listener, MenuProvider {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentMessageBinding.inflate(inflater, container, false)
         if(viewModel.currentContact!!.keys == null){
             initOverlay(inflater)
         }

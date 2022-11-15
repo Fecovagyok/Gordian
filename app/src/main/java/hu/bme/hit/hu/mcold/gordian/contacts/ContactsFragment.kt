@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import hu.bme.gordian.hu.mcold.gordian.R
-import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentFirstBinding
+import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentContactBinding
 import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
 
 /**
@@ -20,7 +20,7 @@ class ContactsFragment : Fragment(), ContactAdapter.ContactListener {
         const val DTAG = "FECO"
     }
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentContactBinding? = null
 
     private val viewModel: ChatViewModel by activityViewModels()
 
@@ -36,7 +36,7 @@ class ContactsFragment : Fragment(), ContactAdapter.ContactListener {
 
 
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentContactBinding.inflate(inflater, container, false)
         return binding.root
 
     }

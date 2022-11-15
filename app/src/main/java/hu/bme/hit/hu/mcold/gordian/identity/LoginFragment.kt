@@ -9,7 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import hu.bme.gordian.hu.mcold.gordian.R
-import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentIdentityBinding
+import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentLoginBinding
 import hu.bme.hit.hu.mcold.gordian.MainActivity
 import hu.bme.hit.hu.mcold.gordian.common.isEmpty
 import hu.bme.hit.hu.mcold.gordian.common.moreThan
@@ -25,7 +25,7 @@ import hu.bme.hit.hu.mcold.gordian.viewModel.NetworkManager
  */
 class LoginFragment : Fragment() {
 
-    private var _binding: FragmentIdentityBinding? = null
+    private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ChatViewModel by activityViewModels()
 
@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentIdentityBinding.inflate(inflater, container, false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
