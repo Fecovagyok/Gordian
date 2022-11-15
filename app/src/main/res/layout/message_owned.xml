@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="test"
-        style="@style/Theme.Szakchat.message"
+        style="@style/Theme.Gordian.message"
         />
 
 </FrameLayout>

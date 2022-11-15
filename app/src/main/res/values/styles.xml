@@ -5,7 +5,7 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="Theme.Szakchat.message" parent="basic_text">
+    <style name="Theme.Gordian.message" parent="basic_text">
         <item name="android:paddingRight">14dp</item>
         <item name="android:paddingLeft">14dp</item>
         <item name="android:paddingTop">8dp</item>

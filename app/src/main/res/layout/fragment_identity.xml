@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.szakchat.identity.LoginFragment"
+    tools:context="hu.bme.hit.hu.mcold.gordian.identity.LoginFragment"
     android:orientation="vertical"
     android:gravity="center"
     >

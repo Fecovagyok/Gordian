@@ -60,7 +60,7 @@ class ChatApplication : Application() {
         val msg = masterKey.isStrongBoxBacked
         return EncryptedSharedPreferences.create(
             applicationContext,
-            "szakchat_secret",
+            "Gordian_secret",
             masterKey,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
