@@ -1,16 +1,16 @@
-package hu.bme.gordian.hu.mcold.gordian.contacts
+package hu.bme.hit.hu.mcold.gordian.contacts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.example.szakchat.database.ContactDao
-import com.example.szakchat.database.RoomContact
-import com.example.szakchat.extensions.toBase64String
-import com.example.szakchat.extensions.toUserID
-import com.example.szakchat.identity.UserID
-import com.example.szakchat.security.KeyProviders
-import com.example.szakchat.security.MySecretKey
-import com.example.szakchat.security.ReceiverKeyProvider
-import com.example.szakchat.security.SenderKeyProvider
+import hu.bme.hit.hu.mcold.gordian.common.toBase64String
+import hu.bme.hit.hu.mcold.gordian.common.toUserID
+import hu.bme.hit.hu.mcold.gordian.database.ContactDao
+import hu.bme.hit.hu.mcold.gordian.database.RoomContact
+import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.security.KeyProviders
+import hu.bme.hit.hu.mcold.gordian.security.MySecretKey
+import hu.bme.hit.hu.mcold.gordian.security.ReceiverKeyProvider
+import hu.bme.hit.hu.mcold.gordian.security.SenderKeyProvider
 
 class ContactRepository(private val dao: ContactDao) {
     fun getContacts(): LiveData<List<Contact>> = dao.getContacts()

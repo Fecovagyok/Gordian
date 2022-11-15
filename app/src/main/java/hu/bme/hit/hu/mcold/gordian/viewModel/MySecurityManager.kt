@@ -1,18 +1,18 @@
-package hu.bme.gordian.hu.mcold.gordian.viewModel
+package hu.bme.hit.hu.mcold.gordian.viewModel
 
 import android.os.Build
 import android.util.Base64
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.szakchat.R
-import com.example.szakchat.common.StatusMessage
-import com.example.szakchat.exceptions.ProtocolException
-import com.example.szakchat.extensions.isRunning
-import com.example.szakchat.extensions.toMySecretKey
-import com.example.szakchat.extensions.toUserID
-import com.example.szakchat.identity.UserID
-import com.example.szakchat.security.*
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.hit.hu.mcold.gordian.common.StatusMessage
+import hu.bme.hit.hu.mcold.gordian.common.isRunning
+import hu.bme.hit.hu.mcold.gordian.common.toMySecretKey
+import hu.bme.hit.hu.mcold.gordian.common.toUserID
+import hu.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
+import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.security.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -22,9 +22,9 @@ import java.security.SecureRandom
 class MySecurityManager(private val viewModel: ChatViewModel) {
 
     companion object {
-        const val START = 2
-        const val END = 1
-        const val MSG = 3
+        const val NETWORK_START = 2
+        const val NETWORK_END = 1
+        const val NETWORK_MSG = 3
     }
 
     private val randomObject: SecureRandom by lazy {
@@ -106,18 +106,18 @@ class MySecurityManager(private val viewModel: ChatViewModel) {
     fun getBytesAsync(count: Int){
         val countWithOutId = count-8
         if(getBytesJob.isRunning()){
-            _liveRandomBytes.postValue(StatusMessage(msg = R.string.secret_key_gen_already_running, state = MSG))
+            _liveRandomBytes.postValue(StatusMessage(msg = R.string.secret_key_gen_already_running, state = NETWORK_MSG))
             return
         }
         getBytesJob = viewModel.viewModelScope.launch(Dispatchers.Default) {
-            _liveRandomBytes.postValue(StatusMessage(state = START))
+            _liveRandomBytes.postValue(StatusMessage(state = NETWORK_START))
             val bytes = ByteArray(countWithOutId)
             randomObject.nextBytes(bytes)
             val bytesWithID = ByteArray(count)
             bytes.copyInto(bytesWithID)
             viewModel.networking.self!!.values.copyInto(bytesWithID, countWithOutId,)
             generatedLotsOfBytes = bytesWithID
-            _liveRandomBytes.postValue(StatusMessage(state = END))
+            _liveRandomBytes.postValue(StatusMessage(state = NETWORK_END))
         }
     }
 }

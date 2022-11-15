@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.contacts
+package hu.bme.hit.hu.mcold.gordian.contacts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import com.example.szakchat.databinding.AddContactBinding
-import com.example.szakchat.extensions.isBadText
-import com.example.szakchat.viewModel.ChatViewModel
+import hu.bme.gordian.hu.mcold.gordian.databinding.AddContactBinding
+import hu.bme.hit.hu.mcold.gordian.common.isBadText
+import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
 
 class AddContactDialog : DialogFragment() {
 

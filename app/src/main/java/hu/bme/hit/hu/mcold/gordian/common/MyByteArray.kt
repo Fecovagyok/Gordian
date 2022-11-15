@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.common
+package hu.bme.hit.hu.mcold.gordian.common
 
 open class MyByteArray(
     val values: ByteArray

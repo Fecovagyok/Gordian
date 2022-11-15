@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.exchange
+package hu.bme.hit.hu.mcold.gordian.exchange
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.szakchat.R
-import com.example.szakchat.common.END
-import com.example.szakchat.common.ERROR
-import com.example.szakchat.common.MSG
-import com.example.szakchat.databinding.ConfirmExchangeLayoutBinding
-import com.example.szakchat.viewModel.ChatViewModel
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.gordian.hu.mcold.gordian.databinding.ConfirmExchangeLayoutBinding
+import hu.bme.hit.hu.mcold.gordian.common.END
+import hu.bme.hit.hu.mcold.gordian.common.ERROR
+import hu.bme.hit.hu.mcold.gordian.common.MSG
+import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
 
 class ConfirmExchangeFragment : Fragment() {
 

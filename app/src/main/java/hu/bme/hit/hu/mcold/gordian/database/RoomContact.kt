@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.database
+package hu.bme.hit.hu.mcold.gordian.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.exchange
+package hu.bme.hit.hu.mcold.gordian.exchange
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.szakchat.R
-import com.example.szakchat.contacts.Contact
-import com.example.szakchat.databinding.FragmentQrShowBinding
-import com.example.szakchat.viewModel.ChatViewModel
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentQrShowBinding
+import hu.bme.hit.hu.mcold.gordian.contacts.Contact
+import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
 
 class ShowQRFragment : Fragment() {
 

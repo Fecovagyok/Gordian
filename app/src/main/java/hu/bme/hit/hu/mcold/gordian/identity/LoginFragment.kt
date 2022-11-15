@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.identity
+package hu.bme.hit.hu.mcold.gordian.identity
 
 import android.content.Context
 import android.os.Bundle
@@ -8,16 +8,16 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.szakchat.MainActivity
-import com.example.szakchat.R
-import com.example.szakchat.common.onError
-import com.example.szakchat.common.reSetupActionBar
-import com.example.szakchat.databinding.FragmentIdentityBinding
-import com.example.szakchat.exceptions.AlreadyRunning
-import com.example.szakchat.extensions.isEmpty
-import com.example.szakchat.extensions.moreThan
-import com.example.szakchat.viewModel.ChatViewModel
-import com.example.szakchat.viewModel.NetworkManager
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentIdentityBinding
+import hu.bme.hit.hu.mcold.gordian.MainActivity
+import hu.bme.hit.hu.mcold.gordian.common.isEmpty
+import hu.bme.hit.hu.mcold.gordian.common.moreThan
+import hu.bme.hit.hu.mcold.gordian.common.onError
+import hu.bme.hit.hu.mcold.gordian.common.reSetupActionBar
+import hu.bme.hit.hu.mcold.gordian.exceptions.AlreadyRunning
+import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
+import hu.bme.hit.hu.mcold.gordian.viewModel.NetworkManager
 
 /**
  * A simple [Fragment] subclass.

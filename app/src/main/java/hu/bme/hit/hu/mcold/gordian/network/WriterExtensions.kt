@@ -1,8 +1,8 @@
-package hu.bme.gordian.hu.mcold.gordian.network
+package hu.bme.hit.hu.mcold.gordian.network
 
 import android.util.Log
-import com.example.szakchat.common.MyByteArray
-import com.example.szakchat.security.GcmMessage
+import hu.bme.hit.hu.mcold.gordian.common.MyByteArray
+import hu.bme.hit.hu.mcold.gordian.security.GcmMessage
 import java.io.OutputStream
 
 fun OutputStream.writeString(str: String) {

@@ -1,9 +1,9 @@
-package hu.bme.gordian.hu.mcold.gordian.network
+package hu.bme.hit.hu.mcold.gordian.network
 
-import com.example.szakchat.exceptions.ProtocolException
-import com.example.szakchat.extensions.toMyByteArray
-import com.example.szakchat.extensions.toUserID
-import com.example.szakchat.security.GcmMessage
+import hu.bme.hit.hu.mcold.gordian.common.toMyByteArray
+import hu.bme.hit.hu.mcold.gordian.common.toUserID
+import hu.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
+import hu.bme.hit.hu.mcold.gordian.security.GcmMessage
 import java.io.IOException
 import java.io.InputStream
 

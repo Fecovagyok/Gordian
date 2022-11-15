@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian
+package hu.bme.hit.hu.mcold.gordian
 
 import android.app.Application
 import android.content.SharedPreferences
@@ -6,9 +6,9 @@ import android.os.Build
 import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.example.szakchat.database.Database
-import com.example.szakchat.extensions.toBase64String
-import com.example.szakchat.extensions.toData
+import hu.bme.hit.hu.mcold.gordian.common.toBase64String
+import hu.bme.hit.hu.mcold.gordian.common.toData
+import hu.bme.hit.hu.mcold.gordian.database.Database
 import net.sqlcipher.database.SupportFactory
 import java.security.SecureRandom
 

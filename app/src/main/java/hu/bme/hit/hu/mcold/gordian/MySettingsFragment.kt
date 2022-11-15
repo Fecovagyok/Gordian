@@ -1,11 +1,11 @@
-package hu.bme.gordian.hu.mcold.gordian
+package hu.bme.hit.hu.mcold.gordian
 
 import android.os.Bundle
-import android.text.InputType
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.example.szakchat.common.reSetupActionBar
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.hit.hu.mcold.gordian.common.reSetupActionBar
 
 class MySettingsFragment : PreferenceFragmentCompat() {
 

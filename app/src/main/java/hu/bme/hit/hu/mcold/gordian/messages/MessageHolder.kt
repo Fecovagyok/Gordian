@@ -1,10 +1,10 @@
-package hu.bme.gordian.hu.mcold.gordian.messages
+package hu.bme.hit.hu.mcold.gordian.messages
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.example.szakchat.R
-import com.example.szakchat.databinding.MessageIncomingBinding
-import com.example.szakchat.databinding.MessageOwnedBinding
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.gordian.hu.mcold.gordian.databinding.MessageIncomingBinding
+import hu.bme.gordian.hu.mcold.gordian.databinding.MessageOwnedBinding
 
 abstract class MessageHolder(view: View,) : RecyclerView.ViewHolder(view) {
     protected var message: Message? = null

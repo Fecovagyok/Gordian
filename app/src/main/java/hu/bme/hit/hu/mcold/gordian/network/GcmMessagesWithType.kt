@@ -1,6 +1,6 @@
-package hu.bme.gordian.hu.mcold.gordian.network
+package hu.bme.hit.hu.mcold.gordian.network
 
-import com.example.szakchat.security.GcmMessage
+import hu.bme.hit.hu.mcold.gordian.security.GcmMessage
 
 class GcmMessagesWithType(count: Int) {
     private val list: Array<MutableList<GcmMessage>> = Array(2) {

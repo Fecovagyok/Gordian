@@ -1,6 +1,6 @@
-package hu.bme.gordian.hu.mcold.gordian.network
+package hu.bme.hit.hu.mcold.gordian.network
 
-import com.example.szakchat.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.identity.UserID
 
 data class Credentials(
     val id: UserID,

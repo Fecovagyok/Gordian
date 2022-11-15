@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.exchange
+package hu.bme.hit.hu.mcold.gordian.exchange
 
 import android.os.Bundle
 import android.util.Log
@@ -9,14 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.budiyev.android.codescanner.*
-import com.example.szakchat.MainActivity
-import com.example.szakchat.R
-import com.example.szakchat.contacts.Contact
-import com.example.szakchat.databinding.FragmentReadQrBinding
-import com.example.szakchat.extensions.toData
-import com.example.szakchat.viewModel.ChatViewModel
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentReadQrBinding
+import hu.bme.hit.hu.mcold.gordian.MainActivity
+import hu.bme.hit.hu.mcold.gordian.common.toData
+import hu.bme.hit.hu.mcold.gordian.contacts.Contact
+import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
 
 class ReadQRFragment : Fragment() {
     private var _binding: FragmentReadQrBinding? = null

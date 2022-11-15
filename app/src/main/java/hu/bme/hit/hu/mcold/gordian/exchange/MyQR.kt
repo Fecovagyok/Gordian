@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.exchange
+package hu.bme.hit.hu.mcold.gordian.exchange
 
 import android.graphics.Bitmap
 import android.graphics.Color.BLACK

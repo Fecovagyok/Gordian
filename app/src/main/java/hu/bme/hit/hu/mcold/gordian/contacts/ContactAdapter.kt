@@ -1,14 +1,14 @@
-package hu.bme.gordian.hu.mcold.gordian.contacts
+package hu.bme.hit.hu.mcold.gordian.contacts
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.szakchat.databinding.RowContactBinding
+import hu.bme.gordian.hu.mcold.gordian.databinding.RowContactBinding
 
 class ContactAdapter(private val listener: ContactListener)
-    : ListAdapter<Contact,ContactAdapter.ContactHolder>(itemCallback){
+    : ListAdapter<Contact, ContactAdapter.ContactHolder>(itemCallback){
 
     companion object {
         object itemCallback : DiffUtil.ItemCallback<Contact>() {

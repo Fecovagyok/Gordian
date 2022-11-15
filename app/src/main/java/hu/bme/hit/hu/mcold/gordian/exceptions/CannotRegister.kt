@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.exceptions
+package hu.bme.hit.hu.mcold.gordian.exceptions
 
 import java.io.IOException
 

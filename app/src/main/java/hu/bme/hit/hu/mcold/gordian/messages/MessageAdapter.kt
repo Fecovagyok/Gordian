@@ -1,11 +1,11 @@
-package hu.bme.gordian.hu.mcold.gordian.messages
+package hu.bme.hit.hu.mcold.gordian.messages
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.szakchat.databinding.MessageIncomingBinding
-import com.example.szakchat.databinding.MessageOwnedBinding
+import hu.bme.gordian.hu.mcold.gordian.databinding.MessageIncomingBinding
+import hu.bme.gordian.hu.mcold.gordian.databinding.MessageOwnedBinding
 
 class MessageAdapter(private val listener: Listener)
     : ListAdapter<Message, MessageHolder>(itemCallback){

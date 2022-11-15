@@ -1,11 +1,11 @@
-package hu.bme.gordian.hu.mcold.gordian.network
+package hu.bme.hit.hu.mcold.gordian.network
 
 import android.util.Log
-import com.example.szakchat.contacts.Contact
-import com.example.szakchat.identity.UserID
-import com.example.szakchat.messages.Message
-import com.example.szakchat.security.GcmMessage
-import com.example.szakchat.security.MySecurityProtocol
+import hu.bme.hit.hu.mcold.gordian.contacts.Contact
+import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.messages.Message
+import hu.bme.hit.hu.mcold.gordian.security.GcmMessage
+import hu.bme.hit.hu.mcold.gordian.security.MySecurityProtocol
 
 // Assuming it was sent, and we need the src as contact
 fun convertToMessages(contacts: List<Contact>, list: List<GcmMessage>, security: MySecurityProtocol): List<Message> {

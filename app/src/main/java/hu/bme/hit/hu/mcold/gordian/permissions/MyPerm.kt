@@ -1,10 +1,10 @@
-package hu.bme.gordian.hu.mcold.gordian.permissions
+package hu.bme.hit.hu.mcold.gordian.permissions
 
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import com.example.szakchat.MainActivity
+import hu.bme.hit.hu.mcold.gordian.MainActivity
 
 class MyPerm(private val activity: MainActivity) {
     companion object {

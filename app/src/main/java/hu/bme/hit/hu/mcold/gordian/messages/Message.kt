@@ -1,7 +1,7 @@
-package hu.bme.gordian.hu.mcold.gordian.messages
+package hu.bme.hit.hu.mcold.gordian.messages
 
-import com.example.szakchat.contacts.Contact
-import com.example.szakchat.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.contacts.Contact
+import hu.bme.hit.hu.mcold.gordian.identity.UserID
 
 data class Message(
     val id: Long = 0,

@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.messages
+package hu.bme.hit.hu.mcold.gordian.messages
 
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import hu.bme.gordian.R
-import hu.bme.gordian.databinding.FragmentSecondBinding
-import hu.bme.gordian.databinding.SecretExpiredLayoutBinding
-import hu.bme.gordian.extensions.isBadText
-import hu.bme.gordian.extensions.scrollToTheEnd
-import hu.bme.gordian.hu.mcold.gordian.viewModel.ChatViewModel
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentSecondBinding
+import hu.bme.gordian.hu.mcold.gordian.databinding.SecretExpiredLayoutBinding
+import hu.bme.hit.hu.mcold.gordian.common.isBadText
+import hu.bme.hit.hu.mcold.gordian.common.scrollToTheEnd
+import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
 
 
 /**

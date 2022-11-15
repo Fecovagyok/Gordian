@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.exchange
+package hu.bme.hit.hu.mcold.gordian.exchange
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.szakchat.MainActivity
-import com.example.szakchat.R
-import com.example.szakchat.databinding.FragmentExchangeBinding
-import com.example.szakchat.viewModel.ChatViewModel
-import com.example.szakchat.viewModel.MySecurityManager
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentExchangeBinding
+import hu.bme.hit.hu.mcold.gordian.MainActivity
+import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
+import hu.bme.hit.hu.mcold.gordian.viewModel.MySecurityManager
 
 class ExchangeFragment : Fragment() {
 
@@ -31,14 +31,14 @@ class ExchangeFragment : Fragment() {
         security.liveRandomBytes.observe(viewLifecycleOwner){
             it?: return@observe
             when(it.state){
-                MySecurityManager.MSG -> {
+                MySecurityManager.NETWORK_MSG -> {
                     val activity = requireActivity() as MainActivity
                     activity.showSnack(it.msg)
                 }
-                MySecurityManager.START -> {
+                MySecurityManager.NETWORK_START -> {
                     binding.createKeyProgress.visibility = View.VISIBLE
                 }
-                MySecurityManager.END -> {
+                MySecurityManager.NETWORK_END -> {
                     binding.createKeyProgress.visibility = View.GONE
                     findNavController().navigate(R.id.navigate_to_qr)
                     security.clearMessage()

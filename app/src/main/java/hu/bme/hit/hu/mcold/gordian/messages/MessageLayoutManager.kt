@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.messages
+package hu.bme.hit.hu.mcold.gordian.messages
 
 import android.content.Context
 import android.util.AttributeSet

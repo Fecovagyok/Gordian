@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.contacts
+package hu.bme.hit.hu.mcold.gordian.contacts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.szakchat.R
-import com.example.szakchat.databinding.FragmentFirstBinding
-import com.example.szakchat.viewModel.ChatViewModel
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentFirstBinding
+import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.

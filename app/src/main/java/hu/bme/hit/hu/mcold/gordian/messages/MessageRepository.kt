@@ -1,12 +1,12 @@
-package hu.bme.gordian.hu.mcold.gordian.messages
+package hu.bme.hit.hu.mcold.gordian.messages
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.example.szakchat.contacts.Contact
-import com.example.szakchat.database.RoomMessage
-import com.example.szakchat.extensions.toBase64String
-import com.example.szakchat.extensions.toUserID
-import hu.bme.gordian.hu.mcold.gordian.ChatApplication
+import hu.bme.hit.hu.mcold.gordian.ChatApplication
+import hu.bme.hit.hu.mcold.gordian.common.toBase64String
+import hu.bme.hit.hu.mcold.gordian.common.toUserID
+import hu.bme.hit.hu.mcold.gordian.contacts.Contact
+import hu.bme.hit.hu.mcold.gordian.database.RoomMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -1,10 +1,11 @@
-package hu.bme.gordian.hu.mcold.gordian.network
+package hu.bme.hit.hu.mcold.gordian.network
 
-import com.example.szakchat.exceptions.AuthError
-import com.example.szakchat.exceptions.ProtocolException
-import com.example.szakchat.extensions.awaitClose
-import com.example.szakchat.extensions.toUserID
-import com.example.szakchat.security.GcmMessage
+import hu.bme.gordian.hu.mcold.gordian.network.StatusLogger
+import hu.bme.hit.hu.mcold.gordian.common.awaitClose
+import hu.bme.hit.hu.mcold.gordian.common.toUserID
+import hu.bme.hit.hu.mcold.gordian.exceptions.AuthError
+import hu.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
+import hu.bme.hit.hu.mcold.gordian.security.GcmMessage
 import java.io.InputStream
 import java.io.OutputStream
 import java.net.Inet4Address

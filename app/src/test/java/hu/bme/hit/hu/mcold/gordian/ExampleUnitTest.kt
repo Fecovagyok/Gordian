@@ -1,6 +1,6 @@
 package hu.bme.gordian
 
-import com.example.szakchat.extensions.toByteArray
+import hu.bme.hit.hu.mcold.gordian.common.toByteArray
 import org.junit.Test
 
 /**

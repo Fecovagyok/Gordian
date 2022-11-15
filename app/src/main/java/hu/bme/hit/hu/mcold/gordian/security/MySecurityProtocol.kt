@@ -1,14 +1,11 @@
-package hu.bme.gordian.hu.mcold.gordian.security
+package hu.bme.hit.hu.mcold.gordian.security
 
 import android.util.Log
-import com.example.szakchat.common.MSG_VERSION
-import com.example.szakchat.common.TYPE_HELLO
-import com.example.szakchat.common.TYPE_MESSAGE
-import com.example.szakchat.exceptions.ProtocolException
-import com.example.szakchat.exceptions.TooLongMessage
-import com.example.szakchat.extensions.*
-import com.example.szakchat.identity.UserID
-import com.example.szakchat.messages.Message
+import hu.bme.hit.hu.mcold.gordian.common.*
+import hu.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
+import hu.bme.hit.hu.mcold.gordian.exceptions.TooLongMessage
+import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.messages.Message
 import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.spec.GCMParameterSpec

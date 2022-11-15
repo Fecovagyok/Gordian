@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian
+package hu.bme.hit.hu.mcold.gordian
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -16,12 +16,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
-import com.example.szakchat.databinding.ActivityMainBinding
-import com.example.szakchat.extensions.toUserID
-import com.example.szakchat.permissions.MyPerm
-import com.example.szakchat.viewModel.ChatViewModel
-import com.example.szakchat.viewModel.NetworkManager
 import com.google.android.material.snackbar.Snackbar
+import hu.bme.gordian.hu.mcold.gordian.R
+import hu.bme.gordian.hu.mcold.gordian.databinding.ActivityMainBinding
+import hu.bme.hit.hu.mcold.gordian.common.toUserID
+import hu.bme.hit.hu.mcold.gordian.permissions.MyPerm
+import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
+import hu.bme.hit.hu.mcold.gordian.viewModel.NetworkManager
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 

@@ -1,4 +1,4 @@
-package hu.bme.gordian.hu.mcold.gordian.security
+package hu.bme.hit.hu.mcold.gordian.security
 
 import android.util.Log
 
