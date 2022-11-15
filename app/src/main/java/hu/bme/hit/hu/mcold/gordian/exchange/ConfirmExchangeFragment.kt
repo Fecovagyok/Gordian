@@ -67,7 +67,7 @@ class ConfirmExchangeFragment : Fragment() {
     private fun setButtonOnSuccess(){
         binding.confirmBackBtn.setText(R.string.get_back_messaging)
         binding.confirmBackBtn.setOnClickListener {
-            findNavController().popBackStack(R.id.SecondFragment, inclusive = false)
+            findNavController().popBackStack(R.id.MessagesFragment, inclusive = false)
         }
         binding.confirmBackBtn.isEnabled = true
     }

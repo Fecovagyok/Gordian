@@ -53,4 +53,8 @@
     <string name="max_characters_second_half"> characters</string>
     <string name="log_out">Log out</string>
     <string name="empty_msg_not_sent">Empty message will not be sent</string>
+    <string name="confirm_interrupt_pairing">Are you sure you want to interrupt the pairing process?</string>
+    <string name="abort_pairing">Abort pairing</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

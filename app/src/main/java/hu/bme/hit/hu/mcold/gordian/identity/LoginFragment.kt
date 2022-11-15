@@ -66,7 +66,7 @@ class LoginFragment : Fragment() {
                     )
                     viewModel.networking.checkPollingSync()
                     // Appbar fix
-                    reSetupActionBar(a, R.id.FirstFragment) { controller ->
+                    reSetupActionBar(a, R.id.ContactsFragment) { controller ->
                         controller.navigate(R.id.action_login_to_first)
                     }
                 }

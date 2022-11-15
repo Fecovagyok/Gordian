@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -80,12 +81,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     private fun initSelfId(): Int {
         return if(viewModel.networking.self != null){
-            R.id.FirstFragment
+            R.id.ContactsFragment
         } else {
             if(!restoreCredentials())
                 R.id.graph_login_fragment
             else {
-                R.id.FirstFragment
+                R.id.ContactsFragment
             }
         }
     }
@@ -149,5 +150,26 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     fun logout() {
         viewModel.networking.logout(getPreferences(Context.MODE_PRIVATE))
+    }
+
+    override fun onBackPressed() {
+        if(
+            findNavController(R.id.nav_host_fragment_content_main).currentDestination!!.id
+            == R.id.exchange_confirm_fragment_in_graph
+        ) {
+            AlertDialog.Builder(this)
+                .setMessage(R.string.confirm_interrupt_pairing)
+                .setTitle(R.string.abort_pairing)
+                .setCancelable(true)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    super.onBackPressed()
+                }
+                .setNegativeButton(R.string.no) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
+        } else {
+            super.onBackPressed()
+        }
     }
 }

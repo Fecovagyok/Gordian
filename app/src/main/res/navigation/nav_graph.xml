@@ -75,7 +75,7 @@
         >
         <action
             android:id="@+id/action_login_to_first"
-            app:destination="@id/FirstFragment"
+            app:destination="@id/ContactsFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true"
             />
@@ -83,29 +83,20 @@
     </fragment>
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/ContactsFragment"
         android:name="hu.bme.hit.hu.mcold.gordian.contacts.ContactsFragment"
         android:label="@string/contact_fragment_label"
         tools:layout="@layout/fragment_contact">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-        <action
-            android:id="@+id/action_First_to_self"
-            app:destination="@id/graph_login_fragment"
-            app:popUpToInclusive="true"
-            />
+            app:destination="@id/MessagesFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/MessagesFragment"
         android:name="hu.bme.hit.hu.mcold.gordian.messages.MessagesFragment"
         android:label="@string/messages"
         tools:layout="@layout/fragment_message">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
 
         <action
             android:id="@+id/navigate_to_exchange"
