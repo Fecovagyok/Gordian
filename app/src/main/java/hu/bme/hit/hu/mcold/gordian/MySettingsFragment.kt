@@ -13,7 +13,6 @@ class MySettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         val serverPref: EditTextPreference? = findPreference("SERVER_ADDRESS")
         serverPref?.setOnBindEditTextListener {
-            it.inputType = InputType.TYPE_CLASS_NUMBER
         }
         val logoutPref: Preference? = findPreference("LOGOUT")
         logoutPref?.setOnPreferenceClickListener {
