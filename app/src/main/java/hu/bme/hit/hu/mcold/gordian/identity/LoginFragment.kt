@@ -20,8 +20,8 @@ import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
 import hu.bme.hit.hu.mcold.gordian.viewModel.NetworkManager
 
 /**
- * A simple [Fragment] subclass.
- * create an instance of this fragment.
+ * A [Fragment] subclass which displays
+ * the user's local contacts.
  */
 class LoginFragment : Fragment() {
 
