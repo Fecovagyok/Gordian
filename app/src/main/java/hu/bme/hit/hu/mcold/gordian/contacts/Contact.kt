@@ -1,6 +1,6 @@
 package hu.bme.hit.hu.mcold.gordian.contacts
 
-import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.login.UserID
 import hu.bme.hit.hu.mcold.gordian.security.KeyProviders
 
 data class Contact(

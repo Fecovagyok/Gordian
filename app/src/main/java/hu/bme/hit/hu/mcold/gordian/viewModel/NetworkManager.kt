@@ -15,7 +15,7 @@ import hu.bme.hit.hu.mcold.gordian.common.toBase64String
 import hu.bme.hit.hu.mcold.gordian.exceptions.AlreadyRunning
 import hu.bme.hit.hu.mcold.gordian.exceptions.AuthError
 import hu.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
-import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.login.UserID
 import hu.bme.hit.hu.mcold.gordian.messages.Message
 import hu.bme.hit.hu.mcold.gordian.network.ChatSocket
 import hu.bme.hit.hu.mcold.gordian.network.Credentials
@@ -263,7 +263,12 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
                 }
             }
             try {
-                chatSocket.auth(username, password, logger)
+                chatSocket.auth(username, password, logger){ socket, timeout ->
+                    launch(Dispatchers.IO) {
+                        delay(timeout.toLong())
+                        socket.close()
+                    }
+                }
             } catch (e: ProtocolException){
                 Log.e("FECO", "ProtocolException: ${e.message} while logging in")
                 logger.postError(e.message?: "Unknown auth error")

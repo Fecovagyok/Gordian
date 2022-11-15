@@ -10,7 +10,7 @@ import hu.bme.hit.hu.mcold.gordian.common.*
 import hu.bme.hit.hu.mcold.gordian.contacts.Contact
 import hu.bme.hit.hu.mcold.gordian.contacts.ContactRepository
 import hu.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
-import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.login.UserID
 import hu.bme.hit.hu.mcold.gordian.messages.Message
 import hu.bme.hit.hu.mcold.gordian.messages.MessageRepository
 import hu.bme.hit.hu.mcold.gordian.security.GcmMessage

@@ -4,7 +4,7 @@ import android.util.Log
 import hu.bme.hit.hu.mcold.gordian.common.*
 import hu.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
 import hu.bme.hit.hu.mcold.gordian.exceptions.TooLongMessage
-import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.login.UserID
 import hu.bme.hit.hu.mcold.gordian.messages.Message
 import java.security.SecureRandom
 import javax.crypto.Cipher

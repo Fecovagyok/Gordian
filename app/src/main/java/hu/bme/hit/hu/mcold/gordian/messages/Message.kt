@@ -1,7 +1,7 @@
 package hu.bme.hit.hu.mcold.gordian.messages
 
 import hu.bme.hit.hu.mcold.gordian.contacts.Contact
-import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.login.UserID
 
 data class Message(
     val id: Long = 0,

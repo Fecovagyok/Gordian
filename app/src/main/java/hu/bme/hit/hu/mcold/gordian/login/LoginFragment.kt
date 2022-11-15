@@ -1,4 +1,4 @@
-package hu.bme.hit.hu.mcold.gordian.identity
+package hu.bme.hit.hu.mcold.gordian.login
 
 import android.content.Context
 import android.os.Bundle

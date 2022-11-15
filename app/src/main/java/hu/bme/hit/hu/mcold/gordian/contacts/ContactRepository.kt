@@ -6,7 +6,7 @@ import hu.bme.hit.hu.mcold.gordian.common.toBase64String
 import hu.bme.hit.hu.mcold.gordian.common.toUserID
 import hu.bme.hit.hu.mcold.gordian.database.ContactDao
 import hu.bme.hit.hu.mcold.gordian.database.RoomContact
-import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.login.UserID
 import hu.bme.hit.hu.mcold.gordian.security.KeyProviders
 import hu.bme.hit.hu.mcold.gordian.security.MySecretKey
 import hu.bme.hit.hu.mcold.gordian.security.ReceiverKeyProvider

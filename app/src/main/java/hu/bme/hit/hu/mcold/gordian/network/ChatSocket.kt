@@ -10,6 +10,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.net.Inet4Address
 import java.net.InetSocketAddress
+import java.net.Socket
 import javax.net.SocketFactory
 import javax.net.ssl.SSLSocketFactory
 
@@ -28,9 +29,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
 
     fun send(messages: List<GcmMessage>){
         self?: throw IllegalStateException("No logged on user")
-        postReceiveMessage("Trying to connect...")
-        val socket = factory.createSocket(ip, SENDING_PORT)
-        postReceiveMessage("Connected")
+        val socket = createMySocket(SENDING_PORT)
         val inS = socket.getInputStream()
         val out = socket.getOutputStream()
         withAuth(out, inS) {
@@ -50,9 +49,7 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
 
     fun receive(): GcmMessagesWithType {
         self?: throw IllegalStateException("No logged on user")
-        postReceiveMessage("Trying to connect...")
-        val socket = factory.createSocket(ip, POLLING_PORT)
-        postReceiveMessage("Connected")
+        val socket = createMySocket(POLLING_PORT)
         val inS = socket.getInputStream()
         val out = socket.getOutputStream()
         val received = withAuth(out = out, inS = inS) {
@@ -86,10 +83,18 @@ class ChatSocket(private val logger: StatusLogger, var ip: String, var self: Cre
         }
     }
 
-    fun auth(username: String, password: String, out: StatusLogger){
-        val address = InetSocketAddress(Inet4Address.getByName(ip), POLLING_PORT)
+    private fun createMySocket(port: Int): Socket {
+        postReceiveMessage("Trying to connect...")
+        val address = InetSocketAddress(Inet4Address.getByName(ip), port)
         val socket = factory.createSocket()
         socket.connect(address, TIMEOUT)
+        postReceiveMessage("Connected")
+        return socket
+    }
+
+    fun auth(username: String, password: String, out: StatusLogger, socketOut: (Socket, Int) -> Unit){
+        val socket = createMySocket(POLLING_PORT)
+        socketOut(socket, TIMEOUT)
         val outStream = socket.getOutputStream()
         val inStream = socket.getInputStream()
         outStream.write(AUTH_WITH_NAME)

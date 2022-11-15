@@ -1,7 +1,7 @@
 package hu.bme.hit.hu.mcold.gordian.security
 
 import hu.bme.hit.hu.mcold.gordian.common.MyByteArray
-import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.login.UserID
 
 data class GcmMessage(
     val version: Int,

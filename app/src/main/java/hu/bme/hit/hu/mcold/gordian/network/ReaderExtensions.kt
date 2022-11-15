@@ -10,7 +10,7 @@ import java.io.InputStream
 fun InputStream.throwRead(): Int {
     val red = read()
     if (red == -1)
-        throw IOException("Vege")
+        throw IOException("Remote end closed the socket")
     return red
 }
 

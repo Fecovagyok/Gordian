@@ -1,4 +1,4 @@
-package hu.bme.hit.hu.mcold.gordian.identity
+package hu.bme.hit.hu.mcold.gordian.login
 
 import hu.bme.hit.hu.mcold.gordian.common.MyByteArray
 

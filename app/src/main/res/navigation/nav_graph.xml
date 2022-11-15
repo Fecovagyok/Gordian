@@ -69,7 +69,7 @@
 
     <fragment
         android:id="@+id/graph_login_fragment"
-        android:name="hu.bme.hit.hu.mcold.gordian.identity.LoginFragment"
+        android:name="hu.bme.hit.hu.mcold.gordian.login.LoginFragment"
         android:label="@string/login"
         tools:layout="@layout/fragment_login"
         >

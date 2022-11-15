@@ -2,7 +2,7 @@ package hu.bme.hit.hu.mcold.gordian.network
 
 import android.util.Log
 import hu.bme.hit.hu.mcold.gordian.contacts.Contact
-import hu.bme.hit.hu.mcold.gordian.identity.UserID
+import hu.bme.hit.hu.mcold.gordian.login.UserID
 import hu.bme.hit.hu.mcold.gordian.messages.Message
 import hu.bme.hit.hu.mcold.gordian.security.GcmMessage
 import hu.bme.hit.hu.mcold.gordian.security.MySecurityProtocol
