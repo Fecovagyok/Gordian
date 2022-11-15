@@ -8,7 +8,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.szakchat"
+        applicationId "hu.bme.gordian.hu.mcold.gordian"
         minSdk 23 // Android 6.0 is the minimum - Codename marshmallow
         targetSdk 32
         versionCode 1
