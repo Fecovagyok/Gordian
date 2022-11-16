@@ -19,6 +19,7 @@ import hu.bme.hit.hu.mcold.gordian.login.UserID
 import hu.bme.hit.hu.mcold.gordian.messages.Message
 import hu.bme.hit.hu.mcold.gordian.network.ChatSocket
 import hu.bme.hit.hu.mcold.gordian.network.Credentials
+import hu.bme.hit.hu.mcold.gordian.network.TimeOutJob
 import hu.bme.hit.hu.mcold.gordian.network.convertToMessages
 import hu.bme.hit.hu.mcold.gordian.security.GcmMessage
 import kotlinx.coroutines.*
@@ -81,8 +82,8 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         return false
     }
 
-    fun sendHello(message: GcmMessage) {
-        chatSocket.send(listOf(message))
+    fun sendHello(message: GcmMessage, timeOutJob: TimeOutJob) {
+        chatSocket.send(listOf(message), timeOutJob)
     }
 
     private fun startSend(message: Message) = viewModel.viewModelScope.launch(Dispatchers.IO) {
@@ -91,7 +92,9 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         }
         robust("sending") {
             val id = viewModel.messageRepository.insert(message)
-            chatSocket.send(listOf(gcmMessage))
+            withTimeOut(this) { timeOutJob ->
+                chatSocket.send(listOf(gcmMessage), timeOutJob)
+            }
             message.sent = true
             viewModel.messageRepository.setSent(id)
         }
@@ -233,7 +236,9 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
             robust("polling") {
                 while (true) {
                     delay(POLL_INTERVAL)
-                    val received = chatSocket.receive()
+                    val received = withTimeOut(this) { timeOutJob ->
+                        chatSocket.receive(timeOutJob)
+                    }
                     if(received[TYPE_HELLO].isNotEmpty())
                         insertHelloMessage(received[TYPE_HELLO])
                     if(received[TYPE_MESSAGE].isNotEmpty())
@@ -263,11 +268,8 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
                 }
             }
             try {
-                chatSocket.auth(username, password, logger){ socket, timeout ->
-                    launch(Dispatchers.IO) {
-                        delay(timeout.toLong())
-                        socket.close()
-                    }
+                withTimeOut(this){timeOutJob ->
+                    chatSocket.auth(username, password, logger, timeOutJob)
                 }
             } catch (e: ProtocolException){
                 Log.e("FECO", "ProtocolException: ${e.message} while logging in")

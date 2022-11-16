@@ -75,7 +75,9 @@ class ChatViewModel() : ViewModel() {
             val ackMessage = withContext(Dispatchers.IO){
                 networking.startHelloChannel()
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.sending_hello_message))
-                networking.sendHello(helloMessage)
+                withTimeOut(this@launch){ timeOutJob ->
+                    networking.sendHello(helloMessage, timeOutJob)
+                }
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.waiting_hello_reply))
                 networking.getHelloMessage()
             }
@@ -143,7 +145,9 @@ class ChatViewModel() : ViewModel() {
                     )
                     withContext(Dispatchers.IO) {
                         repository.updateContact(newContact)
-                        networking.sendHello(myHello) // Sending the ack
+                        withTimeOut(this@launch){timeOutJob ->
+                            networking.sendHello(myHello, timeOutJob) // Sending the ack
+                        }
                     }
                     pairData.postValue(StatusMessage(state = END,))
                 }
