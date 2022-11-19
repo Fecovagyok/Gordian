@@ -29,7 +29,7 @@
         android:id="@+id/show_qr_fragment"
         tools:layout="@layout/fragment_qr_show"
         android:name="hu.bme.hit.hu.mcold.gordian.exchange.ShowQRFragment"
-        android:label="@string/your_secret_key"
+        android:label="@string/show_your_secret_key"
         >
 
         <action
@@ -53,7 +53,7 @@
 
     <fragment
         android:id="@+id/exchangeKeyFragment"
-        android:label="@string/exchange_your_secret_key"
+        android:label="@string/exchange_keys"
         tools:layout="@layout/fragment_exchange"
         android:name="hu.bme.hit.hu.mcold.gordian.exchange.ExchangeFragment"
         >

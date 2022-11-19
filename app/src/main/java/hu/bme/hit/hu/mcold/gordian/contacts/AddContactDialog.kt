@@ -2,10 +2,6 @@ package hu.bme.hit.hu.mcold.gordian.contacts
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -18,25 +14,15 @@ class AddContactDialog : DialogFragment() {
 
     private val viewModel: ChatViewModel by activityViewModels()
 
-    private lateinit var binding: AddContactBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = AddContactBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = requireContext()
-        val input = EditText(context)
+        val binding = AddContactBinding.inflate(layoutInflater)
         return AlertDialog.Builder(context)
             .setTitle(R.string.add_contact)
-            .setView(input)
+            .setView(binding.root)
             .setPositiveButton(R.string.ok) { _, _ ->
-                val text = binding.contactField.text.toString().trim()
+                val text = binding.addContactInput.text.toString().trim()
+
                 if(text.isBadText())
                     return@setPositiveButton
                 createContact(text)

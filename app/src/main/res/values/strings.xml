@@ -20,7 +20,7 @@
     <string name="secret_key_gen_already_running">The secret is already being generated</string>
     <string name="exchange_secret_menu">Exchange</string>
     <string name="exchange_your_secret_key">Exchange your secret key</string>
-    <string name="your_secret_key">Your secret key</string>
+    <string name="show_your_secret_key">Show your secret key</string>
     <string name="read_your_secret_key">Read your secret key</string>
     <string name="messages">Messages</string>
     <string name="server_address">Server address</string>
