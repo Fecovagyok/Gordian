@@ -188,10 +188,12 @@ class NetworkManager(private val viewModel: ChatViewModel, ip: String)
         helloChannel = null
     }
 
-    suspend fun getHelloMessage(): GcmMessage {
-        val received = helloChannel!!.receive()
-        helloChannel = null
-        return received
+    suspend fun getHelloMessage(): GcmMessage? {
+        return withTimeoutOrNull(30000) {
+            val received = helloChannel!!.receive()
+            helloChannel = null
+            return@withTimeoutOrNull received
+        }
     }
 
     private suspend fun insertHelloMessage(received: List<GcmMessage>){

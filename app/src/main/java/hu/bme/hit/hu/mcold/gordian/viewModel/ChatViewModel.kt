@@ -81,6 +81,10 @@ class ChatViewModel() : ViewModel() {
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.waiting_hello_reply))
                 networking.getHelloMessage()
             }
+            ackMessage?: run {
+                gettingHelloMessageTimedOut()
+                return@launch
+            }
             withGoodHelloMessage(contact, ackMessage){
                 repository.updateContact(contact)
                 pairData.postValue(
@@ -100,6 +104,15 @@ class ChatViewModel() : ViewModel() {
         name = name,
         keys = keys,
     )
+
+    private fun gettingHelloMessageTimedOut(){
+        pairData.postValue(
+            StatusMessage(
+                state = ERROR,
+                R.string.pairing_timed_out
+            )
+        )
+    }
 
     // to be called on the default thread
     private suspend inline fun withGoodHelloMessage(
@@ -136,6 +149,10 @@ class ChatViewModel() : ViewModel() {
         helloJob = viewModelScope.launch(Dispatchers.IO) {
             pairData.postValue(StatusMessage(state = MSG, R.string.waiting_hello_message))
             val helloMessage = networking.getHelloMessage()
+            helloMessage?: run {
+                gettingHelloMessageTimedOut()
+                return@launch
+            }
             withContext(Dispatchers.Default) {
                 withGoodHelloMessage(contact, helloMessage) { newContact ->
                     val myHello = security.myProto.craftHelloMessage(

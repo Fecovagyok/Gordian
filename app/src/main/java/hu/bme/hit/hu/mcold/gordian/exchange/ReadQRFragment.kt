@@ -92,7 +92,10 @@ class ReadQRFragment : Fragment() {
 
     private fun onReadSuccess(result: Result){
         val newContact = viewModel.currentContact!!.toContactWithKey(result)
-        viewModel.startHello(newContact)
+        if(!viewModel.startHello(newContact)){
+            val activity = requireActivity() as MainActivity
+            activity.showSnack("Pairing already in progress")
+        }
         findNavController().navigate(R.id.from_read_to_confirm)
     }
 }

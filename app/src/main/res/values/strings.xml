@@ -59,4 +59,5 @@
     <string name="no">No</string>
     <string name="add_contact">Add a contact</string>
     <string name="ok">OK</string>
+    <string name="pairing_timed_out">Pairing timed out</string>
 </resources>

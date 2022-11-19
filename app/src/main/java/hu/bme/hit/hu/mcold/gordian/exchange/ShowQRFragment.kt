@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import hu.bme.gordian.hu.mcold.gordian.R
 import hu.bme.gordian.hu.mcold.gordian.databinding.FragmentQrShowBinding
+import hu.bme.hit.hu.mcold.gordian.MainActivity
 import hu.bme.hit.hu.mcold.gordian.contacts.Contact
 import hu.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
 
@@ -56,7 +57,11 @@ class ShowQRFragment : Fragment() {
     private fun secretExchangeSuccess(){
         val bytes = viewModel.security.generatedLotsOfBytes!!
         val newContact = viewModel.currentContact!!.toContactWithKey(bytes)
-        viewModel.listenHello(newContact)
+        if(!viewModel.listenHello(newContact)){
+            val activity = requireActivity() as MainActivity
+            activity.showSnack("Pairing already in progress")
+        }
+
         findNavController().navigate(R.id.from_show_to_confirm)
     }
 }
