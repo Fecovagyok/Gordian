@@ -20,4 +20,15 @@ open class MyByteArray(
 
     operator fun get(idx: Int) = values[idx]
     val size get() = values.size
+
+    override fun toString(): String {
+        return buildString {
+            append('[')
+            values.forEach {
+                append(it)
+                append(',')
+            }
+            append(']')
+        }
+    }
 }

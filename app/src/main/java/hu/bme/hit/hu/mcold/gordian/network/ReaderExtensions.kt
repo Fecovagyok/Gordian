@@ -1,5 +1,6 @@
 package hu.bme.hit.hu.mcold.gordian.network
 
+import hu.bme.hit.hu.mcold.gordian.common.myToLong
 import hu.bme.hit.hu.mcold.gordian.common.toMyByteArray
 import hu.bme.hit.hu.mcold.gordian.common.toUserID
 import hu.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
@@ -26,7 +27,7 @@ fun InputStream.readInt32(): Int {
 
 fun InputStream.readLong(): Long {
     val input = readInt32().toLong() shl 32
-    return input or readInt32().toLong()
+    return input or readInt32().myToLong()
 }
 
 // Read a string from the input stream with a max size of 255

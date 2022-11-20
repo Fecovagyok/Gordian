@@ -2,6 +2,7 @@ package hu.bme.hit.hu.mcold.gordian.network
 
 import android.util.Log
 import hu.bme.hit.hu.mcold.gordian.common.MyByteArray
+import hu.bme.hit.hu.mcold.gordian.common.toHex
 import hu.bme.hit.hu.mcold.gordian.security.GcmMessage
 import java.io.OutputStream
 
@@ -15,11 +16,13 @@ fun OutputStream.writeString(str: String) {
 
 fun OutputStream.writeInt16(value: Int) {
     val left = value ushr 8
+    Log.d("FECO", "Bytes: ${left.toByte().toHex()} ${value.toByte().toHex()}")
     write(left)
     write(value)
 }
 
 fun OutputStream.writeInt32(value: Int) {
+    Log.d("FECO", "Int32 sent: $value")
     writeInt16(value ushr 16)
     writeInt16(value)
 }
@@ -36,7 +39,6 @@ fun OutputStream.writeGcmMessage(msg: GcmMessage){
     write(msg.type)
     writeInt16(msg.length)
     writeInt32(msg.seqNum)
-    Log.d("FECO", "Size of rnd: ${msg.rnd.size}")
     write(msg.rnd)
     writeLong(msg.date)
     write(msg.src)

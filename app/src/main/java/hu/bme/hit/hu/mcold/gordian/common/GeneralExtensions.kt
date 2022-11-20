@@ -53,6 +53,8 @@ fun ByteArray.toUserID(): UserID {
 fun MyByteArray.toHex() = values.toHex()
 fun Long.toHex() = toByteArray().toHex()
 fun Int.toHex() = toByteArray().toHex()
+fun Byte.toByteArray() = ByteArray(1) { this }
+fun Byte.toHex() = toByteArray().toHex()
 fun String.toData(): ByteArray = Base64.decode(this, Base64.DEFAULT)
 fun ByteArray.toBase64String(): String = Base64.encodeToString(this, Base64.DEFAULT)
 fun String.toUserID() = UserID(Base64.decode(this, Base64.DEFAULT))
@@ -62,6 +64,8 @@ fun Int.copyBytes(dest: ByteArray){
     dest[2] = toSecondMostByte()
     dest[3] = toByte()
 }
+
+fun Int.myToLong() = toLong() and 0x00000000ffffffff
 
 fun Short.toSecondMostByte(): Byte {
     val target = toInt() ushr 8

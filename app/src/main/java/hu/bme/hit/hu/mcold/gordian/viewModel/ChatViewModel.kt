@@ -1,5 +1,6 @@
 package hu.bme.hit.hu.mcold.gordian.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -72,12 +73,14 @@ class ChatViewModel() : ViewModel() {
                 owner = contact.owner,
                 id = contact.uniqueId!!
             )
+            Log.d("FECO", "Crafted hello message:\n$helloMessage")
             val ackMessage = withContext(Dispatchers.IO){
                 networking.startHelloChannel()
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.sending_hello_message))
                 withTimeOut(this@launch){ timeOutJob ->
                     networking.sendHello(helloMessage, timeOutJob)
                 }
+                networking.checkPollingSync()
                 pairData.postValue(StatusMessage(state = MSG, msg = R.string.waiting_hello_reply))
                 networking.getHelloMessage()
             }
@@ -126,6 +129,7 @@ class ChatViewModel() : ViewModel() {
             currentContact = newContact
             block(newContact)
         } catch (e: javax.crypto.AEADBadTagException) {
+            Log.e("FECO", "Bad message:\n$helloMessage")
             pairData.postValue(
                 StatusMessage(
                     state = ERROR,
