@@ -23,7 +23,7 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "hu.mcold.gordian"
