@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import haart.bme.gordian.hu.mcold.gordian.databinding.MessageIncomingBinding
-import haart.bme.gordian.hu.mcold.gordian.databinding.MessageOwnedBinding
+import hu.mcold.gordian.databinding.MessageIncomingBinding
+import hu.mcold.gordian.databinding.MessageOwnedBinding
 
 class MessageAdapter(private val listener: Listener)
     : ListAdapter<Message, hu.mcold.gordian.messages.MessageHolder>(itemCallback){

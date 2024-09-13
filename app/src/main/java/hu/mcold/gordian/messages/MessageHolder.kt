@@ -2,9 +2,9 @@ package hu.mcold.gordian.messages
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import haart.bme.gordian.hu.mcold.gordian.R
-import haart.bme.gordian.hu.mcold.gordian.databinding.MessageIncomingBinding
-import haart.bme.gordian.hu.mcold.gordian.databinding.MessageOwnedBinding
+import hu.mcold.gordian.R
+import hu.mcold.gordian.databinding.MessageIncomingBinding
+import hu.mcold.gordian.databinding.MessageOwnedBinding
 
 abstract class MessageHolder(view: View,) : RecyclerView.ViewHolder(view) {
     protected var message: hu.mcold.gordian.messages.Message? = null

@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import haart.bme.gordian.hu.mcold.gordian.R
-import haart.bme.hit.hu.mcold.gordian.common.reSetupActionBar
+import hu.mcold.gordian.R
+import hu.mcold.gordian.common.reSetupActionBar
 
 class MySettingsFragment : PreferenceFragmentCompat() {
 

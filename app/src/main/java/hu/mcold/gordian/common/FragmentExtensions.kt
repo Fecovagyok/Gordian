@@ -6,7 +6,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.textfield.TextInputLayout
-import haart.bme.hit.hu.mcold.gordian.MainActivity
+import hu.mcold.gordian.MainActivity
 
 inline fun Fragment.reSetupActionBar(a: MainActivity, startDest: Int, navigateBlock: (NavController) -> Unit){
     val controller = findNavController()

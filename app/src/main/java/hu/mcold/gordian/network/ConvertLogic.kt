@@ -1,11 +1,11 @@
 package hu.mcold.gordian.network
 
 import android.util.Log
-import haart.bme.hit.hu.mcold.gordian.contacts.Contact
-import haart.bme.hit.hu.mcold.gordian.login.UserID
-import haart.bme.hit.hu.mcold.gordian.messages.Message
+import hu.mcold.gordian.contacts.Contact
+import hu.mcold.gordian.login.UserID
+import hu.mcold.gordian.messages.Message
 import hu.mcold.gordian.security.GcmMessage
-import haart.bme.hit.hu.mcold.gordian.security.MySecurityProtocol
+import hu.mcold.gordian.security.MySecurityProtocol
 
 // Assuming it was sent, and we need the src as contact
 fun convertToMessages(contacts: List<Contact>, list: List<hu.mcold.gordian.security.GcmMessage>, security: MySecurityProtocol): List<Message> {

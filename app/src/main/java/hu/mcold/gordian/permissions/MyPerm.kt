@@ -4,7 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import haart.bme.hit.hu.mcold.gordian.MainActivity
+import hu.mcold.gordian.MainActivity
 
 class MyPerm(private val activity: MainActivity) {
     companion object {

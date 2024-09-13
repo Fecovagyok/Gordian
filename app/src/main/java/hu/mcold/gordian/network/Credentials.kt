@@ -1,6 +1,6 @@
 package hu.mcold.gordian.network
 
-import haart.bme.hit.hu.mcold.gordian.login.UserID
+import hu.mcold.gordian.login.UserID
 
 data class Credentials(
     val id: UserID,

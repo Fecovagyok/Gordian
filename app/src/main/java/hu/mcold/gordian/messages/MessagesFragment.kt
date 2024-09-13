@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import haart.bme.gordian.hu.mcold.gordian.R
-import haart.bme.gordian.hu.mcold.gordian.databinding.FragmentMessageBinding
-import haart.bme.gordian.hu.mcold.gordian.databinding.SecretExpiredLayoutBinding
-import haart.bme.hit.hu.mcold.gordian.common.isBadText
-import haart.bme.hit.hu.mcold.gordian.common.scrollToTheEnd
-import haart.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
+import hu.mcold.gordian.R
+import hu.mcold.gordian.databinding.FragmentMessageBinding
+import hu.mcold.gordian.databinding.SecretExpiredLayoutBinding
+import hu.mcold.gordian.common.isBadText
+import hu.mcold.gordian.common.scrollToTheEnd
+import hu.mcold.gordian.viewModel.ChatViewModel
 
 
 /**

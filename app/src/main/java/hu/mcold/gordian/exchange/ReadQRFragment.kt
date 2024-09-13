@@ -11,11 +11,12 @@ import androidx.navigation.fragment.findNavController
 import com.budiyev.android.codescanner.*
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
-import haart.bme.gordian.hu.mcold.gordian.databinding.FragmentReadQrBinding
-import haart.bme.hit.hu.mcold.gordian.MainActivity
-import haart.bme.hit.hu.mcold.gordian.common.toData
-import haart.bme.hit.hu.mcold.gordian.contacts.Contact
-import haart.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
+import hu.mcold.gordian.databinding.FragmentReadQrBinding
+import hu.mcold.gordian.MainActivity
+import hu.mcold.gordian.common.toData
+import hu.mcold.gordian.contacts.Contact
+import hu.mcold.gordian.viewModel.ChatViewModel
+import hu.mcold.gordian.R
 
 class ReadQRFragment : Fragment() {
     private var _binding: FragmentReadQrBinding? = null

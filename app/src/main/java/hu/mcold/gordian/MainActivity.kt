@@ -17,12 +17,12 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
-import haart.bme.gordian.hu.mcold.gordian.R
-import haart.bme.gordian.hu.mcold.gordian.databinding.ActivityMainBinding
-import haart.bme.hit.hu.mcold.gordian.common.toUserID
-import haart.bme.hit.hu.mcold.gordian.permissions.MyPerm
-import haart.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
-import haart.bme.hit.hu.mcold.gordian.viewModel.NetworkManager
+import hu.mcold.gordian.R
+import hu.mcold.gordian.databinding.ActivityMainBinding
+import hu.mcold.gordian.common.toUserID
+import hu.mcold.gordian.permissions.MyPerm
+import hu.mcold.gordian.viewModel.ChatViewModel
+import hu.mcold.gordian.viewModel.NetworkManager
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 

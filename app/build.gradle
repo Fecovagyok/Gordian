@@ -32,7 +32,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    namespace 'hu.bme.gordian.hu.mcold.gordian'
+    namespace 'hu.mcold.gordian'
 }
 
 dependencies {

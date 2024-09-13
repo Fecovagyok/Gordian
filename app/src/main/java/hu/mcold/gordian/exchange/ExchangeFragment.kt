@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import haart.bme.gordian.hu.mcold.gordian.R
-import haart.bme.gordian.hu.mcold.gordian.databinding.FragmentExchangeBinding
-import haart.bme.hit.hu.mcold.gordian.MainActivity
-import haart.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
-import haart.bme.hit.hu.mcold.gordian.viewModel.MySecurityManager
+import hu.mcold.gordian.R
+import hu.mcold.gordian.databinding.FragmentExchangeBinding
+import hu.mcold.gordian.MainActivity
+import hu.mcold.gordian.viewModel.ChatViewModel
+import hu.mcold.gordian.viewModel.MySecurityManager
 
 class ExchangeFragment : Fragment() {
 

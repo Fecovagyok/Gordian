@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import haart.bme.gordian.hu.mcold.gordian.R
-import haart.bme.gordian.hu.mcold.gordian.databinding.ConfirmExchangeLayoutBinding
-import haart.bme.hit.hu.mcold.gordian.common.END
-import haart.bme.hit.hu.mcold.gordian.common.ERROR
-import haart.bme.hit.hu.mcold.gordian.common.MSG
-import haart.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
+import hu.mcold.gordian.R
+import hu.mcold.gordian.databinding.ConfirmExchangeLayoutBinding
+import hu.mcold.gordian.common.END
+import hu.mcold.gordian.common.ERROR
+import hu.mcold.gordian.common.MSG
+import hu.mcold.gordian.viewModel.ChatViewModel
 
 class ConfirmExchangeFragment : Fragment() {
 

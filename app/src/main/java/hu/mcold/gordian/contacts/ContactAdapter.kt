@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import haart.bme.gordian.hu.mcold.gordian.databinding.RowContactBinding
+import hu.mcold.gordian.databinding.RowContactBinding
 
 class ContactAdapter(private val listener: ContactListener)
     : ListAdapter<Contact, ContactAdapter.ContactHolder>(itemCallback){

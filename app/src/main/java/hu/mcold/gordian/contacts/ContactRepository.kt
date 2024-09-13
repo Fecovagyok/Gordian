@@ -2,15 +2,15 @@ package hu.mcold.gordian.contacts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import haart.bme.hit.hu.mcold.gordian.common.toBase64String
-import haart.bme.hit.hu.mcold.gordian.common.toUserID
-import haart.bme.hit.hu.mcold.gordian.database.ContactDao
-import haart.bme.hit.hu.mcold.gordian.database.RoomContact
-import haart.bme.hit.hu.mcold.gordian.login.UserID
-import haart.bme.hit.hu.mcold.gordian.security.KeyProviders
-import haart.bme.hit.hu.mcold.gordian.security.MySecretKey
-import haart.bme.hit.hu.mcold.gordian.security.ReceiverKeyProvider
-import haart.bme.hit.hu.mcold.gordian.security.SenderKeyProvider
+import hu.mcold.gordian.common.toBase64String
+import hu.mcold.gordian.common.toUserID
+import hu.mcold.gordian.database.ContactDao
+import hu.mcold.gordian.database.RoomContact
+import hu.mcold.gordian.login.UserID
+import hu.mcold.gordian.security.KeyProviders
+import hu.mcold.gordian.security.MySecretKey
+import hu.mcold.gordian.security.ReceiverKeyProvider
+import hu.mcold.gordian.security.SenderKeyProvider
 
 class ContactRepository(private val dao: ContactDao) {
     fun getContacts(): LiveData<List<Contact>> = dao.getContacts()

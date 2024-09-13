@@ -8,16 +8,16 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import haart.bme.gordian.hu.mcold.gordian.R
-import haart.bme.gordian.hu.mcold.gordian.databinding.FragmentLoginBinding
-import haart.bme.hit.hu.mcold.gordian.MainActivity
-import haart.bme.hit.hu.mcold.gordian.common.isEmpty
-import haart.bme.hit.hu.mcold.gordian.common.moreThan
-import haart.bme.hit.hu.mcold.gordian.common.onError
-import haart.bme.hit.hu.mcold.gordian.common.reSetupActionBar
-import haart.bme.hit.hu.mcold.gordian.exceptions.AlreadyRunning
-import haart.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
-import haart.bme.hit.hu.mcold.gordian.viewModel.NetworkManager
+import hu.mcold.gordian.R
+import hu.mcold.gordian.databinding.FragmentLoginBinding
+import hu.mcold.gordian.MainActivity
+import hu.mcold.gordian.common.isEmpty
+import hu.mcold.gordian.common.moreThan
+import hu.mcold.gordian.common.onError
+import hu.mcold.gordian.common.reSetupActionBar
+import hu.mcold.gordian.exceptions.AlreadyRunning
+import hu.mcold.gordian.viewModel.ChatViewModel
+import hu.mcold.gordian.viewModel.NetworkManager
 
 /**
  * A [Fragment] subclass which displays

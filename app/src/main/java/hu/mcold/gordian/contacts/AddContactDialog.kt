@@ -5,10 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import haart.bme.gordian.hu.mcold.gordian.R
-import haart.bme.gordian.hu.mcold.gordian.databinding.AddContactBinding
-import haart.bme.hit.hu.mcold.gordian.common.isBadText
-import haart.bme.hit.hu.mcold.gordian.viewModel.ChatViewModel
+import hu.mcold.gordian.R
+import hu.mcold.gordian.databinding.AddContactBinding
+import hu.mcold.gordian.common.isBadText
+import hu.mcold.gordian.viewModel.ChatViewModel
 
 class AddContactDialog : DialogFragment() {
 

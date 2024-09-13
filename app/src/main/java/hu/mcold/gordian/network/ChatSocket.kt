@@ -1,10 +1,10 @@
 package hu.mcold.gordian.network
 
-import haart.bme.gordian.hu.mcold.gordian.network.StatusLogger
-import haart.bme.hit.hu.mcold.gordian.common.awaitClose
-import haart.bme.hit.hu.mcold.gordian.common.toUserID
-import haart.bme.hit.hu.mcold.gordian.exceptions.AuthError
-import haart.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
+import hu.mcold.gordian.network.StatusLogger
+import hu.mcold.gordian.common.awaitClose
+import hu.mcold.gordian.common.toUserID
+import hu.mcold.gordian.exceptions.AuthError
+import hu.mcold.gordian.exceptions.ProtocolException
 import hu.mcold.gordian.security.GcmMessage
 import java.io.InputStream
 import java.io.OutputStream

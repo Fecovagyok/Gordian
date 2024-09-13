@@ -1,8 +1,8 @@
 package hu.mcold.gordian.network
 
 import android.util.Log
-import haart.bme.hit.hu.mcold.gordian.common.MyByteArray
-import haart.bme.hit.hu.mcold.gordian.common.toHex
+import hu.mcold.gordian.common.MyByteArray
+import hu.mcold.gordian.common.toHex
 import hu.mcold.gordian.security.GcmMessage
 import java.io.OutputStream
 

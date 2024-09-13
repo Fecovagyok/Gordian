@@ -1,11 +1,11 @@
 package hu.mcold.gordian.security
 
 import android.util.Log
-import haart.bme.hit.hu.mcold.gordian.common.*
-import haart.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
+import hu.mcold.gordian.common.*
+import hu.mcold.gordian.exceptions.ProtocolException
 import hu.mcold.gordian.exceptions.TooLongMessage
-import haart.bme.hit.hu.mcold.gordian.login.UserID
-import haart.bme.hit.hu.mcold.gordian.messages.Message
+import hu.mcold.gordian.login.UserID
+import hu.mcold.gordian.messages.Message
 import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.spec.GCMParameterSpec

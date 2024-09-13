@@ -7,8 +7,8 @@ import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import haart.bme.hit.hu.mcold.gordian.login.UserID
-import haart.bme.hit.hu.mcold.gordian.security.MySecretKey
+import hu.mcold.gordian.login.UserID
+import hu.mcold.gordian.security.MySecretKey
 import kotlinx.coroutines.Job
 import java.net.Socket
 import java.security.SecureRandom

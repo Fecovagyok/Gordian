@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/exchange_confirm_fragment_in_graph"
-        android:name="haart.bme.hit.hu.mcold.gordian.exchange.ConfirmExchangeFragment"
+        android:name="hu.mcold.gordian.exchange.ConfirmExchangeFragment"
         android:label="@string/confirm_the_exchange"
         tools:layout="@layout/confirm_exchange_layout"
         />
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/show_qr_fragment"
         tools:layout="@layout/fragment_qr_show"
-        android:name="haart.bme.hit.hu.mcold.gordian.exchange.ShowQRFragment"
+        android:name="hu.mcold.gordian.exchange.ShowQRFragment"
         android:label="@string/show_your_secret_key"
         >
 
@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/read_qr_fragment"
         tools:layout="@layout/fragment_read_qr"
-        android:name="haart.bme.hit.hu.mcold.gordian.exchange.ReadQRFragment"
+        android:name="hu.mcold.gordian.exchange.ReadQRFragment"
         android:label="@string/read_your_secret_key"
         >
 
@@ -69,7 +69,7 @@
 
     <fragment
         android:id="@+id/graph_login_fragment"
-        android:name="haart.bme.hit.hu.mcold.gordian.login.LoginFragment"
+        android:name="hu.mcold.gordian.login.LoginFragment"
         android:label="@string/login"
         tools:layout="@layout/fragment_login"
         >
@@ -84,7 +84,7 @@
 
     <fragment
         android:id="@+id/ContactsFragment"
-        android:name="haart.bme.hit.hu.mcold.gordian.contacts.ContactsFragment"
+        android:name="hu.mcold.gordian.contacts.ContactsFragment"
         android:label="@string/contact_fragment_label"
         tools:layout="@layout/fragment_contact">
 
@@ -94,7 +94,7 @@
     </fragment>
     <fragment
         android:id="@+id/MessagesFragment"
-        android:name="haart.bme.hit.hu.mcold.gordian.messages.MessagesFragment"
+        android:name="hu.mcold.gordian.messages.MessagesFragment"
         android:label="@string/messages"
         tools:layout="@layout/fragment_message">
 

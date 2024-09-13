@@ -1,9 +1,9 @@
 package hu.mcold.gordian.network
 
-import haart.bme.hit.hu.mcold.gordian.common.myToLong
-import haart.bme.hit.hu.mcold.gordian.common.toMyByteArray
-import haart.bme.hit.hu.mcold.gordian.common.toUserID
-import haart.bme.hit.hu.mcold.gordian.exceptions.ProtocolException
+import hu.mcold.gordian.common.myToLong
+import hu.mcold.gordian.common.toMyByteArray
+import hu.mcold.gordian.common.toUserID
+import hu.mcold.gordian.exceptions.ProtocolException
 import hu.mcold.gordian.security.GcmMessage
 import java.io.IOException
 import java.io.InputStream

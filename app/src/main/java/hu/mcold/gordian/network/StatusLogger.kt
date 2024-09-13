@@ -1,4 +1,4 @@
-package haart.bme.gordian.hu.mcold.gordian.network
+package hu.mcold.gordian.network
 
 interface StatusLogger {
     fun postError(msg: String)

@@ -2,11 +2,11 @@ package hu.mcold.gordian.messages
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import haart.bme.hit.hu.mcold.gordian.ChatApplication
-import haart.bme.hit.hu.mcold.gordian.common.toBase64String
-import haart.bme.hit.hu.mcold.gordian.common.toUserID
-import haart.bme.hit.hu.mcold.gordian.contacts.Contact
-import haart.bme.hit.hu.mcold.gordian.database.RoomMessage
+import hu.mcold.gordian.ChatApplication
+import hu.mcold.gordian.common.toBase64String
+import hu.mcold.gordian.common.toUserID
+import hu.mcold.gordian.contacts.Contact
+import hu.mcold.gordian.database.RoomMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

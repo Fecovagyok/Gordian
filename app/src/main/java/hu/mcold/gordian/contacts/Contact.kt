@@ -1,7 +1,7 @@
 package hu.mcold.gordian.contacts
 
-import haart.bme.hit.hu.mcold.gordian.login.UserID
-import haart.bme.hit.hu.mcold.gordian.security.KeyProviders
+import hu.mcold.gordian.login.UserID
+import hu.mcold.gordian.security.KeyProviders
 
 data class Contact(
     val id: Long = 0,

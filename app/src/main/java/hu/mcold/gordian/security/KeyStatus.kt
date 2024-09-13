@@ -1,6 +1,6 @@
 package hu.mcold.gordian.security
 
-import haart.bme.hit.hu.mcold.gordian.common.MyByteArray
+import hu.mcold.gordian.common.MyByteArray
 
 
 data class KeyStatus(

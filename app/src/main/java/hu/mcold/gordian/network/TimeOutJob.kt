@@ -1,6 +1,6 @@
 package hu.mcold.gordian.network
 
-import haart.bme.gordian.hu.mcold.gordian.network.StatusLogger
+import hu.mcold.gordian.network.StatusLogger
 import kotlinx.coroutines.*
 import java.net.Socket
 

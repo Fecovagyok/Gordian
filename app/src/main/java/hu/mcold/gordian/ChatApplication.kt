@@ -6,9 +6,9 @@ import android.os.Build
 import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import haart.bme.hit.hu.mcold.gordian.common.toBase64String
-import haart.bme.hit.hu.mcold.gordian.common.toData
-import haart.bme.hit.hu.mcold.gordian.database.Database
+import hu.mcold.gordian.common.toBase64String
+import hu.mcold.gordian.common.toData
+import hu.mcold.gordian.database.Database
 import net.sqlcipher.database.SupportFactory
 import java.security.SecureRandom
 
