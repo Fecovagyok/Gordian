@@ -29,8 +29,8 @@ android {
         applicationId "hu.mcold.gordian"
         minSdk 23 // Android 6.0 is the minimum - Codename marshmallow
         targetSdk 34
-        versionCode 2
-        versionName "1.1"
+        versionCode 4
+        versionName "1.7"
         signingConfig signingConfigs.release
 
     }
@@ -39,6 +39,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
